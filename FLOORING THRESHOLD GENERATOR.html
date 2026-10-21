@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flooring Threshold Studio · v2.2</title>
+<style>
+:root{font-family:Inter,'Segoe UI',Arial,sans-serif;color:#e6edf6;background:#0d1420;font-synthesis:none}*{box-sizing:border-box}
+body{margin:0}button,input,select{font:inherit}header{height:64px;background:#151f2f;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #2c3b4c;gap:10px}header strong{font-size:17px;letter-spacing:.025em}.small{color:#91a3b7;font-size:12px;line-height:1.45}.pill{background:#263e55;color:#b9d9ef;border-radius:15px;padding:6px 10px;font-size:11px;white-space:nowrap}
+main{display:grid;grid-template-columns:330px minmax(420px,1fr) 264px;height:calc(100vh - 64px);overflow:hidden}aside{padding:19px;background:#131d2b;border-right:1px solid #2b3a49;overflow:auto;scrollbar-color:#3c5063 transparent}.report{padding:19px;background:#131d2b;border-left:1px solid #2b3a49;overflow:auto}section{border-bottom:1px solid #304050;padding:5px 0 16px;margin-bottom:15px}h3{font-size:12px;letter-spacing:.075em;color:#8ca6bc;text-transform:uppercase;margin:6px 0 15px}label{display:block;color:#bdcbda;font-size:12px;margin:11px 0 5px}input,select{width:100%;min-width:0;background:#202e3d;color:#f0f4f9;border:1px solid #3c5063;padding:9px 10px;border-radius:6px;font-size:13px}input:focus,select:focus{outline:2px solid #3995ea;outline-offset:1px}input:disabled{opacity:.4}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:1px solid #44739a;background:#215c96;color:white;border-radius:7px;padding:10px 13px;cursor:pointer;font-weight:650;font-size:12px}.btn:hover{filter:brightness(1.12)}.btn.secondary{background:#23354b}.btn.wide{width:100%;margin:5px 0}.btn:disabled{opacity:.4;cursor:not-allowed}.checkbox{display:flex;align-items:center;gap:8px;line-height:1.4;margin:9px 0}.checkbox input{width:auto;margin:0}.workspace{min-width:0;overflow:auto;background:radial-gradient(circle at 45% 40%,#203148,#0c1523 75%);display:flex;flex-direction:column}.workspaceTop{padding:19px 22px 6px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.workspaceTitle{font-size:15px;font-weight:700}.workspaceTitle small{display:block;font-size:11px;color:#93aec5;font-weight:400;margin-top:3px}.switcher{display:flex;gap:5px;background:#122034;border-radius:8px;padding:4px;border:1px solid #2e4355}.switcher button{border:0;background:transparent;color:#a7bfd3;border-radius:5px;padding:7px 12px;font-size:12px;cursor:pointer}.switcher button.active{background:#286b9e;color:#fff}.canvasPanel{flex:1;min-height:460px;display:flex;flex-direction:column;padding:13px 22px 20px}.panel{border:1px solid #30475e;border-radius:12px;background:#132034b8;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 12px 34px #0002}.panelHead{padding:13px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2b4054;gap:10px;font-size:12px}.panelHead b{letter-spacing:.06em}.panelHead span{font-size:11px;color:#94adc4}.sketchArea{position:relative;height:370px;background-image:linear-gradient(#5082a212 1px,transparent 1px),linear-gradient(90deg,#5082a212 1px,transparent 1px);background-size:22px 22px;overflow:hidden}#sketch{display:block;width:100%;height:100%}.floatDim{position:absolute;z-index:3;width:64px;transform:translate(-50%,-50%);text-align:center;border:1px solid #59a2c9;background:#192f45;color:#eaf5ff;padding:5px 4px;font-size:12px;font-weight:650;box-shadow:0 3px 10px #0008}.floatDim:focus{z-index:5}.dimunit{position:absolute;color:#7fabc5;font-size:10px;pointer-events:none;transform:translate(-50%,0)}.sketchFooter{padding:11px 15px;border-top:1px solid #30445a;color:#9cb4ca;font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.previewOuter{height:390px;position:relative;background-image:linear-gradient(#5082a20b 1px,transparent 1px),linear-gradient(90deg,#5082a20b 1px,transparent 1px);background-size:25px 25px}#preview{width:100%;height:100%;display:block;cursor:grab;touch-action:none}#preview:active{cursor:grabbing}.viewHint{position:absolute;bottom:13px;left:16px;color:#9eb5ca;font-size:11px;pointer-events:none}.viewerNote{position:absolute;top:12px;right:14px;color:#b1d1e6;background:#15283bbd;padding:7px 9px;border:1px solid #315571;border-radius:6px;font-size:11px}.bottomRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}.smallPanel{padding:15px;border-radius:10px;background:#142237;border:1px solid #30485e}.smallPanel b{display:block;font-size:13px;margin-bottom:10px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{background:#1d2c3b;border:1px solid #2d4459;border-radius:9px;padding:12px;margin-bottom:10px}.metric b{font-size:23px;display:block;margin-top:4px}.metric span{font-size:12px;color:#9eb3c8}.metric.compact b{font-size:19px}.status{font-size:12px;color:#a9c0d3;line-height:1.55;margin:8px 0 12px}.status.warn{color:#ffd493}.status.error{color:#ffacae}.notice{font-size:11px;color:#9bb0c4;line-height:1.5;background:#1a2b3d;border-radius:8px;padding:11px;margin-top:12px}table{border-collapse:collapse;width:100%;font-size:11px}td,th{text-align:left;padding:9px 4px;border-bottom:1px solid #2c3b4a}th{color:#9db4c6}td:last-child{text-align:right}.tag{color:#9fdaef;border:1px solid #446981;border-radius:4px;padding:3px 5px;font-size:10px}.slim{margin:6px 0}.filletDot{cursor:pointer;transition:fill .15s,stroke .15s}.filletDot:hover{stroke:#fff;stroke-width:3.4}.cornerLabel{font-size:10px;fill:#b3ccdf;pointer-events:none}.selectedMarker{stroke:#fff;stroke-width:3}.cornerHelp{border:1px solid #406584;border-radius:8px;padding:10px;margin-top:12px;background:#192a3e}.cornerHelp b{color:#9addff;font-size:12px}.hintAccent{color:#edc17c}.hidden{display:none!important}
+#welcome{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 60% 25%,#284260 0%,#101b2c 42%,#070e19 100%);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .4s ease,visibility .4s ease}#welcome.dismissed{opacity:0;visibility:hidden;pointer-events:none}.welcome-card{width:min(100%,485px);background:#162439ee;border:1px solid #466680;border-radius:20px;padding:39px;box-shadow:0 25px 85px #0008}.welcome-mark{font-size:55px;color:#76c6ef}.welcome-eyebrow{font-size:12px;letter-spacing:.18em;color:#8db6d0;font-weight:700;margin:18px 0 10px}.welcome-card h1{font-size:35px;line-height:1.1;margin:0 0 16px}.welcome-card p{color:#b9cce0;line-height:1.6;margin-bottom:25px}.welcome-card select{padding:13px;font-size:15px}.welcome-start{width:100%;padding:15px;margin:20px 0 14px;font-size:15px;background:#267fc4;border-color:#59a8df}.welcome-footnote{font-size:12px;color:#8ca5bb;display:block;text-align:center}
+.toast{position:fixed;bottom:16px;right:18px;z-index:150;padding:11px 18px;border-radius:10px;background:#234864;color:#eff9ff;border:1px solid #4c9bcb;box-shadow:0 8px 40px #0008;font-size:12px;display:none;max-width:330px}.toast.visible{display:block}
+@media(max-width:1200px){main{grid-template-columns:300px 1fr}.report{grid-column:1/-1;border-top:1px solid #2b3a49;max-height:none}.workspace{min-height:800px}main{height:auto;overflow:visible}}
+@media(max-width:700px){main{display:flex;flex-direction:column}aside{order:2}.workspace{order:1;min-height:0}.report{order:3}.canvasPanel{padding:9px}.workspaceTop{padding:16px 10px 6px}.sketchArea{height:330px}.previewOuter{height:320px}.bottomRow{grid-template-columns:1fr}.floatDim{width:54px;font-size:10px;padding:5px 2px}header{padding:0 13px}header strong{font-size:12px}.pill{font-size:9px}.welcome-card{padding:25px}.welcome-card h1{font-size:27px}}
+@media(prefers-reduced-motion:reduce){#welcome{transition:none}}
+
+/* v1.6 — collapsed-by-default parameter accordions */
+aside{padding:16px 13px}
+.menuToolbar{display:flex;align-items:center;justify-content:space-between;padding:2px 4px 13px;gap:8px}
+.menuToolbarTitle{font-size:10px;letter-spacing:.12em;color:#8fa8bc;font-weight:750}
+.menuToolbarActions{display:flex;gap:6px;flex-wrap:wrap}
+.toolbarMini{cursor:pointer;background:#1f3348;border:1px solid #38516a;border-radius:5px;color:#b6d0e3;padding:5px 7px;font-size:10px}
+.toolbarMini:hover,.toolbarMini:focus-visible{background:#294960;border-color:#70b5e7}
+.menuSection{border:1px solid #314559;border-radius:9px;margin:0 0 9px;padding:0;background:#182638;overflow:hidden}
+.menuSection.isOpen{border-color:#496d88;background:#152436}
+.menuHeading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:49px;padding:0 11px 0 14px;background:#1b2d41}
+.menuHeading h3{margin:0;line-height:1.3;letter-spacing:.063em;color:#bad6ea;flex:1}
+.menuToggle{width:29px;height:29px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid #476480;border-radius:6px;background:#243c52;color:#cde8fa;font-size:19px;line-height:1;cursor:pointer;padding:0}
+.menuToggle:hover,.menuToggle:focus-visible{outline:1px solid #6ec1fa;background:#2b5574}
+.menuBody{padding:6px 13px 16px}
+.menuBody[hidden]{display:none!important}
+.unitField{position:relative;min-width:0}
+.unitField input{padding-right:48px;font-variant-numeric:tabular-nums}
+.unitField input[data-unit-type="count"]{padding-right:50px}
+.inputUnit{position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;min-width:20px;text-align:right;user-select:none;color:#93bbd6;font-size:11px;font-weight:650}
+.fieldUnitLabel{float:right;color:#86adc9;font-size:10px;font-weight:700;letter-spacing:.025em;margin-left:6px}
+.menuBody .notice{margin-top:12px}
+.menuBody .split{gap:10px}
+@media(max-width:700px){.menuHeading{min-height:51px}}
+
+.coordHead,.coordRow{display:grid;grid-template-columns:minmax(84px,1.05fr) minmax(70px,1fr) minmax(70px,1fr);gap:7px;align-items:center}
+.coordHead{font-size:10px;color:#99b2c7;letter-spacing:.07em;margin:14px 0 7px;padding:0 3px}
+.coordRow{border-top:1px solid #324559;padding:8px 2px;border-radius:5px;cursor:pointer}
+.coordRow.selected{background:#213c56;border-left:3px solid #8adafa;padding-left:5px}
+.coordRow strong{color:#b1e3ff;font-size:12px;display:block}.coordRow small{color:#879daf;display:block;font-size:10px;line-height:1.3}
+.coordRow input{padding:7px 6px;font-size:12px;text-align:right;min-width:0}
+.pointEditor{position:absolute;z-index:5;top:43px;right:12px;width:192px;border:1px solid #477697;background:#15293ef1;border-radius:8px;padding:10px;box-shadow:0 6px 20px #02081090}
+.pointEditorTitle b{max-width:125px;line-height:1.3;overflow-wrap:anywhere}.pointEditorTitle{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#b1e3ff}
+.pointEditorGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px}
+.pointEditorGrid label{font-size:10px;margin:3px 0;white-space:nowrap}.pointEditorGrid input{padding:6px 4px;font-size:12px;margin:3px 0 0;text-align:right;width:100%}
+.pointEditorButton{border:0;background:transparent;color:#9cdbfc;cursor:pointer;font-size:10px;padding:4px 0;text-align:left}
+.pointEditorButton:hover{text-decoration:underline;color:#fff}
+.vertexHit{fill:transparent;cursor:pointer;pointer-events:all}
+.vertexDot{pointer-events:none}.vertexLetter{font-family:Segoe UI,Arial;font-size:10px;font-weight:700;fill:#b4e9ff;pointer-events:none}
+.vertexHit:focus{outline:none;stroke:#fff;stroke-width:2px}
+.linkedVertexRing{fill:none;stroke:#ffce7a;stroke-width:2.6;stroke-dasharray:3 2;pointer-events:none}
+#pointPairStatus{margin-top:5px;font-size:10px;color:#ffdc9c;line-height:1.3}
+@media(max-width:700px){.pointEditor{top:32px;width:136px;padding:7px}.pointEditorGrid input{font-size:11px}}
+
+/* V1.9 contextual geometry controls */
+.segmentGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.segmentItem{display:flex;align-items:center;gap:7px;padding:5px 7px;border:1px solid #324c65;background:#18283a;border-radius:6px;min-width:0}
+.segmentItem .segmentName{font-weight:700;color:#a9deff;min-width:27px;font-size:11px}
+.segmentItem input{min-width:0;text-align:right;padding:6px 23px 6px 4px;font-size:11px}
+.segmentItem .inputUnit{font-size:10px;right:6px}
+.profileLineHit{stroke:transparent;stroke-width:17;fill:none;cursor:pointer;pointer-events:stroke}
+.profileLineHit:hover,.profileLineHit:focus{stroke:#f6c66b88;stroke-width:12;outline:none}
+.lineCaption{fill:#b7d9ee;font-size:11px;pointer-events:none;font-family:Segoe UI,Arial;font-weight:650;paint-order:stroke;stroke:#132034;stroke-width:3}
+.lineCaption.active{fill:#ffe2a2}
+.lineEditor{position:absolute;z-index:6;top:45px;left:12px;width:145px;border:1px solid #477697;background:#15293ef1;border-radius:8px;padding:10px;box-shadow:0 6px 20px #02081090}
+.lineEditor label{margin:5px 0;font-size:10px}.lineEditor input{font-size:12px;margin-top:4px;padding:7px}
+#sketch .filletDot{cursor:pointer}
+
+/* v1.9 sketch manipulation and live editable project metrics */
+#sketch{touch-action:none;user-select:none;cursor:crosshair}
+#sketch.sketchPanning{cursor:grabbing}
+#sketch.sketchDragging{cursor:grabbing}
+#sketch .vertexHit{cursor:grab}
+#sketch .profileLineHit{cursor:move}
+.sketchToolBtn{border:1px solid #3f6788;background:#20374c;color:#c2def2;border-radius:5px;padding:4px 7px;font-size:11px;cursor:pointer}
+.sketchTools{display:flex;gap:6px;align-items:center}
+.sketchZoomLabel{font-size:11px;color:#aad0e9;min-width:42px;text-align:center}
+.summaryIntro{font-size:11px;color:#8eaec7;line-height:1.5;margin:-3px 0 12px}
+.report .metric label{margin:0 0 7px;color:#9eb3c8;font-size:12px}
+.report .metric{min-width:0}
+.report .summaryValue{display:flex;gap:6px;align-items:center;min-width:0}
+.report .summaryValue input{width:100%;min-width:0;font-size:18px;font-weight:700;padding:7px 5px 7px 7px;color:#ecf7ff;border:1px solid #42617b}
+.report .metric.compact input{font-size:16px}
+.report .summaryUnit{font-size:10px;color:#9cb7cb;flex-shrink:0;white-space:nowrap}
+.report .summaryValue input:focus{border-color:#68bbec}
+
+/* v2.1 — unrestricted 3D orbit with synchronized, clickable view cube */
+.previewOuter{isolation:isolate}
+.viewerNote{left:14px;right:auto;max-width:calc(100% - 185px)}
+.orbitWidget{position:absolute;z-index:5;right:12px;top:12px;width:150px;padding:7px;background:#101e2fef;border:1px solid #41617b;border-radius:11px;box-shadow:0 8px 24px #0008;display:flex;align-items:center;flex-direction:column;gap:5px;user-select:none}
+.viewCube{width:102px;height:102px;display:block;cursor:pointer;touch-action:none;border-radius:7px}
+.viewCube:focus-visible{outline:2px solid #7bcbff;outline-offset:2px}
+.orbitWidget .orbitTitle{font-size:10px;color:#c7e1f5;font-weight:750;letter-spacing:.09em}
+.viewPresets{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.viewPreset{color:#afc9df;background:#22364a;border:1px solid #415e76;border-radius:5px;min-width:0;min-height:25px;font-size:10px;cursor:pointer;padding:4px 2px}
+.viewPreset:hover,.viewPreset:focus-visible{color:white;border-color:#8bcfff;background:#2c5b7d}
+.viewPreset[aria-pressed="true"]{color:#fff;background:#286d9c;border-color:#79bdf5}
+.orbitReadout{font-size:9px;color:#98b5ce;white-space:nowrap}
+.orbitHelp{font-size:10px;color:#b1c9dc;text-align:center;line-height:1.35}
+@media(max-width:700px){.orbitWidget{width:128px;right:7px;top:7px;padding:5px}.viewCube{width:80px;height:80px}.viewPreset{font-size:9px;min-height:22px}.viewHint{max-width:calc(100% - 150px)}.viewerNote{max-width:calc(100% - 155px)}}
+/* V2.4 sketch constraint tools, undo history and lock diagnostics */
+.sketchConstraint{min-width:30px;min-height:28px;font-size:15px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;padding:3px 7px}
+.sketchConstraint svg{width:18px;height:18px;overflow:visible;pointer-events:none}
+.sketchConstraint[aria-pressed="true"]{background:#94692e;border-color:#ffd483;color:#fff5d6;box-shadow:0 0 0 1px #dfa352}
+.sketchToolBtn:disabled{opacity:.45;cursor:not-allowed}
+#constraintStatus{font-size:11px;color:#c6d7e8;min-width:100px;max-width:290px;line-height:1.3}
+#constraintStatus.constraintError{color:#ffb9a9}
+#checkList .constraintIssue{padding:9px;margin-top:9px;border:1px solid #d46a5d;border-radius:7px;background:#502729;color:#ffd0c9;font-weight:700}
+@keyframes locked-point-flash{0%,100%{opacity:1;filter:drop-shadow(0 0 0px #ff5544)}25%,75%{opacity:.2;filter:drop-shadow(0 0 10px #ff4239)}50%{opacity:1;filter:drop-shadow(0 0 9px #ffec66)}}
+.constraint-flash{animation:locked-point-flash .38s ease-in-out 5}
+.constraint-flash .vertexLetter{fill:#ffcb64!important;font-weight:900}
+.constraint-flash .vertexDot{fill:#fc604f!important;stroke:#ffd084;stroke-width:3px}
+@media(max-width:950px){.sketchTools{flex-wrap:wrap;justify-content:flex-end}#constraintStatus{max-width:190px}}
+/* V2.3 hole centerline, per-hole design advisories and exports */
+.holeSketchButton[aria-pressed="true"]{background:#326e5e;color:#e9fff5;border-color:#71d5ae}
+#sketch .holeGuide{cursor:ew-resize}
+#sketch .holeGuide:hover{stroke-width:20}
+.holeAdvice{font-size:11px;line-height:1.5;padding:9px;margin:8px 0;border:1px solid #40586b;border-radius:7px;background:#1a2b3c}
+.holeAdvice.good{border-color:#44886d;color:#a1f0c4}.holeAdvice.caution{border-color:#937044;color:#ffd493}.holeAdvice.bad{border-color:#995257;color:#ffb1b7}
+/* V2.2 independent vertex locks and manufacturing-oriented profiles */
+.pointLockButton{width:100%;padding:7px 8px;margin:8px 0 3px;border:1px solid #4d7796;border-radius:6px;background:#18364f;color:#cce6ff;cursor:pointer;font-size:11px;font-weight:700;text-align:left}
+.pointLockButton[aria-pressed="true"]{border-color:#eac77c;background:#45351e;color:#ffdfa1}
+.coordRow .pointPin{font-size:10px;background:#1e3044;border:1px solid #55738a;border-radius:5px;color:#c0d8ec;cursor:pointer;padding:3px 5px;min-width:54px;text-align:center;display:block;margin-top:3px}
+.coordRow .pointPin[aria-pressed="true"]{color:#ffe0a0;border-color:#a88845;background:#3b3021}
+.coordRow input:disabled{opacity:.48;cursor:not-allowed}
+.sketchLockTag{font-family:Segoe UI,Arial;font-size:13px;pointer-events:none;paint-order:stroke;stroke:#122136;stroke-width:2}
+</style></head><body>
+<div id="welcome" aria-modal="true" role="dialog" aria-labelledby="welcomeTitle"><div class="welcome-card"><div class="welcome-mark">▱</div><div class="welcome-eyebrow">FLOORING THRESHOLD STUDIO</div><h1 id="welcomeTitle">Design your transition.</h1><p>Create a dimensioned flooring threshold, add per-piece fasteners and corner fillets, then generate interlocking print-length segments.</p><label for="welcomeUnits">Primary dimensions</label><select id="welcomeUnits"><option selected value="in">Inches (in)</option><option value="mm">Millimeters (mm)</option></select><button class="btn welcome-start" id="welcomeStart">Start designing &nbsp; →</button><span class="welcome-footnote">All STL files export in millimeters · Works offline.</span></div></div>
+<header><div><strong>▱ FLOORING THRESHOLD STUDIO</strong> <span class="small">/ profile generator</span></div><span class="pill">V2.4 • <span id="headerUnitStatus">IN</span> • OFFLINE READY</span></header>
+<main>
+<aside><div class="menuToolbar"><span class="menuToolbarTitle">PARAMETERS</span><div class="menuToolbarActions"><button type="button" class="toolbarMini" id="expandMenus">Expand all</button><button type="button" class="toolbarMini" id="collapseMenus">Collapse all</button></div></div>
+<section class="menuSection" data-menu="1" aria-label="01 — PROFILE GEOMETRY"><div class="menuHeading"><h3>01 — PROFILE GEOMETRY</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody1" aria-label="Expand 01 — PROFILE GEOMETRY" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody1" hidden>
+<div class="split"><div><label>Display units</label><select id="units"><option value="in" selected>inches</option><option value="mm">millimeters</option></select></div><div><label>Profile preset</label><select id="preset"><option value="sketch">Original sketch</option><option value="flat">Symmetric reducer</option><option value="mirror">Mirrored original · right-to-left reducer</option><option value="printFlat">Print-flat · low T-cap (face-down)</option></select></div></div>
+<label>Top profile curve</label><select id="curve"><option value="smooth" selected>Soft crown</option><option value="linear">Straight segments</option></select>
+<label>Additional vertices on top profile</label><select id="topVertexCount"><option value="0" selected>None · use A, B, C</option><option value="1">1 extra (J)</option><option value="2">2 extra (J–K)</option><option value="3">3 extra (J–L)</option><option value="4">4 extra (J–M)</option><option value="5">5 extra (J–N)</option></select>
+<div class="small" style="margin-top:9px">Select a vertex and click Lock to pin its X/Y position. Locked points cannot move during dragging, line edits, or coordinate changes. When an I/H or D/E member is pinned, both members hold their Y coordinates. Unlock to edit. Click or drag a vertex to edit its X/Y coordinates or add a fillet. Drag a line to move both endpoints; click its two-letter label to edit its length. New J–N vertices follow the left-to-right top contour. Changing their count redistributes them; the curve passes through each control point.</div>
+<h3 style="margin-top:15px;margin-bottom:7px">Individual line lengths</h3><div class="segmentGrid" id="segmentLengths"></div>
+<div class="small" style="margin-top:7px">Length is the straight-line distance between the named vertices. When one endpoint is locked, the other endpoint adjusts; when both endpoints are locked, the segment is fixed.</div><div class="notice" style="margin-top:8px">Print-flat T-cap: low, flat textured face for printing face-down on the build plate; an upper strip tapers into a central anchoring stem. Flat faces print easiest with texture disabled or extremely shallow. Test-fit and verify fastening strength before use.</div>
+<div id="baseParameters" hidden><input id="leftW" value="1" type="number" step="0.1"><input id="midW" value="2" type="number" step="0.1"><input id="rightW" value="1" type="number" step="0.1"><input id="crest" value="0.72" type="number" step="0.1"><input id="leftClear" value="0.6" type="number" step="0.1"><input id="rightRise" value="0.23" type="number" step="0.1"><input id="leftEdge" value="0.05125" type="number" step="0.1"><input id="edge" value="0.055" type="number" step="0.1"></div><div id="profileMessage" class="status"></div></div></section>
+<section class="menuSection" data-menu="coords" aria-label="02 — VERTEX COORDINATES"><div class="menuHeading"><h3>02 — VERTEX COORDINATES</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBodyCoords" aria-label="Expand 02 — VERTEX COORDINATES" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBodyCoords" hidden>
+<p class="small">Choose any labeled sketch node (A–I, plus optional J–N) or enter its X and Y here. X is horizontal across the threshold; Y is vertical above the floor datum. Every corner has its own editable coordinates; the selected curve setting controls the upper profile between top vertices. <strong>I ↔ H and D ↔ E share Y only.</strong> B (crest) is independent; all X coordinates remain independently editable.</p>
+<div class="coordHead"><span>POINT / LOCK</span><span>X <span class="coordUnit">in</span></span><span>Y <span class="coordUnit">in</span></span></div><div id="coordinateRows" class="coordRows"></div>
+<div class="cornerHelp"><b id="coordModeStatus">Dimension-defined profile</b><div class="small" style="margin-top:7px">The line length editor remains available for custom-coordinate profiles.</div><button class="btn secondary wide" id="resetCoordinates" type="button">Restore dimension-defined profile</button></div>
+<div id="coordMessage" class="status"></div></div></section>
+<section class="menuSection" data-menu="2" aria-label="03 — DOORWAY & PRINTING"><div class="menuHeading"><h3>03 — DOORWAY & PRINTING</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody2" aria-label="Expand 02 — DOORWAY & PRINTING" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody2" hidden><div class="split"><div><label>Doorway / installed length<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="doorL">in</span></label><div class="unitField"><input data-unit-type="length" id="doorL" type="number" step="0.1" value="36"><span class="inputUnit" data-unit-type="length" data-unit-for="doorL" aria-hidden="true">in</span></div></div><div><label>Max print length<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="maxL">in</span></label><div class="unitField"><input data-unit-type="length" id="maxL" type="number" step="0.1" value="8.65"><span class="inputUnit" data-unit-type="length" data-unit-for="maxL" aria-hidden="true">in</span></div></div><div><label>Quantity of doorways<span class="fieldUnitLabel" data-unit-type="count" data-unit-for="sets">pcs</span></label><div class="unitField"><input data-unit-type="count" id="sets" type="number" min="1" step="1" value="1"><span class="inputUnit" data-unit-type="count" data-unit-for="sets" aria-hidden="true">pcs</span></div></div><div><label>Piece length mode</label><select id="splitMode"><option value="even" selected>Equal segments</option><option value="long">Max first / last short</option></select></div></div><label class="checkbox"><input type="checkbox" id="explode" checked>Show seam gaps in preview</label><div class="small">Section lengths include any protruding lock tongue. Each section can have its own mounting holes.</div></div></section>
+<section class="menuSection" data-menu="3" aria-label="04 — MOUNTING HARDWARE"><div class="menuHeading"><h3>04 — MOUNTING HARDWARE</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody3" aria-label="Expand 03 — MOUNTING HARDWARE" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody3" hidden><label class="checkbox"><input id="holesOn" type="checkbox" checked>Enable mounting holes</label><div class="split"><div><label>Hole quantity / section<span class="fieldUnitLabel" data-unit-type="count" data-unit-for="holeN">holes</span></label><div class="unitField"><input data-unit-type="count" type="number" id="holeN" min="0" max="24" step="1" value="2"><span class="inputUnit" data-unit-type="count" data-unit-for="holeN" aria-hidden="true">holes</span></div></div><div><label>Inset from each section end<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="endInset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="endInset" step="0.1" value="1.5"><span class="inputUnit" data-unit-type="length" data-unit-for="endInset" aria-hidden="true">in</span></div></div><div><label>Hole center from left edge<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="holeX">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="holeX" step="0.1" value="2"><span class="inputUnit" data-unit-type="length" data-unit-for="holeX" aria-hidden="true">in</span></div></div><div><label>Through-hole diameter<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="boreD">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="boreD" step="0.1" value="0.177"><span class="inputUnit" data-unit-type="length" data-unit-for="boreD" aria-hidden="true">in</span></div></div><div><label>Fastener head / chamfer Ø<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="headD">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="headD" step="0.1" value="0.354"><span class="inputUnit" data-unit-type="length" data-unit-for="headD" aria-hidden="true">in</span></div></div><div><label>Recess treatment</label><select id="recess"><option selected value="sink">Countersink / chamfer</option><option value="plain">Plain hole</option><option value="bore">Counterbore</option></select></div><div><label>Countersink included angle (°)<span class="fieldUnitLabel" data-unit-type="angle" data-unit-for="sinkA">°</span></label><div class="unitField"><input data-unit-type="angle" type="number" id="sinkA" value="90" min="20" max="170" step="1"><span class="inputUnit" data-unit-type="angle" data-unit-for="sinkA" aria-hidden="true">°</span></div></div><div><label>Counterbore depth<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="boreDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="boreDepth" value="0.10" step="0.1"><span class="inputUnit" data-unit-type="length" data-unit-for="boreDepth" aria-hidden="true">in</span></div></div></div><button type="button" id="placeHoleInMenu" class="btn secondary wide">＋ Place / move hole centerline in 2D sketch</button>
+<div class="small">Click the sketch to drop a vertical drilling axis, or drag its dashed line left/right. The location controls all section holes; lengthwise hole positions remain per section.</div>
+<div id="holeMessage" class="holeAdvice" aria-live="polite"></div></div></section>
+<section class="menuSection" data-menu="4" aria-label="05 — CORNER FILLETS"><div class="menuHeading"><h3>05 — CORNER FILLETS</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody4" aria-label="Expand 04 — CORNER FILLETS" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody4" hidden><p class="small">Select a node and enter its radius. Tangent points may reach the next node, using the entire adjoining edge. At acute corners the exact radius may be limited by the corner angle. Fillets export to STL, SVG, and DXF.</p><div class="cornerHelp"><b id="cornerSelection">No corner selected</b><div class="split"><div><label>Fillet radius<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="filletRadius">in</span></label><div class="unitField"><input data-unit-type="length" id="filletRadius" type="number" step="0.1" value="0.02"><span class="inputUnit" data-unit-type="length" data-unit-for="filletRadius" aria-hidden="true">in</span></div></div><div><label>&nbsp;</label><button class="btn secondary" id="applyFillet" style="width:100%">Apply radius</button></div></div><button class="btn secondary wide" id="removeFillet">Remove selected fillet</button><button class="btn secondary wide" id="clearFillets">Clear all fillets</button><div class="small" id="filletMessage">Orange = filleted; blue = available. Full-edge fillets are supported.</div></div></div></section>
+<section class="menuSection" data-menu="5" aria-label="06 — SECTION END LOCKS"><div class="menuHeading"><h3>06 — SECTION END LOCKS</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody5" aria-label="Expand 05 — SECTION END LOCKS" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody5" hidden><label class="checkbox"><input type="checkbox" id="locksOn" checked>Enable interlocking tongue + socket</label><div class="split"><div><label>Socket profile inset / offset<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockOffset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockOffset" step="0.1" value="0.08"><span class="inputUnit" data-unit-type="length" data-unit-for="lockOffset" aria-hidden="true">in</span></div></div><div><label>Socket cut / removal depth<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockDepth" step="0.1" value="0.35"><span class="inputUnit" data-unit-type="length" data-unit-for="lockDepth" aria-hidden="true">in</span></div></div>
+<div><label>Tongue profile inset / offset<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="tongueOffset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="tongueOffset" step="0.1" value="0.088"><span class="inputUnit" data-unit-type="length" data-unit-for="tongueOffset" aria-hidden="true">in</span></div></div>
+<div><label>Tongue extrusion length<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="tongueDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="tongueDepth" step="0.1" value="0.315"><span class="inputUnit" data-unit-type="length" data-unit-for="tongueDepth" aria-hidden="true">in</span></div></div>
+</div><button class="btn secondary wide" id="inspectSocket" type="button">Inspect socket mouth in 3D</button><div class="small" id="lockMessage">Socket is a real recessed pocket cut into the start of each joining section; the tongue extends from the other end. Enter each profile offset and axial depth independently. Ensure tongue is narrower and shorter than the socket.</div></div></section>
+<section class="menuSection" data-menu="texture" aria-label="07 — TOP SURFACE TEXTURE"><div class="menuHeading"><h3>07 — TOP SURFACE TEXTURE</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBodyTexture" aria-label="Expand 07 — TOP SURFACE TEXTURE" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBodyTexture" hidden>
+<label class="checkbox"><input id="woodOn" type="checkbox">Emboss a wood-grain relief on the top surface</label>
+<div class="split"><div><label>Grain rotation (°)<span class="fieldUnitLabel">°</span></label><div class="unitField"><input id="grainAngle" type="number" step="1" min="-180" max="180" value="0"><span class="inputUnit">°</span></div></div>
+<div><label>Grain relief depth<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="grainDepth">in</span></label><div class="unitField"><input data-unit-type="length" id="grainDepth" type="number" min="0" step="0.1" value="0.006"><span class="inputUnit" data-unit-type="length" data-unit-for="grainDepth">in</span></div></div>
+<div><label>Grain line spacing<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="grainPitch">in</span></label><div class="unitField"><input data-unit-type="length" id="grainPitch" type="number" min="0.01" step="0.1" value="0.21"><span class="inputUnit" data-unit-type="length" data-unit-for="grainPitch">in</span></div></div></div>
+<div class="small">0° runs along the doorway; 90° runs across it. This is real, low-relief printable geometry in preview and STL, not an image or color texture. Ridges taper to zero at print-section ends and fastener openings.</div>
+<div id="grainMessage" class="status"></div></div></section>
+<section class="menuSection" data-menu="6" aria-label="08 — EXPORT / PROJECT"><div class="menuHeading"><h3>08 — EXPORT / PROJECT</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody6" aria-label="Expand 08 — EXPORT / PROJECT" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody6" hidden><button class="btn wide" id="exportAll">Download print package (.zip)</button><button class="btn secondary wide" id="exportOne">Export selected segment (.stl)</button><label>Select segment</label><select id="segmentChoice"></select><div class="split"><button class="btn secondary" id="exportDxf">Profile DXF</button><button class="btn secondary" id="exportSvg">Drawing SVG</button><button class="btn secondary" id="exportJson">Save project JSON</button><button class="btn secondary" id="importJson">Load project JSON</button></div><input type="file" id="jsonFile" accept=".json,application/json" class="hidden"><div class="notice">3D printable STLs include real through-holes, recessed fastener heads, rounded profile edges and end locks. Verify printer fit, layer orientation, fasteners, slip resistance, and structural suitability before installation.</div></div></section>
+</aside>
+<div class="workspace"><div class="workspaceTop"><div class="workspaceTitle">PROFILE WORKSPACE <small>Floor reducer · parametric cross-section and 3D manufacturing preview</small></div><div class="switcher"><button data-mode="both" class="active">Split view</button><button data-mode="sketch">2D sketch</button><button data-mode="three">3D model</button></div></div><div class="canvasPanel"><div class="panel" id="drawingPanel"><div class="panelHead"><b>01 / SECTION SKETCH</b><div class="sketchTools"><span style="font-size:10px;color:#98b2c7">Wheel zoom · middle-drag pan · left-drag geometry</span><button class="sketchToolBtn" type="button" id="undoSketch" title="Undo last sketch/project change (Ctrl+Z)" disabled>↶ Undo</button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="equal" aria-pressed="false" aria-label="Equal length: select reference line and target line" title="Equal length · pick reference, then target">=</button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="parallel" aria-pressed="false" aria-label="Parallel: rotate target line to reference angle" title="Parallel · pick reference, then target"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M4 16L13 7M11 21L20 12"/></svg></button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="mirror" aria-pressed="false" aria-label="Mirror: reflect target angle across vertical drilling line" title="Mirror angle over vertical hole axis · pick reference, then target"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-dasharray="2 2" d="M12 2v20"/><path d="M10 5L3 12l7 7M14 5l7 7-7 7"/></svg></button><span id="constraintStatus" role="status">Choose a tool, then two lines</span><button class="sketchToolBtn holeSketchButton" type="button" id="placeHoleAxis" aria-pressed="false" title="Click in the 2D sketch to place the hole centerline">＋ Hole line</button><button class="sketchToolBtn" type="button" id="sketchZoomOut" title="Zoom out">−</button><span id="sketchZoomLabel" class="sketchZoomLabel">100%</span><button class="sketchToolBtn" type="button" id="sketchZoomIn" title="Zoom in">+</button><button class="sketchToolBtn" type="button" id="sketchZoomReset" title="Reset zoom and pan">Fit</button></div></div><div class="sketchArea" id="sketchArea"><svg id="sketch" aria-label="Floor threshold cross section with selectable vertex and line lengths"></svg>
+<div class="lineEditor hidden" id="lineEditor"><div class="pointEditorTitle"><b id="lineEditorName">AB length</b><button type="button" class="pointEditorButton" id="closeLineEditor" aria-label="Close length edit">✕</button></div><label>Length <span class="pointUnits">in</span><input id="lineLength" type="number" step="0.1" aria-label="Selected line length"></label></div>
+<div class="pointEditor hidden" id="pointEditor"><div class="pointEditorTitle"><b id="pointEditorName">Point A</b><button type="button" class="pointEditorButton" id="pointOpenFillet">Fillet →</button></div><button type="button" id="togglePointLock" class="pointLockButton" aria-pressed="false">🔓 Lock selected point</button><div class="pointEditorGrid"><label>X <span class="pointUnits">in</span><input type="number" step="0.1" id="pointX" aria-label="Selected point X coordinate"></label><label>Y <span class="pointUnits">in</span><input type="number" step="0.1" id="pointY" aria-label="Selected point Y coordinate"></label></div><div id="pointPairStatus" aria-live="polite">Y coordinate independent</div><button type="button" class="pointEditorButton" id="openCoordMenu">Edit all points →</button></div></div><div class="sketchFooter"><span id="widthReport">OVERALL WIDTH —</span><span id="sketchHoleHealth" aria-live="polite">Hole axis —</span><span>Wheel zoom · middle-button pan · drag nodes or lines</span></div></div><div class="panel" id="threePanel" style="margin-top:15px"><div class="panelHead"><b>02 / PRINT MODEL</b><select id="previewFocus" aria-label="Preview scope" style="width:auto;max-width:180px;padding:5px 7px;font-size:11px"><option value="whole">Full doorway</option><option value="piece">Selected segment</option></select></div><div class="previewOuter"><canvas id="preview" aria-label="Interactive 3D print model: drag to orbit, middle-drag to pan, scroll to zoom"></canvas><span class="viewHint">Left-drag 360° orbit · Middle-drag / Shift-drag pan · Wheel zoom</span><span class="viewerNote" id="modelInfo">—</span><div class="orbitWidget" aria-label="3D view cube and face selection"><div class="orbitTitle">VIEW CUBE</div><canvas id="viewCube" class="viewCube" width="204" height="204" tabindex="0" role="button" aria-label="Click a visible cube face to align the model view" title="Click a cube face or use the view buttons below"></canvas><div class="viewPresets"><button type="button" class="viewPreset" data-camera-view="top">Top</button><button type="button" class="viewPreset" data-camera-view="front">Front</button><button type="button" class="viewPreset" data-camera-view="left">Left</button><button type="button" class="viewPreset" data-camera-view="right">Right</button><button type="button" class="viewPreset" data-camera-view="back">Back</button><button type="button" class="viewPreset" data-camera-view="bottom">Bottom</button><button type="button" class="viewPreset" data-camera-view="iso">Iso</button><button type="button" class="viewPreset" data-camera-view="fit">Fit</button></div><div class="orbitReadout" id="orbitReadout" aria-live="polite">Free orbit</div></div></div><div class="sketchFooter"><span id="holeReport">HOLES —</span><span>STL = mm · top grain (if enabled) is physical relief</span></div></div><div class="bottomRow"><div class="smallPanel"><b>Installation layout</b><svg id="layout" viewBox="0 0 680 110" style="width:100%;display:block" aria-label="Print-segment and mounting-hole layout"></svg><span class="small" id="layoutCaption">—</span></div><div class="smallPanel"><b>Design checks</b><div id="checkList" class="status"></div></div></div></div></div>
+<div class="report"><h3>PROJECT SUMMARY</h3>
+<div class="summaryIntro">Editable parameters · updates profile and print layout</div>
+<div class="metric"><label for="metricWidth">Overall threshold width</label><div class="summaryValue"><input type="number" id="metricWidth" step="0.1" min="0.1" aria-label="Overall threshold width"><span class="summaryUnit">in</span></div></div>
+<div class="metric"><label for="metricLength">Doorway length</label><div class="summaryValue"><input type="number" id="metricLength" step="0.1" min="0.1" aria-label="Doorway length"><span class="summaryUnit">in</span></div></div>
+<div class="metrics">
+<div class="metric compact"><label for="metricTotal">Pieces total</label><div class="summaryValue"><input type="number" id="metricTotal" step="1" min="1" aria-label="Total printed pieces"><span class="summaryUnit">pcs</span></div></div>
+<div class="metric compact"><label for="metricHoles">Holes / doorway</label><div class="summaryValue"><input type="number" id="metricHoles" step="1" min="0" aria-label="Total mounting holes per doorway"><span class="summaryUnit">holes</span></div></div>
+<div class="metric compact"><label for="metricMaxPiece">Max print length</label><div class="summaryValue"><input type="number" id="metricMaxPiece" step="0.1" min="0.1" aria-label="Maximum allowable print length"><span class="summaryUnit">in</span></div></div>
+</div><div class="summaryIntro" id="summaryConstraint">Total pieces reflects print sections × doorway quantity; holes are requested per section. Unsafe holes are flagged and omitted, but valid geometry remains exportable.</div><h3 style="margin-top:18px">CUT / PRINT SCHEDULE</h3><table><thead><tr><th>Segment</th><th>Length</th><th>Holes</th></tr></thead><tbody id="cutRows"></tbody></table><div class="notice" id="summaryNote">Print a test cross-section and check floor heights before manufacturing all sections.</div><h3 style="margin-top:24px">EXPORT NOTES</h3><p class="small">ZIP includes a separate binary STL for each numbered section, a profile DXF, a dimensioned SVG cross-section, a cut schedule, and project parameters. Pieces are numbered from the start of the doorway.</p></div>
+</main><div id="toast" class="toast" role="status"></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), U=25.4;
+const fields=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch'];
+const unitDependentIds=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch','filletRadius'];
+const dimLinks={dimLeftLip:'leftEdge',dimRightLip:'edge',dimLeftW:'leftW',dimMidW:'midW',dimRightW:'rightW',dimCrest:'crest',dimRightRise:'rightRise'};
+const $val=id=>Number($(id).value), units=()=> $('units').value, toMM=v=>v*(units()==='in'?U:1), fromMM=v=>v/(units()==='in'?U:1), fmt=(v,d=3)=>Number.isFinite(v)?Number(v.toFixed(d)).toString():'—', disp=(v,d=2)=>`${fmt(fromMM(v),d)} ${units()==='in'?'in':'mm'}`;
+let model=null, glr=null, rendering=false, toastTimer=null, currentMode='both', selectedCorner=null, selectedSegment=null, cornerRadii={}, vertexOverrides=null, extraTopPoints=[], vertexLocks=new Set();
+const sketchCamera={zoom:1,panX:0,panY:0};
+let sketchFit=null,sketchDrag=null,sketchDragRaf=0,dragPending=null,sketchSkipClick=false,holePlaceMode=false;
+let constraintMode=null,constraintReference=null,constraintIssue=null;
+const undoStack=[];let historyLast=null,historyApplying=false,historySuspend=0;
+const historyIds=[...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','woodOn','grainAngle','preset','topVertexCount','units'];
+function designSnapshot(){return JSON.stringify({inputs:Object.fromEntries(historyIds.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),points:vertexOverrides,top:extraTopPoints,fillets:cornerRadii,locks:[...vertexLocks]});}
+function historyCommit(){if(historyApplying||historySuspend>0||sketchDrag)return;const state=designSnapshot();if(historyLast===null){historyLast=state;return;}if(historyLast!==state){undoStack.push(historyLast);if(undoStack.length>75)undoStack.shift();historyLast=state;}$('undoSketch').disabled=!undoStack.length;}
+function historyPause(fn){historySuspend++;try{return fn();}finally{historySuspend--;if(!historySuspend)historyCommit();}}
+function undoDesign(){if(!undoStack.length)return;const previous=undoStack.pop(),state=JSON.parse(previous);historyApplying=true;try{
+ for(const [id,value] of Object.entries(state.inputs)){
+  const el=$(id);if(el.type==='checkbox')el.checked=Boolean(value);else el.value=value;
+ }
+ vertexOverrides=state.points?state.points.map(v=>({...v})):null;
+ extraTopPoints=(state.top||[]).map(v=>({...v}));cornerRadii={...state.fillets};vertexLocks=new Set(state.locks||[]);
+ constraintMode=null;constraintReference=null;constraintIssue=null;updateConstraintUI();
+ selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');
+ sync();historyLast=designSnapshot();
+ }finally{historyApplying=false;}$('undoSketch').disabled=!undoStack.length;toast('Last change undone.');}
+
+
+const num=id=>toMM($val(id));
+function params(){const p={L:num('leftW'),M:num('midW'),R:num('rightW'),h:num('crest'),left:num('leftClear'),right:num('rightRise'),leftEdge:num('leftEdge'),edge:num('edge'),door:num('doorL'),max:num('maxL'),sets:Math.floor($val('sets')),splitMode:$('splitMode').value,curve:$('curve').value,holesOn:$('holesOn').checked,holeN:Math.floor($val('holeN')),inset:num('endInset'),xhole:num('holeX'),bore:num('boreD'),head:num('headD'),recess:$('recess').value,angle:$val('sinkA'),boreDepth:num('boreDepth'),locksOn:$('locksOn').checked,lockOffset:num('lockOffset'),lockDepth:num('lockDepth'),tongueOffset:num('tongueOffset'),tongueDepth:num('tongueDepth'),woodOn:$('woodOn').checked,grainAngle:$val('grainAngle'),grainDepth:num('grainDepth'),grainPitch:num('grainPitch'),fillets:{...cornerRadii},extraTop:extraTopPoints.map(n=>({...n}))};
+ if(vertexOverrides){
+  p.nodes=vertexOverrides.map(n=>({...n}));
+  const node=id=>p.nodes.find(q=>q.id===id);
+  p.xBase=node('leftUpper').x;
+  p.L=node('leftStepBottom').x-p.xBase;
+  p.M=node('rightStepBottom').x-node('leftStepBottom').x;
+  p.R=node('rightUpper').x-node('rightStepBottom').x;
+  p.h=node('crest').z;
+  p.left=node('leftStepTop').z;
+  p.right=node('rightStepTop').z;
+  p.edge=node('rightUpper').z-node('rightLower').z;
+  p.leftEdge=node('leftUpper').z-node('leftLower').z;
+  p.channelLeft=node('leftStepBottom').x;
+  p.channelRight=node('rightStepBottom').x;
+  p.width=Math.max(...p.nodes.map(q=>q.x))-Math.min(...p.nodes.map(q=>q.x));
+  p.xBase=Math.min(...p.nodes.map(q=>q.x));
+  // Keep selected top curve available in coordinate-driven mode.
+ }else{p.xBase=0;p.channelLeft=p.L;p.channelRight=p.L+p.M;p.width=p.L+p.M+p.R;}
+ return p;}
+function topAnchors(p){
+ const base=p.nodes||[{id:'leftUpper',x:p.xBase,z:p.left+p.leftEdge},{id:'crest',x:p.xBase+p.L,z:p.h},{id:'rightUpper',x:p.xBase+p.L+p.M+p.R,z:p.right+p.edge}],get=id=>base.find(v=>v.id===id);
+ return [get('leftUpper'),get('crest'),get('rightUpper'),...(p.extraTop||[])].filter(Boolean).sort((a,b)=>a.x-b.x);
+}
+function baseTopZ(p,x){
+ const W=p.L+p.M+p.R,peak=p.h,leftTop=p.left+p.leftEdge,tip=p.right+p.edge,localX=x-p.xBase;
+ if(localX<=p.L){let t=Math.max(0,Math.min(1,localX/p.L));return p.curve==='smooth'?leftTop+(peak-leftTop)*(.5-.5*Math.cos(Math.PI*t)):leftTop+(peak-leftTop)*t;}
+ let t=Math.max(0,Math.min(1,(localX-p.L)/(W-p.L)));
+ return p.curve==='smooth'?peak+(tip-peak)*(t*t*(3-2*t)):peak+(tip-peak)*t;
+}
+function topZ(p,x){
+ const anchors=topAnchors(p);
+ if(!p.nodes&&!(p.extraTop||[]).length)return baseTopZ(p,x);
+ const index=Math.max(0,Math.min(anchors.length-2,anchors.findIndex((v,i)=>i<anchors.length-1&&x<=anchors[i+1].x)));
+ const a=anchors[index],b=anchors[index+1];
+ const t=Math.max(0,Math.min(1,(x-a.x)/(b.x-a.x||1)));
+ const w=p.curve==='smooth'?t*t*(3-2*t):t;
+ return a.z+(b.z-a.z)*w;
+}
+function bottomZ(p,x,region=null){if(region!==null){return region===0?p.left:region===1?0:p.right;}return x<p.L-1e-6?p.left:x<p.L+p.M-1e-6?0:p.right;}
+function inRegion(p,x){return x<p.L?0:x<p.L+p.M?1:2;}
+function profileSamples(p){
+ const anchors=topAnchors(p),W=p.width;
+ if(!p.nodes&&!(p.extraTop||[]).length){
+  if(p.fillets?.crest)return [[p.xBase,topZ(p,p.xBase)],[p.xBase+p.L,p.h],[p.xBase+W,topZ(p,p.xBase+W)]];
+  const xs=new Set([p.xBase,p.xBase+p.L,p.channelRight,p.xBase+W]);for(let j=0;j<=64;j++)xs.add(p.xBase+W*j/64);
+  return [...xs].sort((a,b)=>a-b).map(x=>[x,topZ(p,x)]);
+ }
+ const out=[];
+ for(let i=0;i<anchors.length-1;i++){
+  const a=anchors[i],b=anchors[i+1],smooth=p.curve==='smooth'&&!p.fillets?.[a.id]&&!p.fillets?.[b.id];
+  for(let j=0;j<(smooth?9:1);j++){const t=j/(smooth?9:1),x=a.x+(b.x-a.x)*t;out.push([x,topZ(p,x)]);}
+ }
+ const last=anchors.at(-1);out.push([last.x,last.z]);return out;
+}
+function segments(p){
+ const tongue=p.locksOn?p.tongueDepth:0;
+ const usable=p.max-tongue;
+ if(!Number.isFinite(usable)||usable<1)return [];
+ const n=p.door<=p.max?1:Math.max(2,Math.ceil((p.door-tongue)/usable));
+ if(n>100)return [];
+ const parts=[];let start=0;
+ for(let i=0;i<n;i++){
+  // Reserve protrusion length on all sections except the last.
+  let end=p.splitMode==='even'?p.door*(i+1)/n:Math.min(p.door,start+(i<n-1?usable:p.max));
+  parts.push({number:i+1,start,end,length:end-start,holes:[],female:p.locksOn&&i>0,male:p.locksOn&&i<n-1});start=end;
+ }
+ return parts;
+}
+function holes(p,parts){if(!p.holesOn||!p.holeN)return [];const result=[];
+ for(const part of parts){const h=p.holeN===1?[part.length/2]:Array.from({length:Math.min(200,p.holeN)},(_,i)=>p.inset+i*(part.length-2*p.inset)/(p.holeN-1));
+ for(const local of h){part.holes.push(local);result.push(part.start+local);}}
+ return result;
+}
+// Hole health is advisory, not a global profile validity condition. Red holes are
+// excluded from triangulation; they remain represented in the 2D sketch/layout.
+function assessHole(p,part,local,previousAccepted){
+ const center=p.xBase+p.xhole, outer=(p.recess==='plain'?p.bore:p.head)/2;
+ const patch=outer+Math.max(2.2,outer*.35),bands=[[p.xBase,p.channelLeft],[p.channelLeft,p.channelRight],[p.channelRight,p.xBase+p.width]];
+ const supportingBand=bands.findIndex(([a,b])=>center-patch>a+.1&&center+patch<b-.1);
+ const onWing=supportingBand!==1;
+ const reject=reason=>({state:'bad',included:false,reason,part:part.number,local,global:part.start+local});
+ const warn=reason=>({state:'caution',included:true,reason,part:part.number,local,global:part.start+local});
+ const okay=()=>({state:'good',included:true,reason:'Hole has modeled material and edge clearance',part:part.number,local,global:part.start+local});
+ if(!Number.isFinite(center)||!Number.isFinite(outer)||outer<=0)return reject('Invalid hole dimensions');
+ if(supportingBand<0)return reject('Drilling clearance crosses a profile edge or stepped underside; move the hole line');
+ const seamMin=patch+.2+(part.female?p.lockDepth:0);
+ if(local<seamMin||part.length-local<patch+.2)return reject('Hole overlaps a section seam or socket');
+ if(previousAccepted!==null&&local-previousAccepted<2*(patch+.2))return reject('Hole overlaps another mounting hole');
+ try{
+  const contour=roundedProfile(p);
+  const section=x=>{const a=crossIntersections(contour,x+1e-7);return a.length>=2?{bottom:a[0].z,top:a.at(-1).z}:null;};
+  const samples=[center-patch*.95,center-patch*.6,center,center+patch*.6,center+patch*.95].map(section);
+  if(samples.some(q=>!q))return reject('Profile has no complete wall beneath the hole clearance');
+  const minThickness=Math.min(...samples.map(q=>q.top-q.bottom));
+  const dep=p.recess==='sink'?(p.head-p.bore)/2/Math.tan(p.angle*Math.PI/360):p.recess==='bore'?p.boreDepth:0;
+  const topMid=samples[2].top,bottomMax=Math.max(...samples.map(q=>q.bottom));
+  const residual=topMid-dep-bottomMax;
+  if(!Number.isFinite(residual)||residual<.45||minThickness<.65)return reject('Countersink/through-hole leaves insufficient solid material');
+  if(onWing)return warn('Nonstandard wing-mounted fastener; verify underside support, seating and strength');
+  if(residual<1.8||Math.min(center-patch-p.channelLeft,p.channelRight-(center+patch))<1.5||minThickness<2.6)return warn('Limited material around hole; verify strength and fastener seating');
+  return okay();
+ }catch(e){return reject('Hole cannot be resolved on this custom profile');}
+}
+function assessAllHoles(p,parts){
+ const checks=[];
+ for(const part of parts){
+  let accepted=null,requested=[...part.holes];part.holeChecks=[];part.holes=[];
+  for(const local of requested){const check=assessHole(p,part,local,accepted);checks.push(check);part.holeChecks.push(check);
+   if(check.included){part.holes.push(local);accepted=local;}}
+ }
+ return checks;
+}
+function validate(p){const errors=[],warn=[];
+ if([p.L,p.M,p.R,p.h,p.left,p.right,p.leftEdge,p.edge,p.door,p.max].some(v=>!Number.isFinite(v)||v<=0))errors.push('Profile widths, heights, doorway length, and print length must be positive numbers.');
+ if(!Number.isInteger(p.sets)||p.sets<1||p.sets>100)errors.push('Doorway quantity must be between 1 and 100.');
+ if(p.leftEdge<=.02||p.leftEdge>100)errors.push('A–I left edge thickness must be positive and within the profile limits.');
+ if(p.left+p.leftEdge>=p.h&&!p.nodes)warn.push('Left edge A is at or above the crest B; verify that the upper ramp is intentional.');
+ if(p.right+p.edge>=p.h&&!p.nodes)warn.push('Right edge C is at or above the crest B; verify that the upper ramp is intentional.');
+ if(p.door>100000||p.max>100000||p.width>2000)errors.push('Dimensions exceed prototype limits.');
+ if(p.locksOn){
+  if(!Number.isFinite(p.lockOffset)||p.lockOffset<=0||!Number.isFinite(p.tongueOffset)||p.tongueOffset<=0)errors.push('Socket and tongue offsets must be positive.');
+  if(!Number.isFinite(p.lockDepth)||p.lockDepth<=0||!Number.isFinite(p.tongueDepth)||p.tongueDepth<=0)errors.push('Socket and tongue depths must be positive.');
+  if(p.tongueOffset<=p.lockOffset+.02)errors.push('Tongue offset must exceed socket offset to provide radial clearance.');
+  if(p.tongueDepth>=p.lockDepth-.05)errors.push('Tongue length must be shorter than socket depth to leave axial clearance.');
+  if(p.tongueDepth>=p.max*.75)errors.push('Tongue extends too far for current max print length.');
+  if(p.lockDepth>=p.max*.65)errors.push('Socket cut is too deep for current max print length.');
+  if(p.tongueOffset*2>=p.channelRight-p.channelLeft-1)errors.push('Tongue inset exceeds central channel width.');
+  if(p.lockOffset*2>=p.channelRight-p.channelLeft-1)errors.push('Socket inset exceeds central channel width.');
+  const bottomAt=x=>crossIntersections(roundedProfile(p),x+1e-7)[0]?.z??0;
+  const minThick=Math.min(topZ(p,p.channelLeft)-bottomAt(p.channelLeft+0.1),topZ(p,p.channelRight)-bottomAt(p.channelRight-0.1));
+  if(2*p.tongueOffset>=minThick-.4)errors.push('Tongue inset is too tall for the central channel.');
+  if(2*p.lockOffset>=minThick-.4)errors.push('Socket inset is too tall for the central channel.');
+ }
+ if(p.woodOn){
+  if(!Number.isFinite(p.grainAngle)||Math.abs(p.grainAngle)>180)errors.push('Grain rotation must be between -180° and 180°.');
+  if(!Number.isFinite(p.grainPitch)||p.grainPitch<1.5||p.grainPitch>40)errors.push('Grain spacing must be 1.5–40 mm.');
+  if(!Number.isFinite(p.grainDepth)||p.grainDepth<=0||p.grainDepth>1)errors.push('Grain relief depth must be between 0 and 1 mm.');
+  if(p.grainDepth>.4)warn.push('Deep grain relief may reduce comfort and cleanability on a walking surface.');
+ }
+
+ if(p.nodes){
+  const ns=p.nodes;
+  if(ns.some(q=>!Number.isFinite(q.x)||!Number.isFinite(q.z)))errors.push('Every point needs finite X and Y coordinates.');
+  if(p.width<=1 || ns.some(q=>q.z < -5))errors.push('Profile must have positive width and must not drop far below the floor datum.');
+  for(let i=0;i<ns.length;i++){const a=ns[i],b=ns[(i+1)%ns.length];if(Math.hypot(a.x-b.x,a.z-b.z)<.03)errors.push(`Point ${nodeLetter(a.id)} is too close to its neighbor.`);}
+  // Exclude shared endpoints when detecting intersections of nonadjacent polygon edges.
+  const cross=(a,b,c)=>(b.x-a.x)*(c.z-a.z)-(b.z-a.z)*(c.x-a.x);
+  for(let i=0;i<ns.length;i++)for(let j=i+2;j<ns.length;j++){
+   if(i===0&&j===ns.length-1)continue;
+   const a=ns[i],b=ns[(i+1)%ns.length],c=ns[j],d=ns[(j+1)%ns.length];
+   if(cross(a,b,c)*cross(a,b,d)<-1e-6&&cross(c,d,a)*cross(c,d,b)<-1e-6)errors.push(`Profile crosses itself near points ${nodeLetter(a.id)} and ${nodeLetter(c.id)}.`);
+  }
+  if(!(p.channelRight>p.channelLeft+4))errors.push('The central mounting channel must have positive width.');if(ns.find(n=>n.id==='leftStepTop').x>ns.find(n=>n.id==='leftStepBottom').x+1e-5)errors.push('Left step upper X cannot exceed its floor X (unsupported overhang).');if(ns.find(n=>n.id==='rightStepBottom').x>ns.find(n=>n.id==='rightStepTop').x+1e-5)errors.push('Right step floor X cannot exceed its upper X (unsupported overhang).');
+  if(ns.find(n=>n.id==='rightUpper').x<=ns.find(n=>n.id==='crest').x)errors.push('Upper profile points A–C must progress left to right.');
+ }
+ const anchors=topAnchors(p);if(anchors.some((q,i)=>i&&q.x<=anchors[i-1].x+.03))errors.push('Top profile controls must have distinct, increasing X coordinates between A and C.');
+ if((p.extraTop||[]).some(q=>!Number.isFinite(q.x)||!Number.isFinite(q.z)||q.x<=anchors[0].x||q.x>=anchors[anchors.length-1].x))errors.push('Additional upper vertices must stay between A and C.');
+ const parts=errors.length?[]:segments(p);
+ if(!parts.length)errors.push('Unable to split the doorway at this print length.');
+ if(parts.length>100)errors.push('Too many sections (100 maximum).');
+ const hpos=holes(p,parts);if(hpos.length>450)errors.push('Too many total bores to preview. Reduce mounting holes or segment count (max 450).');
+ const requestedHoleCount=hpos.length;
+ if(p.holesOn){
+  if(!Number.isInteger(p.holeN)||p.holeN<0||p.holeN>24)errors.push('Hole quantity / section must be 0–24.');
+  if(!Number.isFinite(p.bore)||p.bore<=0)errors.push('Through-hole diameter must be positive.');
+  if(p.recess!=='plain'&&(!Number.isFinite(p.head)||p.head<p.bore))errors.push('Head / chamfer diameter must be at least bore diameter.');
+  if(p.inset<0||!Number.isFinite(p.inset))errors.push('Section-end hole inset cannot be negative.');
+  if(p.recess==='sink'&&(!Number.isFinite(p.angle)||p.angle<=20||p.angle>=170))errors.push('Countersink angle must be 20°–170°.');
+  if(p.recess==='bore'&&p.boreDepth<=0)errors.push('Counterbore depth must be positive.');
+ }
+ // Unsafe hole placement is not a blocker: export the sound portions of the
+ // threshold and document all attempted hole centers, including omitted ones.
+ const holeChecks=errors.length?[]:assessAllHoles(p,parts);
+ const skipped=holeChecks.filter(q=>!q.included),marginal=holeChecks.filter(q=>q.state==='caution');
+ if(skipped.length)warn.push(`${skipped.length} requested mounting hole(s) cannot be cut safely and will be OMITTED from the exported STL. Move the hole line or correct the profile.`);
+ if(marginal.length)warn.push(`${marginal.length} marginal hole(s) are modeled but have limited clearance; verify their fit and strength.`);
+ for(const q of [...skipped,...marginal].slice(0,4))warn.push(`P${q.part} hole at ${fmt(q.local,1)} mm: ${q.reason}${q.included?'':' (omitted)'}.`);
+ const acceptedHpos=holeChecks.filter(q=>q.included).map(q=>q.global);
+
+ const radii=Object.entries(p.fillets||{});for(const [id,rad] of radii){if(!Number.isFinite(rad)||rad<=0)errors.push(`Fillet ${id} has an invalid radius.`);}
+ if(p.max<p.L+p.M+p.R)warn.push('Print length smaller than profile width; confirm bed fit.');
+ if(p.left>p.h*.92)warn.push('Very thin left wing; verify walking loads.');
+ if(p.edge<1.2||p.leftEdge<1.2)warn.push('An outside wing edge is thin; check minimum wall thickness.');
+ if(p.locksOn&&parts.length>1)warn.push('Prototype tongue/pocket fit: test-print a short pair and adjust clearance as needed.');
+ try{const poly=roundedProfile(p);if(!poly||poly.length<8)errors.push('Fillet profile could not be generated.');}catch(e){errors.push('Fillet geometry: '+e.message);}
+ return {errors:[...new Set(errors)],warn:[...new Set(warn)],parts,hpos:acceptedHpos,holeChecks,requestedHoleCount,skippedCount:skipped.length,marginalCount:marginal.length};
+}
+function toast(s){const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),3800);}
+function setDimsFromSidebar(){for(const [a,b] of Object.entries(dimLinks))if($(a)&&document.activeElement!==$(a)){const custom=!!vertexOverrides&&['dimLeftLip','dimRightLip'].includes(a);const val=custom?fromMM(params()[a==='dimLeftLip'?'leftEdge':'edge']):$val(b);$(a).value=fmt(val,units()==='in'?4:2);$(a).defaultValue=$(a).value;}}
+function changeUnits(next){const prior=units();if(prior===next)return;const factor=next==='in'?1/U:U;for(const id of unitDependentIds){const e=$(id);if(e.value!==''&&Number.isFinite(Number(e.value)))e.value=fmt(Number(e.value)*factor,next==='in'?5:5);} $('units').value=next;sync();}
+function applyPreset(which){
+ const setField=(id,mm)=>{$(id).value=fmt(fromMM(mm),5);};
+ const setBase=(w,m,r,crest,left,right,edge,leftEdge)=>{
+  Object.entries({leftW:w,midW:m,rightW:r,crest,leftClear:left,rightRise:right,edge,leftEdge}).forEach(([id,mm])=>setField(id,mm));
+ };
+ if(which==='sketch'){
+  vertexOverrides=null;setBase(25.4,50.8,25.4,18.288,15.24,5.842,1.397,1.30175);
+ }else if(which==='flat'){
+  vertexOverrides=null;setBase(25.4,50.8,25.4,12.7,1.524,1.524,1.524,1.524);
+ }else if(which==='mirror'){
+  // Mirror the original, while preserving A-I names in clockwise sketch order.
+  setBase(25.4,50.8,25.4,18.288,5.842,15.24,1.30175,1.397);
+  const from={leftUpper:'rightUpper',crest:'crest',rightUpper:'leftUpper',rightLower:'leftLower',rightStepTop:'leftStepTop',rightStepBottom:'leftStepBottom',leftStepBottom:'rightStepBottom',leftStepTop:'rightStepTop',leftLower:'rightLower'};
+  // Derive from the actual original design rather than the mirrored placeholder fields.
+  setBase(25.4,50.8,25.4,18.288,15.24,5.842,1.397,1.30175);
+  const original=defaultVertices({...params(),nodes:null,extraTop:[]});
+  vertexOverrides=nodeOrder.map(id=>{const n=original.find(p=>p.id===from[id]);return {id,x:101.6-n.x,z:n.z};});
+  setBase(25.4,50.8,25.4,18.288,5.842,15.24,1.30175,1.397);
+ }else if(which==='printFlat'){
+  // Upper face is planar and continuous: print with the grain-facing side on the bed.
+  // Successive layers only get smaller, minimizing support and broad unsupported bridges.
+  setBase(25.4,50.8,25.4,5.6,3,3,2.6,2.6);
+  $('curve').value='linear';
+  vertexOverrides=[
+   ['leftUpper',0,5.6],['crest',50.8,5.6],['rightUpper',101.6,5.6],
+   ['rightLower',101.6,3],['rightStepTop',76.2,3],['rightStepBottom',76.2,0],
+   ['leftStepBottom',25.4,0],['leftStepTop',25.4,3],['leftLower',0,3]
+  ].map(([id,x,z])=>({id,x,z}));
+  // The stock hole head fits within the 5.6 mm thick central stem.
+  // Default grain turned off so the top surface can register flat to the build plate.
+  $('woodOn').checked=false;
+ }else return;
+ sync();
+}
+function makeSvg(tag,attrs={},txt=null){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(txt!==null)e.textContent=txt;return e;}
+const nodeOrder=['leftUpper','crest','rightUpper','rightLower','rightStepTop','rightStepBottom','leftStepBottom','leftStepTop','leftLower'];
+const nodeLetter=id=>id?.startsWith('top')?String.fromCharCode(73+Number(id.slice(3))):String.fromCharCode(65+nodeOrder.indexOf(id));
+// These are the ONLY vertices whose vertical positions are linked:
+// I = leftLower with H = leftStepTop; D = rightLower with E = rightStepTop.
+// B = crest remains independently editable and is NEVER in either pair.
+const pairedYGroups=[['leftLower','leftStepTop'],['rightLower','rightStepTop']];
+function pairedYMate(id){const group=pairedYGroups.find(pair=>pair.includes(id));return group?group.find(other=>other!==id):null;}
+function pairStatus(id){const mate=pairedYMate(id);const suffix=vertexLocks.has(id)?' · pinned X/Y':mate&&vertexLocks.has(mate)?' · Y pinned by '+nodeLetter(mate):'';return (mate?'Linked Y: '+nodeLetter(id)+' ↔ '+nodeLetter(mate)+' (X independent)':'Y independent: '+nodeLetter(id))+suffix;}
+function lockedY(id){return vertexLocks.has(id)||(pairedYMate(id)&&vertexLocks.has(pairedYMate(id)));}
+function toggleVertexLock(id){if(!id)return;vertexLocks.has(id)?vertexLocks.delete(id):vertexLocks.add(id);sync();}
+function refreshLockUI(){
+ const id=selectedCorner,locked=!!id&&vertexLocks.has(id),btn=$('togglePointLock');
+ btn.setAttribute('aria-pressed',String(locked));btn.textContent=(locked?'🔒 Unlock ':'🔓 Lock ')+(id?'point '+nodeLetter(id):'selected point');btn.disabled=!id;
+ $('pointX').disabled=locked;$('pointY').disabled=!id||lockedY(id);
+}
+
+
+function defaultVertices(p){return originalContour({...p,nodes:null,extraTop:[]}).filter(q=>q.id).map(q=>({id:q.id,x:q.x,z:q.z}));}
+function currentVertices(){const p=params();return [...(vertexOverrides||defaultVertices(p)),...extraTopPoints.map(n=>({...n}))];}
+function selectVertex(id,openMenu=false){
+ selectedCorner=id;selectedSegment=null;$('pointEditor').classList.remove('hidden');$('lineEditor').classList.add('hidden');
+ const n=currentVertices().find(q=>q.id===id);if(!n)return;
+ $('cornerSelection').textContent=cornerNames[id];$('pointEditorName').textContent='Point '+nodeLetter(id)+' · '+cornerNames[id];$('pointPairStatus').textContent=pairStatus(id);
+ $('filletRadius').value=fmt(fromMM(cornerRadii[id]??.508),units()==='in'?4:3);
+ setPointFields(n);refreshLockUI(); if(openMenu){/* Contextual point editor opens in sketch; menus remain minimized. */}
+ sync();
+}
+function setPointFields(n){if(document.activeElement!==$('pointX')){$('pointX').value=fmt(fromMM(n.x),units()==='in'?4:2);$('pointX').defaultValue=$('pointX').value;}
+ if(document.activeElement!==$('pointY')){$('pointY').value=fmt(fromMM(n.z),units()==='in'?4:2);$('pointY').defaultValue=$('pointY').value;}}
+function updateVertex(id,axis,value){
+ if(!Number.isFinite(value))return;
+ if(vertexLocks.has(id)||axis==='z'&&lockedY(id)){toast('Point '+nodeLetter(id)+' is locked'+(axis==='z'?' vertically':'')+'. Unlock the point (and linked partner, if pinned) to move it.');sync();return;}
+ if(id.startsWith('top')){const q=extraTopPoints.find(a=>a.id===id);if(!q)return;q[axis]=value;sync();return;}
+ if(!vertexOverrides)vertexOverrides=defaultVertices(params());
+ const q=vertexOverrides.find(a=>a.id===id);if(!q)return;
+ q[axis]=value;
+ // Y links are explicit and symmetrical (I ↔ H, D ↔ E). B/crest must stay fixed.
+ // X edits must never move another point.
+ if(axis==='z'){
+  const mate=pairedYMate(id);
+  if(mate)vertexOverrides.find(a=>a.id===mate).z=value;
+ }
+ // Geometry-only nominal controls cannot silently replace individually edited nodes.
+ $('preset').value='sketch';sync();
+}
+function updatePointEditor(axis){updateVertex(selectedCorner,axis,num(axis==='x'?'pointX':'pointY'));}
+function redrawCoordinates(p){
+ const nodes=[...(p.nodes||defaultVertices(p)),...(p.extraTop||[])],rows=$('coordinateRows');
+ if(rows.querySelectorAll('.coordRow').length!==nodes.length || [...rows.querySelectorAll('.coordRow')].some((row,i)=>row.dataset.node!==nodes[i].id)){
+  rows.innerHTML=nodes.map(n=>`<div class="coordRow" data-node="${n.id}"><div class="coordName" role="button" tabindex="0"><strong>${nodeLetter(n.id)} · ${cornerNames[n.id]}</strong><button type="button" class="pointPin" data-lock-for="${n.id}" aria-pressed="false">🔓 Lock</button></div><input type="number" step="0.1" data-axis="x" aria-label="${cornerNames[n.id]} X"><input type="number" step="0.1" data-axis="z" aria-label="${cornerNames[n.id]} Y"></div>`).join('');
+  rows.querySelectorAll('.coordRow').forEach(row=>{
+   const id=row.dataset.node;
+   const choose=()=>selectVertex(id,false);
+   row.querySelector('.coordName').addEventListener('click',e=>{if(e.target.closest('button'))return;choose();});
+   row.querySelector('.pointPin').addEventListener('click',e=>{e.stopPropagation();toggleVertexLock(id);});
+   row.querySelector('.coordName').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();}});
+   row.querySelectorAll('input').forEach(input=>{input.addEventListener('focus',()=>selectVertex(id,false));input.addEventListener('change',()=>updateVertex(id,input.dataset.axis,toMM(Number(input.value))));});
+  });
+ }
+ nodes.forEach(n=>{
+  const row=rows.querySelector(`.coordRow[data-node="${n.id}"]`);if(!row)return;
+  row.classList.toggle('selected',n.id===selectedCorner);
+  for(const [axis,val] of [['x',n.x],['z',n.z]]){
+   const input=row.querySelector(`[data-axis="${axis}"]`);
+   input.disabled=axis==='x'?vertexLocks.has(n.id):!!lockedY(n.id);
+   if(input!==document.activeElement){input.value=fmt(fromMM(val),units()==='in'?4:2);input.defaultValue=input.value;}
+  }
+  const pin=row.querySelector('.pointPin');if(pin){const on=vertexLocks.has(n.id);pin.setAttribute('aria-pressed',String(on));pin.textContent=on?'🔒 Unlock':'🔓 Lock';}
+ });
+ if(selectedCorner&&!['pointX','pointY'].includes(document.activeElement?.id))setPointFields(nodes.find(q=>q.id===selectedCorner)||nodes[0]);
+ if(selectedCorner){$('pointEditorName').textContent='Point '+nodeLetter(selectedCorner)+' · '+cornerNames[selectedCorner];$('pointPairStatus').textContent=pairStatus(selectedCorner);} $('coordModeStatus').textContent=p.nodes?'Custom X/Y profile':'Dimension-defined profile';
+ refreshLockUI(); $('coordMessage').textContent=p.nodes?'Editing individual X/Y coordinates. I ↔ H and D ↔ E share Y only; B remains independent.':'Coordinates update automatically from the original dimensional profile until you edit one. I ↔ H and D ↔ E share Y; B is not linked.';
+ for(const id of ['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge'])$(id).disabled=!!p.nodes;
+}
+function segmentPairs(p){
+ const anchors=topAnchors(p),base=p.nodes||defaultVertices(p),lower=base.slice(3);
+ const outline=[...anchors,...lower];
+ return outline.map((q,i)=>[q,outline[(i+1)%outline.length]]);
+}
+function segmentLength(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
+// One-shot geometric modifiers use the shared polygon vertex, not copied line geometry.
+// For a line AB, a movable endpoint is rotated around the other endpoint; all
+// neighboring edges remain joined. Locked points/paired Y constraints are atomic.
+function lineForName(p,name){return segmentPairs(p).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);}
+function segmentVector(pair){return {x:pair[1].x-pair[0].x,z:pair[1].z-pair[0].z};}
+function constraintPosition(ref,target,kind){
+ const r=segmentVector(ref),t=segmentVector(target),lr=Math.hypot(r.x,r.z),lt=Math.hypot(t.x,t.z);
+ if(lr<.001||lt<.001)return null;
+ if(kind==='equal')return {x:t.x*lr/lt,z:t.z*lr/lt};
+ const vec=kind==='parallel'?{x:r.x/lr,z:r.z/lr}:{x:-r.x/lr,z:r.z/lr};
+ // Angle is unoriented (modulo 180 degrees); choose the closer result so the
+ // modified line does not unexpectedly flip over its pivot.
+ const sign=(vec.x*t.x+vec.z*t.z)<0?-1:1;
+ return {x:vec.x*lt*sign,z:vec.z*lt*sign};
+}
+function constraintFailure(msg,ids=[]){
+ constraintIssue={text:msg,ids};constraintMode=null;constraintReference=null;updateConstraintUI();sync();
+ if(ids.length){document.querySelectorAll('#sketch .constraint-flash').forEach(el=>el.classList.remove('constraint-flash'));
+   for(const id of ids){const g=document.querySelector(`#sketch [data-node-group="${id}"]`);if(g){g.classList.remove('constraint-flash');void g.getBoundingClientRect();g.classList.add('constraint-flash');}}
+ }
+ toast(msg);
+ return false;
+}
+function attemptConstraint(kind,referenceName,targetName){
+ if(referenceName===targetName)return constraintFailure('Choose a different second line to modify.');
+ const p=params(),ref=lineForName(p,referenceName),target=lineForName(p,targetName);
+ if(!ref||!target)return constraintFailure('The selected line is no longer available.');
+ const vec=constraintPosition(ref,target,kind);
+ if(!vec)return constraintFailure('Both line lengths must be greater than zero.');
+ const t=segmentVector(target);
+ if(Math.hypot(t.x-vec.x,t.z-vec.z)<.00001){
+  constraintMode=null;constraintReference=null;constraintIssue=null;updateConstraintUI();sync();toast('Lines already meet this modifier.');return true;
+ }
+ // Keep the target's first endpoint stationary, unless it is movable and the
+ // second endpoint is locked. A locked anchor is allowed; moving a lock is not.
+ const [a,b]=target,moveId=vertexLocks.has(b.id)?a.id:b.id,anchorId=moveId===b.id?a.id:b.id;
+ const destination=moveId===b.id?{x:a.x+vec.x,z:a.z+vec.z}:{x:b.x-vec.x,z:b.z-vec.z};
+ const prior=moveId===b.id?b:a,dx=destination.x-prior.x,dz=destination.z-prior.z;
+ const blockers=[];
+ if(vertexLocks.has(a.id)&&vertexLocks.has(b.id))return constraintFailure(`Cannot apply ${kind}: both points ${nodeLetter(a.id)} and ${nodeLetter(b.id)} are locked. Unlock an endpoint of ${targetName}.`,[a.id,b.id]);
+ if(vertexLocks.has(moveId)&&(Math.abs(dx)>.00001||Math.abs(dz)>.00001))blockers.push(moveId);
+ const mate=pairedYMate(moveId);
+ if(mate&&Math.abs(dz)>.00001&&vertexLocks.has(mate))blockers.push(mate);
+ if(blockers.length)return constraintFailure(`Cannot apply ${kind}: locked point ${blockers.map(nodeLetter).join(', ')} prevents movement of line ${targetName}. Unlock ${blockers.map(nodeLetter).join(' / ')} and retry.`,blockers);
+ const base=(p.nodes||defaultVertices(p)).map(n=>({...n})),top=(p.extraTop||[]).map(n=>({...n}));
+ const find=id=>id.startsWith('top')?top.find(q=>q.id===id):base.find(q=>q.id===id);
+ const moved=find(moveId);if(!moved)return constraintFailure('Target endpoint not found.');
+ moved.x=destination.x;moved.z=destination.z;
+ if(mate&&Math.abs(dz)>.00001){const linked=find(mate);if(linked)linked.z=destination.z;}
+ const oldBase=vertexOverrides,oldTop=extraTopPoints,oldPreset=$('preset').value;
+ vertexOverrides=base;extraTopPoints=top;$('preset').value='sketch';
+ // Reject a modifier that breaks an otherwise valid cross-section, and restore
+ // the entire model to avoid orphaned endpoints or half-updated linked nodes.
+ const wasValid=validate(p).errors.length===0;
+ const errors=validate(params()).errors;
+ const updatedTarget=lineForName(params(),targetName),actual=updatedTarget&&segmentVector(updatedTarget);
+ const newNorm=actual&&Math.hypot(actual.x,actual.z),oldNorm=Math.hypot(vec.x,vec.z);
+ const satisfied=!!actual&&Math.hypot(actual.x-vec.x,actual.z-vec.z)<Math.max(.02,oldNorm*.001);
+ if(!satisfied){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
+  return constraintFailure(`Cannot apply ${kind} to ${targetName}: linked-point Y constraints prevent the requested rotation or length.`);}
+ if(wasValid&&errors.length){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
+  return constraintFailure(`Cannot apply ${kind} to ${targetName}: ${errors[0]}`);}
+ constraintIssue=null;constraintMode=null;constraintReference=null;updateConstraintUI();
+ historyPause(()=>sync());
+ toast(`${kind==='equal'?'Equal':kind==='parallel'?'Parallel':'Mirror'} applied: ${targetName} updated from ${referenceName}.`);
+ return true;
+}
+function updateConstraintUI(){
+ document.querySelectorAll('[data-constraint-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.constraintMode===constraintMode)));
+ const label={equal:'Equal length',parallel:'Parallel',mirror:'Mirror angle'}[constraintMode];
+ const el=$('constraintStatus');if(!el)return;
+ el.textContent=constraintMode?(constraintReference?`${label} · ${constraintReference} → select target line`:`${label} · select reference line`):constraintIssue?'Last modifier was rejected. Review Design checks.':'Choose a tool, then two lines';
+ el.classList.toggle('constraintError',!!constraintIssue);
+}
+function setConstraintMode(mode){constraintMode=constraintMode===mode?null:mode;constraintReference=null;constraintIssue=null;updateConstraintUI();sync();}
+function chooseConstraintLine(name){
+ if(!constraintMode)return false;
+ if(!constraintReference){constraintReference=name;updateConstraintUI();sync();return true;}
+ attemptConstraint(constraintMode,constraintReference,name);return true;
+}
+
+function updateSegmentLength(name,length){
+ if(!(Number.isFinite(length)&&length>.05))return toast('Line length must be positive.');
+ const p=params(),pair=segmentPairs(p).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);
+ if(!pair)return;
+ const [a,b]=pair,old=segmentLength(a,b);
+ if(old<1e-6)return toast('Cannot resize a zero-length line.');
+ if(vertexLocks.has(a.id)&&vertexLocks.has(b.id))return toast('Both endpoints are locked. Unlock one to resize.');
+ if(vertexLocks.has(b.id)){
+  const next={x:b.x+(a.x-b.x)*length/old,z:b.z+(a.z-b.z)*length/old};
+  updateVertex(a.id,'x',next.x);updateVertex(a.id,'z',next.z);return;
+ }
+ const end={x:a.x+(b.x-a.x)*length/old,z:a.z+(b.z-a.z)*length/old};
+ if(b.id.startsWith('top'))updateVertex(b.id,'x',end.x),updateVertex(b.id,'z',end.z);
+ else {if(!vertexOverrides)vertexOverrides=defaultVertices(p);const q=vertexOverrides.find(n=>n.id===b.id);q.x=end.x;q.z=end.z;const mate=pairedYMate(b.id);if(mate)vertexOverrides.find(n=>n.id===mate).z=end.z;sync();}
+}
+function selectSegment(name){
+ selectedSegment=name;selectedCorner=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.remove('hidden');
+ $('lineEditorName').textContent=name+' · Length';const pair=segmentPairs(params()).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);
+ if(pair)$('lineLength').value=fmt(fromMM(segmentLength(...pair)),units()==='in'?4:2);
+ sync();
+}
+function clearSketchSelection(){selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();}
+function redrawSegments(p){const segs=segmentPairs(p),root=$('segmentLengths'),signature=segs.map(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)).join('|');
+ if(root.dataset.signature!==signature){root.dataset.signature=signature;root.textContent='';for(const [a,b]of segs){const name=nodeLetter(a.id)+nodeLetter(b.id),holder=document.createElement('label');holder.className='segmentItem';holder.innerHTML=`<span class="segmentName">${name}</span><div class="unitField"><input type="number" step="0.1" aria-label="${name} length"><span class="inputUnit" aria-hidden="true">${units()==='in'?'in':'mm'}</span></div>`;const input=holder.querySelector('input');input.addEventListener('change',()=>updateSegmentLength(name,toMM(Number(input.value))));root.append(holder);}}
+ segs.forEach(([a,b],i)=>{const holder=root.children[i],input=holder.querySelector('input');if(document.activeElement!==input){input.value=fmt(fromMM(segmentLength(a,b)),units()==='in'?4:2);input.defaultValue=input.value;}holder.querySelector('.inputUnit').textContent=units()==='in'?'in':'mm';holder.classList.toggle('selected',selectedSegment===nodeLetter(a.id)+nodeLetter(b.id));});
+ if(selectedSegment){const pair=segs.find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===selectedSegment);if(pair&&document.activeElement!==$('lineLength'))$('lineLength').value=fmt(fromMM(segmentLength(...pair)),units()==='in'?4:2);}
+}
+function configureTopVertices(count){
+ if([...vertexLocks].some(id=>id.startsWith('top'))){$('topVertexCount').value=String(extraTopPoints.length);toast('Unlock J–N before changing the number of top vertices.');return;}
+ count=Math.max(0,Math.min(5,count));
+ const p=params(),anchors=topAnchors({...p,extraTop:[]}),A=anchors[0],B=anchors[1],C=anchors[2];
+ const leftCount=Math.floor(count/2),rightCount=count-leftCount;
+ const positions=[...Array.from({length:leftCount},(_,i)=>A.x+(B.x-A.x)*(i+1)/(leftCount+1)),...Array.from({length:rightCount},(_,i)=>B.x+(C.x-B.x)*(i+1)/(rightCount+1))];
+ extraTopPoints=positions.map((x,i)=>({id:'top'+(i+1),x,z:topZ({...p,extraTop:[]},x)}));
+ cornerRadii=Object.fromEntries(Object.entries(cornerRadii).filter(([id])=>!id.startsWith('top')));
+ if(selectedCorner&&!currentVertices().some(v=>v.id===selectedCorner)){selectedCorner=null;$('pointEditor').classList.add('hidden');}
+ selectedSegment=null;$('lineEditor').classList.add('hidden');sync();
+}
+function drawSketch(p){const root=$('sketch');root.textContent='';root.setAttribute('viewBox','0 0 900 370');root.setAttribute('preserveAspectRatio','none');const svg=makeSvg('g',{id:'sketchGeometry',transform:`translate(${sketchCamera.panX} ${sketchCamera.panY}) scale(${sketchCamera.zoom})`});root.append(svg);
+ const W=p.width||101.6,nodes=p.nodes||defaultVertices(p),minX=sketchDrag?.fit.minX??Math.min(0,...nodes.map(q=>q.x)),maxX=Math.max(...nodes.map(q=>q.x)),minY=sketchDrag?.fit.minY??Math.min(0,...nodes.map(q=>q.z)),maxY=Math.max(p.h,...nodes.map(q=>q.z)),scale=sketchDrag?.fit.scale??Math.min(640/Math.max(maxX-minX,1),205/Math.max(maxY-minY,1)),X=x=>90+(x-minX)*scale,Y=z=>280-(z-minY)*scale;
+ sketchFit={minX,minY,scale};
+ $('sketchZoomLabel').textContent=Math.round(sketchCamera.zoom*100)+'%';
+ // For narrow or exceptionally short profiles, leave generous view-box margins.
+ const defs=makeSvg('defs');const marker=makeSvg('marker',{id:'arr',viewBox:'0 0 10 10',refX:5,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.append(makeSvg('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#78b2d2'}));defs.append(marker);svg.append(defs);
+ const line=(x1,y1,x2,y2,color='#6f91ad',width=1.1,dash='')=>{let q=makeSvg('line',{x1,y1,x2,y2,stroke:color,'stroke-width':width});if(dash)q.setAttribute('stroke-dasharray',dash);svg.append(q);};
+ const text=(x,y,str,sz=12,fill='#9cb9cd',anchor='middle')=>svg.append(makeSvg('text',{x,y,'font-size':sz,fill,'text-anchor':anchor,'font-family':'Segoe UI,Arial'},str));
+ line(48,Y(0),850,Y(0),'#5682a3',1,'5 5');
+ const T=roundedProfile(p), path='M '+T.map(q=>`${X(q.x).toFixed(2)},${Y(q.z).toFixed(2)}`).join(' L ')+' Z';
+ let holeHit=null;
+ svg.append(makeSvg('path',{d:path,fill:'#46a8dd31',stroke:'#7dd4ff','stroke-width':2.5,'stroke-linejoin':'round'}));
+ if(p.holesOn){
+  const checks=model?.v?.holeChecks||[],total=checks.length;
+  const bad=checks.some(q=>q.state==='bad'),caution=checks.some(q=>q.state==='caution');
+  const tone=bad?'#ff8f99':caution?'#ffd493':'#7de6ae',axisX=X(p.xBase+p.xhole);
+  line(axisX,32,axisX,325,tone,2,'7 5');
+  const hit=makeSvg('line',{x1:axisX,x2:axisX,y1:32,y2:325,stroke:'transparent','stroke-width':18,class:'holeGuide','data-hole-marker':'1','pointer-events':'stroke','aria-label':'Drag mounting hole centerline'});holeHit=hit;
+  svg.append(makeSvg('circle',{cx:axisX,cy:32,r:6,fill:'#162436',stroke:tone,'stroke-width':2,'pointer-events':'none'}));
+  text(Math.min(805,Math.max(105,axisX+13)),28,total?(bad?'⚠ HOLE POSITION':caution?'⚠ HOLE CLEARANCE':'✓ HOLE AXIS'):'HOLE AXIS',11,tone,'start');
+ }
+
+ const segments=segmentPairs(p);
+ for(const [a,b] of segments){
+  const x1=X(a.x),y1=Y(a.z),x2=X(b.x),y2=Y(b.z),name=nodeLetter(a.id)+nodeLetter(b.id),active=selectedSegment===name;
+  if(constraintReference===name){svg.append(makeSvg('line',{x1,y1,x2,y2,stroke:'#ffe38e','stroke-width':5,'stroke-linecap':'round','pointer-events':'none'}));}
+  const hit=makeSvg('line',{x1,y1,x2,y2,class:'profileLineHit',tabindex:'0',role:'button','data-segment':name,'aria-label':'Select line '+name+(constraintMode?' for '+constraintMode:' length')});
+  const choose=e=>{e.stopPropagation();if(!chooseConstraintLine(name))selectSegment(name);};hit.addEventListener('click',choose);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(e);}});svg.append(hit);
+  const cx=(x1+x2)/2,cy=(y1+y2)/2,dx=y2-y1,dy=-(x2-x1),mag=Math.hypot(dx,dy)||1;
+  text(cx+dx/mag*14,cy+dy/mag*14,name,11,active?'#ffdc96':'#9ebfd5');
+ }
+ text(X(p.xBase+W/2),354,'OVERALL PROFILE  '+disp(W,units()==='in'?3:1),12,'#afd5ec');
+ text(15,18,'SECTION A–A   /   SELECT LINE OR VERTEX',11,'#779bb7','start');
+ text(845,18,'↑ TOP SURFACE',11,'#779bb7','end');
+ drawFilletMarkers(p,X,Y,svg);
+ // Make the hole-axis drag target topmost, even when it overlaps sketch edges.
+ if(holeHit)svg.append(holeHit);
+}
+function drawLayout(p,v){const svg=$('layout');svg.textContent='';if(!v.parts.length)return;let s=0,totalW=620,start=30,y=31;
+ svg.append(makeSvg('rect',{x:start,y,width:totalW,height:34,rx:3,fill:'#1b3144',stroke:'#395774'}));
+ v.parts.forEach((part,i)=>{const a=start+totalW*part.start/p.door,b=start+totalW*part.end/p.door;svg.append(makeSvg('rect',{x:a,y,width:b-a,height:34,fill:i%2?'#25638a':'#3a8399',stroke:'#112438','stroke-width':2}));if(b-a>30)svg.append(makeSvg('text',{x:(a+b)/2,y:y+21,fill:'#fff','font-size':11,'text-anchor':'middle'},`P${i+1}`));});
+ (v.holeChecks||[]).forEach(q=>svg.append(makeSvg('circle',{cx:start+totalW*q.global/p.door,cy:y+17,r:4.7,fill:q.state==='bad'?'#ff8f99':q.state==='caution'?'#ffd493':'#7de6ae',stroke:'#1b3449','stroke-width':1.5})));
+ svg.append(makeSvg('text',{x:start,y:84,fill:'#9eb5ca','font-size':11},'START'));svg.append(makeSvg('text',{x:start+totalW,y:84,fill:'#9eb5ca','font-size':11,'text-anchor':'end'},'END'));
+ $('layoutCaption').textContent=`${v.parts.length} print pieces · ${v.hpos.length}/${v.requestedHoleCount} holes modeled · ${v.skippedCount} red holes omitted · green = sound, amber = caution.`;
+}
+// Exact triangulated print solid: tiled horizontal surfaces with circular opening patches,
+// radial recess walls, underside step walls, and front/back caps. All coordinates in mm.
+// Cross-section and locking geometry use one shared outline for sketch, DXF and STLs.
+const cornerNames={leftUpper:'Left upper tip',crest:'Crown / ridge',rightUpper:'Right feather-edge tip',rightLower:'Right lower tip',rightStepTop:'Right step · upper',rightStepBottom:'Right step · floor',leftStepBottom:'Left step · floor',leftStepTop:'Left step · upper',leftLower:'Left lower tip',top1:'Upper control J',top2:'Upper control K',top3:'Upper control L',top4:'Upper control M',top5:'Upper control N'};
+function originalContour(p){
+ if(p.nodes){const top=profileSamples(p).map(([x,z])=>({x,z,id:topAnchors(p).find(n=>Math.abs(n.x-x)<1e-6)?.id||null,tag:'top'}));return [...top,...p.nodes.slice(3).map(n=>({...n,tag:['leftStepBottom','rightStepBottom'].includes(n.id)?'underside':'bottom'}))];}
+ const top=profileSamples(p).map(([x,z])=>({x,z,id:topAnchors(p).find(n=>Math.abs(n.x-x)<1e-6)?.id||null,tag:'top'}));
+ return [...top,{x:p.L+p.M+p.R,z:p.right,id:'rightLower',tag:'bottom'},
+  {x:p.L+p.M,z:p.right,id:'rightStepTop',tag:'bottom'},
+  {x:p.L+p.M,z:0,id:'rightStepBottom',tag:'underside'},
+  {x:p.L,z:0,id:'leftStepBottom',tag:'underside'},
+  {x:p.L,z:p.left,id:'leftStepTop',tag:'bottom'},
+  {x:0,z:p.left,id:'leftLower',tag:'bottom'}];
+}
+function roundedProfile(p){
+ const input=originalContour(p),n=input.length,marked=new Map();
+ for(let i=0;i<n;i++){
+  const c=input[i],r=p.fillets?.[c.id];if(!r)continue;
+  if(r<=0||!Number.isFinite(r))throw Error('Invalid radius on '+cornerNames[c.id]);
+  const dist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+  let a=i,ad=0,b=i,bd=0,j=0;
+  // Pick a stable direction beyond dense curve samples, without crossing a second design corner.
+  while(ad<Math.max(r*2.2,2)&&j++<n){const prev=(a+n-1)%n;ad+=dist(input[a],input[prev]);a=prev;if(input[a].id)break;}
+  j=0;while(bd<Math.max(r*2.2,2)&&j++<n){const next=(b+1)%n;bd+=dist(input[b],input[next]);b=next;if(input[b].id)break;}
+  const prev=input[a],next=input[b],lenA=dist(c,prev),lenB=dist(c,next);
+  const u=[(prev.x-c.x)/lenA,(prev.z-c.z)/lenA],v=[(next.x-c.x)/lenB,(next.z-c.z)/lenB],
+        alpha=Math.acos(Math.max(-1,Math.min(1,u[0]*v[0]+u[1]*v[1]))),turn=Math.PI-alpha;
+  if(!Number.isFinite(alpha)||alpha<.12||turn<.045)throw Error('Corner '+cornerNames[c.id]+' is too shallow for a circular fillet.');
+  // Full-edge fillets: a tangent point may coincide with the next vertex.
+  // In particular, at a 90 degree corner a radius can equal the shorter edge.
+  const minEdge=Math.min(lenA,lenB), d=r/Math.tan(alpha/2), maxD=minEdge;
+  if(r>minEdge+1e-5)throw Error(cornerNames[c.id]+': radius exceeds the shorter adjoining edge ('+disp(minEdge,3)+').');
+  if(d>maxD+1e-5){
+   const maximum=minEdge*Math.tan(alpha/2);
+   throw Error(cornerNames[c.id]+': radius needs tangent points beyond the next vertex at this angle. Largest exact tangent radius: '+disp(maximum,3)+'.');
+  }
+  const P=[c.x+u[0]*d,c.z+u[1]*d],Q=[c.x+v[0]*d,c.z+v[1]*d],
+        bis=[u[0]+v[0],u[1]+v[1]],bn=Math.hypot(...bis),center=[c.x+(bis[0]/bn)*r/Math.sin(alpha/2),c.z+(bis[1]/bn)*r/Math.sin(alpha/2)];
+  let t0=Math.atan2(P[1]-center[1],P[0]-center[0]),t1=Math.atan2(Q[1]-center[1],Q[0]-center[0]);
+  const inx=c.x-prev.x,inz=c.z-prev.z,outx=next.x-c.x,outz=next.z-c.z,sgn=Math.sign(inx*outz-inz*outx);
+  if(sgn>0){while(t1<t0)t1+=Math.PI*2;if(t1-t0>Math.PI)t1-=Math.PI*2;}
+  else {while(t1>t0)t1-=Math.PI*2;if(t0-t1>Math.PI)t1+=Math.PI*2;}
+  const arc=[];const steps=Math.max(4,Math.ceil(Math.abs(t1-t0)/(Math.PI/28)));
+  for(let k=0;k<=steps;k++){let t=t0+(t1-t0)*k/steps;arc.push({x:center[0]+r*Math.cos(t),z:center[1]+r*Math.sin(t),tag:c.tag});}
+  marked.set(i,{arc,d,prev:a,next:b});
+ }
+ // Neighboring rounds must share the common straight edge without overlapping.
+ for(const [i,a] of marked){
+  const j=a.next,b=marked.get(j);
+  if(!b||b.prev!==i)continue;
+  const seg=Math.hypot(input[j].x-input[i].x,input[j].z-input[i].z);
+  if(a.d+b.d>seg+1e-5)throw Error('Fillets at '+cornerNames[input[i].id]+' and '+cornerNames[input[j].id]+' overlap on their shared edge. Reduce one radius.');
+ }
+ let out=[];
+ for(let i=0;i<n;i++){
+  if(marked.has(i)){out.push(...marked.get(i).arc);continue;}
+  const pos=input[i];let remove=false;
+  for(const [idx,fillet] of marked){if(idx===i)continue;
+   // Suppress intermediate curve samples displaced by the tangent points.
+   let ds=0,k=idx;while(k!==i&&ds<=fillet.d*1.3){let nxt=(k+n-1)%n;ds+=Math.hypot(input[k].x-input[nxt].x,input[k].z-input[nxt].z);k=nxt;}
+   if(k===i&&ds<fillet.d-1e-5){remove=true;break;}
+   ds=0;k=idx;while(k!==i&&ds<=fillet.d*1.3){let nxt=(k+1)%n;ds+=Math.hypot(input[k].x-input[nxt].x,input[k].z-input[nxt].z);k=nxt;}
+   if(k===i&&ds<fillet.d-1e-5){remove=true;break;}
+  }
+  if(!remove)out.push({...pos});
+ }
+ // Drop zero-length vertices, needed for outward fillet tangent intersections.
+ out=out.filter((q,i)=>i===0||Math.hypot(q.x-out[i-1].x,q.z-out[i-1].z)>1e-5);
+ return out;
+}
+function refinedContour(p, extraX=[]){
+ const shape=roundedProfile(p), grid=[...new Set([...shape.map(q=>q.x),...extraX])].filter(Number.isFinite).sort((a,b)=>a-b),out=[];
+ for(let i=0;i<shape.length;i++){
+  const a=shape[i],b=shape[(i+1)%shape.length];out.push(a);
+  if(Math.abs(a.x-b.x)<1e-8)continue;
+  const points=grid.filter(x=>x>Math.min(a.x,b.x)+1e-5&&x<Math.max(a.x,b.x)-1e-5);
+  if(b.x<a.x)points.reverse();
+  for(const x of points)out.push({x,z:a.z+(b.z-a.z)*(x-a.x)/(b.x-a.x),tag:a.tag});
+ }
+ return out;
+}
+function crossIntersections(poly,x){const result=[];
+ for(let i=0;i<poly.length;i++){
+  const a=poly[i],b=poly[(i+1)%poly.length];
+  if(Math.min(a.x,b.x)>x+1e-7||Math.max(a.x,b.x)<x-1e-7||Math.abs(a.x-b.x)<1e-8)continue;
+  const t=(x-a.x)/(b.x-a.x);if(t>=-1e-7&&t<=1+1e-7)result.push({z:a.z+(b.z-a.z)*t,a,b});
+ }
+ return result.sort((a,b)=>a.z-b.z);
+}
+function drawFilletMarkers(p,X,Y,svg){
+ const offsets={leftUpper:[-24,-16],leftLower:[-24,16],crest:[19,-19],leftStepTop:[-18,17],rightUpper:[24,-16],rightLower:[24,16],rightStepTop:[19,-16],rightStepBottom:[19,17],leftStepBottom:[-17,17]};
+ for(const c of originalContour(p).filter(x=>x.id)){
+  const active=!!p.fillets?.[c.id],sel=selectedCorner===c.id;
+  const group=makeSvg('g',{'data-node-group':c.id}),cx=X(c.x),cy=Y(c.z),o=offsets[c.id]||[16,-16],bx=cx+o[0],by=cy+o[1];
+  group.append(makeSvg('circle',{cx,cy,r:7,fill:active?'#f6be64':'#82d8ff',class:'vertexDot', 'data-vertex':c.id}));
+  group.append(makeSvg('line',{x1:cx,y1:cy,x2:bx,y2:by,stroke:active?'#e6bd7c':'#668fae','stroke-width':1.1,'stroke-dasharray':'2 3','pointer-events':'none'}));
+  group.append(makeSvg('circle',{cx:bx,cy:by,r:sel?11:9,fill:active?'#9d6a27':'#204767',stroke:sel?'#fff':'#82d8ff','stroke-width':sel?2.4:1.2,class:'vertexDot'}));
+  if(vertexLocks.has(c.id))group.append(makeSvg('text',{x:bx+11,y:by-9,class:'sketchLockTag'},'🔒'));
+  if(c.id===pairedYMate(selectedCorner))group.append(makeSvg('circle',{cx:bx,cy:by,r:14,class:'linkedVertexRing'}));
+  group.append(makeSvg('text',{x:bx,y:by+3.4,'font-size':10,'text-anchor':'middle',class:'vertexLetter'},nodeLetter(c.id)));
+  const hit=makeSvg('circle',{cx:bx,cy:by,r:12,class:'vertexHit',tabindex:'0',role:'button','data-vertex':c.id,'aria-label':'Select point '+nodeLetter(c.id)+' '+cornerNames[c.id]});
+  hit.addEventListener('click',e=>{e.stopPropagation();selectVertex(c.id,false);});
+  hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectVertex(c.id,false);}});
+  group.append(hit);group.append(makeSvg('circle',{cx,cy,r:10,class:'vertexHit vertexAnchorHit','data-vertex':c.id,'aria-label':'Drag point '+nodeLetter(c.id)}));group.append(makeSvg('title',{},`${nodeLetter(c.id)}: ${cornerNames[c.id]} — click a dot or badge to edit`));svg.append(group);
+ }
+ $('cornerSelection').textContent=(selectedCorner?nodeLetter(selectedCorner)+' · ':'')+(cornerNames[selectedCorner]||'Select a corner');
+}
+
+function triangleMesh(p,part){
+ const verts=[],normals=[],W=p.L+p.M+p.R,Len=part.length;
+ const tri=(a,b,c)=>{const ab=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],ac=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];let n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],m=Math.hypot(...n);if(m<1e-9)return;n=n.map(x=>x/m);for(let v of [a,b,c]){verts.push(...v);normals.push(...n);}};
+ const quad=(a,b,c,d)=>{tri(a,b,c);tri(a,c,d);};
+ const uniq=a=>a.filter(Number.isFinite).sort((a,b)=>a-b).filter((x,i,a)=>!i||Math.abs(x-a[i-1])>1e-5);
+ const holeCenter=p.xhole+p.xBase,topRad=(p.recess==='plain'?p.bore:p.head)/2,boreRad=p.bore/2,pad=topRad+Math.max(2.2,topRad*.35),rects=[],ys=[0,Len],newXs=[];
+ for(const y of part.holes){const rect={x0:holeCenter-pad,x1:holeCenter+pad,y0:y-pad,y1:y+pad,cy:y};rects.push(rect);
+  for(let k=0;k<=8;k++){newXs.push(rect.x0+(rect.x1-rect.x0)*k/8);ys.push(rect.y0+(rect.y1-rect.y0)*k/8);}}
+ const keyX=(male=false)=>[p.channelLeft+(male?p.tongueOffset:p.lockOffset),p.channelRight-(male?p.tongueOffset:p.lockOffset)];
+ if(part.female)newXs.push(...keyX(false));if(part.male)newXs.push(...keyX(true));if(p.woodOn){for(let x=p.xBase;x<p.xBase+p.width;x+=2.0)newXs.push(x);for(let y=2;y<Len;y+=2.4)ys.push(y);}
+ const poly=refinedContour(p,newXs),xs=uniq([...poly.map(q=>q.x),...newXs]),yg=uniq(ys);
+ // Deterministic printable wood grain: direction is set in XY, with 0° along Y.
+ // Taper at every cut end, outside profile edges and around hole-patch boundaries
+ // so the texture joins unchanged caps, sockets and hole rings watertight.
+ const taper=d=>Math.max(0,Math.min(1,d/3)),theta=p.grainAngle*Math.PI/180;
+ const grain=(x,y)=>{
+  if(!p.woodOn)return 0;
+  const globalY=part.start+y,u=(x-p.xBase)*Math.cos(theta)-globalY*Math.sin(theta),v=(x-p.xBase)*Math.sin(theta)+globalY*Math.cos(theta);
+  let boundary=Math.min(x-p.xBase,p.xBase+p.width-x,y,Len-y);
+  for(const r of rects){
+   const dx=Math.max(r.x0-x,0,x-r.x1),dy=Math.max(r.y0-y,0,y-r.y1);
+   const dist=Math.hypot(dx,dy);
+   if(dist<3)boundary=Math.min(boundary,dist);
+  }
+  const ripple=(Math.sin((u+.40*Math.sin(v/16)+.16*Math.sin(v/6))*Math.PI*2/p.grainPitch)+.33*Math.sin((u+.7*Math.sin(v/31))*Math.PI*4/p.grainPitch));
+  return p.grainDepth*.32*taper(boundary)*ripple;
+ };
+ // Classify segments by whether they are part of the upper crown or the central underside.
+ const kind=(a,b)=>a.tag==='top'&&b.tag==='top'?'top':(a.tag==='underside'&&b.tag==='underside'||Math.abs(a.z-b.z)<1e-5&&a.tag!=='top'&&b.tag!=='top')?'bottom':'other';
+ for(let i=0;i<poly.length;i++){
+  const a=poly[i],b=poly[(i+1)%poly.length],k=kind(a,b);
+  for(let j=0;j<yg.length-1;j++){
+   const y0=yg[j],y1=yg[j+1],xm=(a.x+b.x)/2,ym=(y0+y1)/2;
+   const punch=rects.some(r=>xm>r.x0+1e-5&&xm<r.x1-1e-5&&ym>r.y0+1e-5&&ym<r.y1-1e-5);
+   if(punch&&(k==='top'||k==='bottom'))continue;
+   quad([a.x,y0,a.z+(k==='top'?grain(a.x,y0):0)],[b.x,y0,b.z+(k==='top'?grain(b.x,y0):0)],[b.x,y1,b.z+(k==='top'?grain(b.x,y1):0)],[a.x,y1,a.z+(k==='top'?grain(a.x,y1):0)]);
+  }
+ }
+ // Welded circular openings are cut out of the upper surface and center underside.
+ for(const hp of rects){
+  const outer=[];
+  for(const x of xs)if(x>=hp.x0-1e-5&&x<hp.x1-1e-5)outer.push([x,hp.y0]);
+  for(const y of yg)if(y>=hp.y0-1e-5&&y<hp.y1-1e-5)outer.push([hp.x1,y]);
+  for(let k=xs.length-1;k>=0;k--)if(xs[k]<=hp.x1+1e-5&&xs[k]>hp.x0+1e-5)outer.push([xs[k],hp.y1]);
+  for(let k=yg.length-1;k>=0;k--)if(yg[k]<=hp.y1+1e-5&&yg[k]>hp.y0+1e-5)outer.push([hp.x0,yg[k]]);
+  const topAt=x=>{const z=crossIntersections(poly,x+1e-8);return z[z.length-1].z;},bottomAt=x=>{const z=crossIntersections(poly,x+1e-8);return z[0].z;};
+  const circle=rad=>outer.map(v=>{let dx=v[0]-holeCenter,dy=v[1]-hp.cy,scale=rad/Math.hypot(dx,dy);return [holeCenter+dx*scale,hp.cy+dy*scale];});
+  const topC=circle(topRad),smallC=circle(boreRad);
+  const ring=(pt,f)=>pt.map(t=>[t[0],t[1],f(t[0])]),
+        OT=ring(outer,topAt),OC=ring(topC,topAt),OB=ring(outer,bottomAt),SC=ring(smallC,bottomAt);
+  const n=outer.length,each=fn=>{for(let i=0;i<n;i++)fn(i,(i+1)%n);};
+  each((i,j)=>{quad(OT[i],OT[j],OC[j],OC[i]);quad(OB[i],SC[i],SC[j],OB[j]);});
+  const dep=p.recess==='sink'?(topRad-boreRad)/Math.tan(p.angle*Math.PI/360):p.recess==='bore'?p.boreDepth:0;
+  if(p.recess==='sink'){
+   const narrow=ring(smallC,x=>topAt(holeCenter)-dep);
+   each((i,j)=>{quad(OC[i],OC[j],narrow[j],narrow[i]);quad(narrow[i],narrow[j],SC[j],SC[i]);});
+  }else if(p.recess==='bore'){
+   const shoulder=ring(topC,x=>topAt(holeCenter)-dep),narrow=ring(smallC,x=>topAt(holeCenter)-dep);
+   each((i,j)=>{quad(OC[i],OC[j],shoulder[j],shoulder[i]);quad(shoulder[i],shoulder[j],narrow[j],narrow[i]);quad(narrow[i],narrow[j],SC[j],SC[i]);});
+  }else each((i,j)=>quad(OC[i],OC[j],SC[j],SC[i]));
+ }
+ // Fill planar section ends, cutting keyed mouths only on internal section joints.
+ const sectionBands=(x,side)=>{
+  const hits=crossIntersections(poly,x),lo=hits[0]?.z,hi=hits[hits.length-1]?.z;
+  if(!Number.isFinite(lo)||!Number.isFinite(hi)||hi<=lo)return [];
+  if((side==='female'&&!part.female)||(side==='male'&&!part.male)||side==='solid')return [[lo,hi]];
+  const [x0,x1]=keyX(side==='male');if(x<x0-1e-5||x>x1+1e-5)return [[lo,hi]];
+  const inset=side==='male'?p.tongueOffset:p.lockOffset,keyLo=lo+inset,keyHi=hi-inset;
+  if(!(keyHi>keyLo))throw Error('Lock cross-section has negative material thickness.');
+  return [[lo,keyLo],[keyHi,hi]].filter(q=>q[1]-q[0]>1e-6);
+ };
+ function endCap(y,side){const eps=1e-6,positive=y>Len*.5,edges=uniq([...xs,...(side!=='solid'?keyX(side==='male'):[])]);
+  const bandCache=[];
+  for(let i=0;i<edges.length-1;i++){
+   let x0=edges[i],x1=edges[i+1],mid=(x0+x1)/2;
+   const hits=crossIntersections(poly,mid);
+   if(hits.length<2)continue;
+   const bot=hits[0],top=hits[hits.length-1],interpolate=(edge,x)=>edge.a.z+(edge.b.z-edge.a.z)*(x-edge.a.x)/(edge.b.x-edge.a.x),
+     inside=side!=='solid'&&((side==='female'&&part.female)||(side==='male'&&part.male))&&mid>keyX(side==='male')[0]&&mid<keyX(side==='male')[1],inset=side==='male'?p.tongueOffset:p.lockOffset;
+   let lowA=interpolate(bot,x0),lowB=interpolate(bot,x1),hiA=interpolate(top,x0),hiB=interpolate(top,x1);
+   const bands=inside?[[[lowA,lowA+inset],[lowB,lowB+inset]],[[hiA-inset,hiA],[hiB-inset,hiB]]]:[[[lowA,hiA],[lowB,hiB]]];
+   bandCache.push({x0,x1,bands});
+  }
+  const boundaryMarks=x=>{
+   const z=[];
+   for(const c of bandCache)if(Math.abs(c.x0-x)<1e-5||Math.abs(c.x1-x)<1e-5){const idx=Math.abs(c.x0-x)<1e-5?0:1;for(const band of c.bands){z.push(band[idx][0],band[idx][1]);}}
+   for(const q of poly)if(Math.abs(q.x-x)<1e-5)z.push(q.z);
+   return uniq(z);
+  };
+  for(const cell of bandCache){for(const band of cell.bands){const [[z0,z3],[z1,z2]]=band; if(z3<=z0+1e-6&&z2<=z1+1e-6)continue;
+   const zRight=boundaryMarks(cell.x1).filter(z=>z>z1+1e-5&&z<z2-1e-5),zLeft=boundaryMarks(cell.x0).filter(z=>z>z0+1e-5&&z<z3-1e-5).reverse();
+   const outline=[[cell.x0,z0],[cell.x1,z1],...zRight.map(z=>[cell.x1,z]),[cell.x1,z2],[cell.x0,z3],...zLeft.map(z=>[cell.x0,z])];
+   let cx=(cell.x0+cell.x1)/2,cz=(z0+z1+z2+z3)/4;
+   for(let k=0;k<outline.length;k++){const a=outline[k],b=outline[(k+1)%outline.length];
+    if(positive)tri([cx,y,cz],[b[0],y,b[1]],[a[0],y,a[1]]);
+    else tri([cx,y,cz],[a[0],y,a[1]],[b[0],y,b[1]]);
+   }
+  }}
+ }
+ endCap(0,part.female?'female':'solid');endCap(Len,part.male?'male':'solid');
+ function lockGeometry(which){const isMale=which==='male',inset=isMale?p.tongueOffset:p.lockOffset,[x0,x1]=keyX(isMale),back=isMale?Len+p.tongueDepth:p.lockDepth,front=isMale?Len:0;
+  const channel=[x0,...xs.filter(x=>x>x0+1e-5&&x<x1-1e-5),x1];
+  const atTop=x=>crossIntersections(poly,x+1e-8).slice(-1)[0].z-inset,atBottom=x=>crossIntersections(poly,x+1e-8)[0].z+inset;
+  for(let i=0;i<channel.length-1;i++){
+   const a=channel[i],b=channel[i+1],hA=atTop(a),hB=atTop(b),lA=atBottom(a),lB=atBottom(b);
+   if(isMale){quad([a,front,hA],[b,front,hB],[b,back,hB],[a,back,hA]);quad([a,front,lA],[a,back,lA],[b,back,lB],[b,front,lB]);}
+   else {quad([b,front,hB],[a,front,hA],[a,back,hA],[b,back,hB]);quad([b,front,lB],[b,back,lB],[a,back,lA],[a,front,lA]);}
+   const center=[(a+b)/2,back,(lA+lB+hA+hB)/4];
+   const boundary=[[a,lA],[b,lB],[b,hB],[a,hA]];
+   for(let k=0;k<boundary.length;k++){
+    const u=boundary[k],v=boundary[(k+1)%boundary.length];
+    if(isMale)tri(center,[v[0],back,v[1]],[u[0],back,u[1]]);
+    else tri(center,[u[0],back,u[1]],[v[0],back,v[1]]);
+   }
+  }
+  const h0=atTop(x0),h1=atTop(x1),l0=atBottom(x0),l1=atBottom(x1);
+  if(isMale){quad([x0,front,l0],[x0,front,h0],[x0,back,h0],[x0,back,l0]);quad([x1,front,l1],[x1,back,l1],[x1,back,h1],[x1,front,h1]);}
+  else{quad([x0,front,l0],[x0,back,l0],[x0,back,h0],[x0,front,h0]);quad([x1,front,l1],[x1,front,h1],[x1,back,h1],[x1,back,l1]);}
+ }
+ if(part.female)lockGeometry('female');if(part.male)lockGeometry('male');
+ // Position welding to 0.001 mm avoids floating point T-junctions in
+ // mating lock caps when multiple large rounds meet on one profile edge.
+ return {positions:new Float32Array(verts.map(v=>Math.round(v*1000)/1000)),normals:new Float32Array(normals),triangles:verts.length/9};
+}
+
+function makeSTL(mesh,name){const pts=mesh.positions,norm=mesh.normals,count=mesh.triangles,arr=new ArrayBuffer(84+count*50),dv=new DataView(arr),enc=new TextEncoder().encode(('Threshold Studio | '+name+' | mm').slice(0,80));const bytes=new Uint8Array(arr);bytes.set(enc,0);dv.setUint32(80,count,true);let off=84;for(let i=0;i<count;i++){
+ for(let k=0;k<3;k++)dv.setFloat32(off+k*4,norm[i*9+k],true);off+=12;
+ for(let v=0;v<3;v++)for(let k=0;k<3;k++){dv.setFloat32(off,pts[i*9+v*3+k],true);off+=4;}dv.setUint16(off,0,true);off+=2;
+ }return bytes;
+}
+function profileOutline(p){return roundedProfile(p).map(q=>[q.x,q.z]);}
+function dxf(p){let points=profileOutline(p),s=['0','SECTION','2','HEADER','9','$INSUNITS','70','4','0','ENDSEC','0','SECTION','2','ENTITIES','0','LWPOLYLINE','8','PROFILE','90',String(points.length),'70','1'];for(const [x,z] of points){s.push('10',String(x),'20',String(z));}s.push('0','ENDSEC','0','EOF');return s.join('\n');}
+function svgExport(p){const W=p.width,H=Math.max(p.h,...profileOutline(p).map(q=>q[1])),pad=22,scale=125,wp=(W+pad*2)*scale/25.4,hp=(H+pad*2)*scale/25.4;
+ const T=profileOutline(p).map(v=>[pad+v[0]-p.xBase,pad+H-v[1]]),pts=T.map(v=>v.map(a=>fmt(a,3)).join(',')).join(' ');
+ const t=(x,y,txt)=>`<text x="${fmt(x)}" y="${fmt(y)}" fill="#17304a" font-size="3.6" text-anchor="middle" font-family="Arial">${txt}</text>`;
+ return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${fmt(W+2*pad,2)} ${fmt(H+2*pad,2)}" width="${fmt(wp)}" height="${fmt(hp)}"><rect width="100%" height="100%" fill="white"/><polygon points="${pts}" fill="#d5edf8" stroke="#194868" stroke-width="0.35"/><g stroke="#7393b3" stroke-width="0.22"><path d="M${pad} ${pad+H+5} H${pad+W} M${pad} ${pad+H+3}v4 M${pad+p.L} ${pad+H+3}v4 M${pad+p.L+p.M} ${pad+H+3}v4 M${pad+W} ${pad+H+3}v4"/><path d="M${pad-4} ${pad} V${pad+H} M${pad-6} ${pad}h4 M${pad-6} ${pad+H}h4"/></g>${t(pad+p.L/2,pad+H+11,`${fmt(p.L,2)} mm`)}${t(pad+p.L+p.M/2,pad+H+11,`${fmt(p.M,2)} mm`)}${t(pad+p.L+p.M+p.R/2,pad+H+11,`${fmt(p.R,2)} mm`)}${t(pad-9,pad+H/2,`${fmt(H,2)} mm`)}${t(pad+W/2,pad+H+17,`Overall width ${fmt(W,2)} mm`)}${t(pad+W/2,pad-10,'FLOORING THRESHOLD — SECTION A-A / mm')}</svg>`;
+}
+function holeChecksCsv(v){const lines=['Section,Local_position_mm,Installed_position_mm,Status,Included_in_STL,Reason'];
+ for(const h of v.holeChecks||[])lines.push([h.part,fmt(h.local,3),fmt(h.global,3),h.state,h.included?'YES':'NO',String(h.reason).replaceAll(',',';')].join(','));
+ return lines.join('\r\n')+'\r\n';}
+function csvExport(p,v){const lines=['Segment,Start_mm,End_mm,Base_length_mm,Printable_length_mm,Mounting_holes_per_piece,Doorway_quantity,Mating_start,Mating_end'];for(const q of v.parts)lines.push([q.number,fmt(q.start,3),fmt(q.end,3),fmt(q.length,3),fmt(q.length+(q.male?p.tongueDepth:0),3),q.holes.length,p.sets,q.female?'socket':'flat',q.male?'tongue':'flat'].join(','));return lines.join('\r\n')+'\r\n';}
+function projectSave(p){return JSON.stringify({app:'Flooring Threshold Studio',version:'2.4',unit:'mm',vertexLocks:[...vertexLocks],preset:$('preset').value,
+ profile:{leftWidth:p.L,centerWidth:p.M,rightWidth:p.R,crestHeight:p.h,leftClearance:p.left,rightRise:p.right,leftEdgeThickness:p.leftEdge,edgeThickness:p.edge,curve:p.curve,fillets:p.fillets,controlPoints:p.nodes,coordinateMode:!!p.nodes,additionalTopPoints:p.extraTop},
+ installation:{length:p.door,maxPieceLength:p.max,quantity:p.sets,segmentation:p.splitMode},
+ hardware:{enabled:p.holesOn,countPerSection:p.holeN,count:p.holeN,endInset:p.inset,holeX:p.xhole,boreDiameter:p.bore,headDiameter:p.head,recess:p.recess,sinkAngle:p.angle,counterboreDepth:p.boreDepth},
+ locks:{enabled:p.locksOn,offset:p.lockOffset,depth:p.lockDepth,tongueOffset:p.tongueOffset,tongueDepth:p.tongueDepth},texture:{enabled:p.woodOn,angle:p.grainAngle,depth:p.grainDepth,pitch:p.grainPitch}},null,2);}
+function openProject(data){if(data.app!=='Flooring Threshold Studio'||!data.profile||!data.installation||!data.hardware)throw Error('Not a recognized threshold project.');
+ const {profile:a,installation:b,hardware:c}=data,l=data.locks||{enabled:false,offset:2.032,depth:8.89};
+ const set=(id,v)=>{if(v===undefined||!Number.isFinite(Number(v)))throw Error('Missing/invalid value: '+id);$(id).value=fmt(fromMM(Number(v)),5);};
+ for(const [id,val] of Object.entries({leftW:a.leftWidth,midW:a.centerWidth,rightW:a.rightWidth,crest:a.crestHeight,leftClear:a.leftClearance,rightRise:a.rightRise,leftEdge:a.leftEdgeThickness??((Math.max(a.leftClearance+.65*a.edgeThickness,a.crestHeight-1.25*a.edgeThickness))-a.leftClearance),edge:a.edgeThickness,doorL:b.length,maxL:b.maxPieceLength,endInset:c.endInset,holeX:c.holeX,boreD:c.boreDiameter,headD:c.headDiameter,boreDepth:c.counterboreDepth,lockOffset:l.offset,lockDepth:l.depth,tongueOffset:l.tongueOffset??l.offset*1.1,tongueDepth:l.tongueDepth??l.depth*.9,grainDepth:data.texture?.depth??.2032,grainPitch:data.texture?.pitch??4.318}))set(id,val);
+ $('sets').value=b.quantity;$('splitMode').value=b.segmentation;$('holesOn').checked=c.enabled;$('holeN').value=c.countPerSection??c.count;$('recess').value=c.recess;$('sinkA').value=c.sinkAngle;$('curve').value=a.curve;$('preset').value=['sketch','flat','mirror','printFlat'].includes(data.preset)?data.preset:'sketch';$('locksOn').checked=l.enabled;$('woodOn').checked=!!data.texture?.enabled;$('grainAngle').value=data.texture?.angle??0;
+ cornerRadii=a.fillets||{};vertexOverrides=a.coordinateMode&&Array.isArray(a.controlPoints)&&a.controlPoints.length===9?a.controlPoints.map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):null;extraTopPoints=Array.isArray(a.additionalTopPoints)?a.additionalTopPoints.slice(0,5).map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):[];vertexLocks=new Set((data.vertexLocks||[]).filter(id=>[...nodeOrder,...extraTopPoints.map(n=>n.id)].includes(id)));$('topVertexCount').value=String(extraTopPoints.length);selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();
+}
+function download(blob,file){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);}
+function bytes(s){return new TextEncoder().encode(s);}
+const crcTable=(()=>{let tbl=new Uint32Array(256);for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;tbl[i]=c>>>0;}return tbl;})();
+function crc32(a){let v=0xffffffff;for(const b of a)v=crcTable[(v^b)&255]^(v>>>8);return (v^0xffffffff)>>>0;}
+function zipStored(entries){let blocks=[],central=[],cursor=0;const dt=new Date(),dosDate=((dt.getFullYear()-1980)<<9)|((dt.getMonth()+1)<<5)|dt.getDate(),dosTime=(dt.getHours()<<11)|(dt.getMinutes()<<5)|(dt.getSeconds()>>1);
+ for(let [filename,data] of entries){let name=bytes(filename),b=typeof data==='string'?bytes(data):data,crc=crc32(b);const local=new Uint8Array(30+name.length),dv=new DataView(local.buffer);dv.setUint32(0,0x04034b50,true);dv.setUint16(4,20,true);dv.setUint16(6,0,true);dv.setUint16(8,0,true);dv.setUint16(10,dosTime,true);dv.setUint16(12,dosDate,true);dv.setUint32(14,crc,true);dv.setUint32(18,b.length,true);dv.setUint32(22,b.length,true);dv.setUint16(26,name.length,true);local.set(name,30);blocks.push(local,b);
+ let c=new Uint8Array(46+name.length),v=new DataView(c.buffer);v.setUint32(0,0x02014b50,true);v.setUint16(4,20,true);v.setUint16(6,20,true);v.setUint16(8,0,true);v.setUint16(10,0,true);v.setUint16(12,dosTime,true);v.setUint16(14,dosDate,true);v.setUint32(16,crc,true);v.setUint32(20,b.length,true);v.setUint32(24,b.length,true);v.setUint16(28,name.length,true);v.setUint32(42,cursor,true);c.set(name,46);central.push(c);cursor+=local.length+b.length;
+ }
+ const cenlen=central.reduce((s,a)=>s+a.length,0),end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,entries.length,true);e.setUint16(10,entries.length,true);e.setUint32(12,cenlen,true);e.setUint32(16,cursor,true);
+ return new Blob([...blocks,...central,end],{type:'application/zip'});
+}
+class GLViewer{
+ constructor(canvas){this.canvas=canvas;this.gl=canvas.getContext('webgl',{antialias:true,alpha:true,preserveDrawingBuffer:true});this.yaw=-.68;this.pitch=-.73;this.zoom=1;this.pan=[0,0];this.parts=[];this.center=[0,0,0];this.scale=.004;this.drag=null;this.cpuParts=[];this.ctx2d=null;if(!this.gl){this.ctx2d=canvas.getContext('2d');if(!this.ctx2d)return;this.setupEvents();this.setupCubeEvents();if('ResizeObserver' in window)new ResizeObserver(()=>this.draw()).observe(canvas);return;}
+ const gl=this.gl,vs=`attribute vec3 a_pos;attribute vec3 a_normal;uniform vec3 u_center;uniform vec2 u_angle;uniform vec2 u_pan;uniform float u_scale;uniform float u_aspect;varying vec3 v_normal;void main(){vec3 p=a_pos-u_center;float ca=cos(u_angle.x),sa=sin(u_angle.x),cp=cos(u_angle.y),sp=sin(u_angle.y);vec3 r=vec3(ca*p.x-sa*p.y,sa*p.x+ca*p.y,p.z);vec3 q=vec3(r.x,cp*r.y-sp*r.z,sp*r.y+cp*r.z);gl_Position=vec4(q.x*u_scale/u_aspect+u_pan.x,q.y*u_scale+u_pan.y,q.z*u_scale*.09,1.);v_normal=normalize(a_normal);}`,
+ fs=`precision mediump float;uniform vec3 u_color;varying vec3 v_normal;void main(){vec3 n=normalize(v_normal);float diffuse=max(dot(n,normalize(vec3(-.5,-.35,1.))),0.);float f=.42+.53*diffuse;vec3 result=u_color*f+vec3(.10,.14,.18)*pow(max(dot(n,normalize(vec3(.25,.45,1.))),0.),8.);gl_FragColor=vec4(result,1.);}`;
+ const make=(typ,src)=>{const s=gl.createShader(typ);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;};
+ const program=gl.createProgram();gl.attachShader(program,make(gl.VERTEX_SHADER,vs));gl.attachShader(program,make(gl.FRAGMENT_SHADER,fs));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);this.program=program;
+ this.aPos=gl.getAttribLocation(program,'a_pos');this.aNorm=gl.getAttribLocation(program,'a_normal');this.uniform={center:gl.getUniformLocation(program,'u_center'),angle:gl.getUniformLocation(program,'u_angle'),pan:gl.getUniformLocation(program,'u_pan'),scale:gl.getUniformLocation(program,'u_scale'),aspect:gl.getUniformLocation(program,'u_aspect'),color:gl.getUniformLocation(program,'u_color')};
+ this.positionBuffer=gl.createBuffer();this.normalBuffer=gl.createBuffer();
+ this.setupEvents();this.setupCubeEvents();
+ if('ResizeObserver' in window)new ResizeObserver(()=>this.draw()).observe(canvas);
+ }
+ // Z is up, Y runs the doorway, X crosses the threshold width.
+ // These directions use the exact same Euler convention as the WebGL shader.
+ static views={top:[0,0],bottom:[0,Math.PI],front:[0,-Math.PI/2],back:[0,Math.PI/2],left:[Math.PI/2,-Math.PI/2],right:[-Math.PI/2,-Math.PI/2],iso:[-.68,-.73]};
+ setView(name){
+  if(name==='fit'){this.zoom=1;this.pan=[0,0];}
+  else if(GLViewer.views[name]){[this.yaw,this.pitch]=GLViewer.views[name];this.pan=[0,0];this.zoom=1;}
+  this.draw();
+ }
+ currentView(){
+  const distance=(a,b)=>Math.abs(Math.atan2(Math.sin(a-b),Math.cos(a-b)));
+  for(const [name,[yaw,pitch]] of Object.entries(GLViewer.views)){
+   if(distance(this.yaw,yaw)<.009 && distance(this.pitch,pitch)<.009)return name;
+  }
+  return null;
+ }
+ updateViewCube(){
+  const canvas=$('viewCube'),readout=$('orbitReadout');if(!canvas)return;
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  const size=canvas.width;
+  ctx.clearRect(0,0,size,size);
+  const ca=Math.cos(this.yaw),sa=Math.sin(this.yaw),cp=Math.cos(this.pitch),sp=Math.sin(this.pitch);
+  const proj=([x,y,z])=>{
+   const rx=ca*x-sa*y,ry=sa*x+ca*y;
+   const qx=rx,qy=cp*ry-sp*z,qz=sp*ry+cp*z;
+   // Fixed mild perspective makes the face labels readable without changing the model projection.
+   const persp=1+qz*.10;
+   return [size*.5+qx*size*.295*persp,size*.5-qy*size*.295*persp,qz];
+  };
+  const faces=[
+   {name:'Right',normal:[1,0,0],fill:'#376f96',verts:[[1,-1,-1],[1,1,-1],[1,1,1],[1,-1,1]],view:'right'},
+   {name:'Left',normal:[-1,0,0],fill:'#2f6289',verts:[[-1,-1,-1],[-1,-1,1],[-1,1,1],[-1,1,-1]],view:'left'},
+   {name:'Back',normal:[0,1,0],fill:'#346784',verts:[[-1,1,-1],[-1,1,1],[1,1,1],[1,1,-1]],view:'back'},
+   {name:'Front',normal:[0,-1,0],fill:'#386d8d',verts:[[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1]],view:'front'},
+   {name:'Top',normal:[0,0,1],fill:'#548bb4',verts:[[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],view:'top'},
+   {name:'Bottom',normal:[0,0,-1],fill:'#2b587e',verts:[[-1,-1,-1],[-1,1,-1],[1,1,-1],[1,-1,-1]],view:'bottom'}
+  ];
+  const shown=[];
+  for(const f of faces){
+   const n=f.normal,facing=sp*(sa*n[0]+ca*n[1])+cp*n[2];
+   if(facing<=.001)continue;
+   const projected=f.verts.map(proj);
+   shown.push({...f,projected,depth:projected.reduce((sum,p)=>sum+p[2],0)/4});
+  }
+  shown.sort((a,b)=>a.depth-b.depth);
+  this.cubeHitFaces=[];
+  for(const f of shown){
+   const pts=f.projected;
+   ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();
+   ctx.fillStyle=f.fill;ctx.fill();ctx.strokeStyle='#b7d7ef';ctx.lineWidth=2.5;ctx.stroke();
+   const x=pts.reduce((a,p)=>a+p[0],0)/4,y=pts.reduce((a,p)=>a+p[1],0)/4;
+   ctx.font='bold 19px Segoe UI, Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#f7fdff';
+   const width=pts.reduce((min,p,i)=>Math.min(min,Math.hypot(p[0]-pts[(i+1)%4][0],p[1]-pts[(i+1)%4][1])),Infinity);
+   // Abbreviate when rotated very near an edge; buttons below remain available.
+   ctx.fillText(width>54?f.name:f.name.slice(0,1),x,y);
+   this.cubeHitFaces.push({view:f.view,points:pts});
+  }
+  const cv=this.currentView();
+  for(const b of document.querySelectorAll('[data-camera-view]'))b.setAttribute('aria-pressed',String(cv===b.dataset.cameraView));
+  if(readout)readout.textContent=cv?`${cv[0].toUpperCase()+cv.slice(1)} view`:'Free orbit';
+ }
+ setupCubeEvents(){
+  const cube=$('viewCube');if(!cube)return;
+  const hit=e=>{
+   const rect=cube.getBoundingClientRect(),x=(e.clientX-rect.left)*cube.width/rect.width,y=(e.clientY-rect.top)*cube.height/rect.height;
+   for(const face of [...(this.cubeHitFaces||[])].reverse()){
+    let inside=false;const p=face.points;
+    for(let i=0,j=p.length-1;i<p.length;j=i++)if((p[i][1]>y)!==(p[j][1]>y)&&x<(p[j][0]-p[i][0])*(y-p[i][1])/(p[j][1]-p[i][1])+p[i][0])inside=!inside;
+    if(inside)return face.view;
+   }
+   return null;
+  };
+  cube.addEventListener('click',e=>{const view=hit(e);if(view)this.setView(view);});
+  cube.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();this.setView('top');}});
+  document.querySelectorAll('[data-camera-view]').forEach(b=>b.addEventListener('click',()=>this.setView(b.dataset.cameraView)));
+  this.updateViewCube();
+ }
+ setupEvents(){const canvas=this.canvas;
+  canvas.addEventListener('contextmenu',e=>e.preventDefault());
+  canvas.addEventListener('pointerdown',e=>{
+   if(e.button!==0 && e.button!==1)return;
+   e.preventDefault();this.drag={x:e.clientX,y:e.clientY,pan:e.button===1||e.shiftKey,pointerId:e.pointerId};
+   canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove',e=>{
+   if(!this.drag||e.pointerId!==this.drag.pointerId)return;
+   const dx=e.clientX-this.drag.x,dy=e.clientY-this.drag.y;
+   this.drag.x=e.clientX;this.drag.y=e.clientY;
+   if(this.drag.pan){this.pan[0]+=2*dx/Math.max(1,canvas.clientWidth);this.pan[1]-=2*dy/Math.max(1,canvas.clientHeight);}
+   else{
+    this.yaw+=dx*.009;
+    // Do not clamp pitch to ±~90°: permit full top, bottom and all intermediate orbits.
+    this.pitch+=dy*.009;
+    if(this.pitch>Math.PI)this.pitch-=Math.PI*2;
+    if(this.pitch< -Math.PI)this.pitch+=Math.PI*2;
+   }
+   this.draw();
+  });
+  const release=e=>{if(this.drag&&e.pointerId===this.drag.pointerId){this.drag=null;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}};
+  canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
+  canvas.addEventListener('lostpointercapture',()=>{this.drag=null;});
+  canvas.addEventListener('wheel',e=>{e.preventDefault();this.zoom=Math.max(.08,Math.min(60,this.zoom*Math.exp(-e.deltaY*.001)));this.draw();},{passive:false});
+  canvas.addEventListener('dblclick',()=>this.setView('iso'));
+ }
+
+ update(p,v){if(!this.gl&&!this.ctx2d)return;const gl=this.gl,focus=$('previewFocus').value==='piece',chosen=Math.max(0,$('segmentChoice').selectedIndex),shown=focus?[v.parts[chosen]]:v.parts,expl=$('explode').checked?Math.min(4,Math.max(1.4,p.door/300)):0,parts=[],data=[],norms=[];let vertexOff=0;
+ for(let i=0;i<shown.length;i++){const part=shown[i],mesh=triangleMesh(p,part),shift=focus?0:part.start+i*expl,positions=new Float32Array(mesh.positions);for(let k=1;k<positions.length;k+=3)positions[k]+=shift;data.push(positions);norms.push(mesh.normals);parts.push({first:vertexOff,count:positions.length/3,idx:part.number-1});vertexOff+=positions.length/3;}
+ const positions=new Float32Array(vertexOff*3),normals=new Float32Array(vertexOff*3);let offset=0;for(let i=0;i<data.length;i++){positions.set(data[i],offset);normals.set(norms[i],offset);offset+=data[i].length;}
+ if(gl){gl.bindBuffer(gl.ARRAY_BUFFER,this.positionBuffer);gl.bufferData(gl.ARRAY_BUFFER,positions,gl.STATIC_DRAW);gl.bindBuffer(gl.ARRAY_BUFFER,this.normalBuffer);gl.bufferData(gl.ARRAY_BUFFER,normals,gl.STATIC_DRAW);}
+ else this.cpuParts=data.map((points,i)=>({points,normals:norms[i],idx:i}));
+ this.parts=parts;const viewLength=focus?shown[0].length:p.door+(v.parts.length-1)*expl;this.center=[p.xBase+p.width/2,viewLength/2,p.h/2];this.scale=1.9/Math.max(viewLength,p.width*1.15,130);this.draw();
+ }
+ clear(){this.parts=[];this.cpuParts=[];this.draw();}
+ draw(){this.updateViewCube();const gl=this.gl;if(!gl){this.drawFallback();return;}const c=this.canvas,w=Math.max(1,Math.floor(c.clientWidth*(window.devicePixelRatio||1))),h=Math.max(1,Math.floor(c.clientHeight*(window.devicePixelRatio||1)));if(c.width!==w||c.height!==h){c.width=w;c.height=h;}gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.useProgram(this.program);
+ gl.uniform3fv(this.uniform.center,this.center);gl.uniform2f(this.uniform.angle,this.yaw,this.pitch);gl.uniform2fv(this.uniform.pan,this.pan);gl.uniform1f(this.uniform.scale,this.scale*this.zoom);gl.uniform1f(this.uniform.aspect,w/h);
+ gl.bindBuffer(gl.ARRAY_BUFFER,this.positionBuffer);gl.enableVertexAttribArray(this.aPos);gl.vertexAttribPointer(this.aPos,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,this.normalBuffer);gl.enableVertexAttribArray(this.aNorm);gl.vertexAttribPointer(this.aNorm,3,gl.FLOAT,false,0,0);
+ const colors=[[.26,.72,.94],[.37,.84,.86],[.34,.62,.85],[.43,.75,.77]];for(const part of this.parts){gl.uniform3fv(this.uniform.color,colors[part.idx%colors.length]);gl.drawArrays(gl.TRIANGLES,part.first,part.count);}
+ }
+ drawFallback(){const ctx=this.ctx2d;if(!ctx)return;const c=this.canvas,w=Math.max(1,Math.floor(c.clientWidth)),h=Math.max(1,Math.floor(c.clientHeight)),dpr=Math.min(2,window.devicePixelRatio||1);if(c.width!==Math.floor(w*dpr)||c.height!==Math.floor(h*dpr)){c.width=Math.floor(w*dpr);c.height=Math.floor(h*dpr);}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+  const ca=Math.cos(this.yaw),sa=Math.sin(this.yaw),cp=Math.cos(this.pitch),sp=Math.sin(this.pitch),scale=this.scale*this.zoom*h/2;
+  const project=(x,y,z)=>{x-=this.center[0];y-=this.center[1];z-=this.center[2];const rx=ca*x-sa*y,ry=sa*x+ca*y;return [w/2+rx*scale+this.pan[0]*w/2,h/2-(cp*ry-sp*z)*scale-this.pan[1]*h/2,sp*ry+cp*z];};
+  const faces=[],cols=[[74,185,238],[91,209,215],[80,170,225],[97,188,201]];
+  for(const piece of this.cpuParts){const a=piece.points,n=piece.normals;const steps=Math.max(1,Math.ceil((a.length/9)/16000));for(let k=0;k<a.length;k+=9*steps){if(k+8>=a.length)break;
+   const nx=n[k],ny=n[k+1],nz=n[k+2],cameraFacing=sp*(sa*nx+ca*ny)+cp*nz;if(cameraFacing<=0.001)continue;const A=project(a[k],a[k+1],a[k+2]),B=project(a[k+3],a[k+4],a[k+5]),C=project(a[k+6],a[k+7],a[k+8]);let shade=Math.max(.22,Math.min(1,.48+.5*(nx*(-.45)+ny*(-.25)+nz*.86)));faces.push({p:[A,B,C],z:(A[2]+B[2]+C[2])/3,shade,col:cols[piece.idx%cols.length]});
+  }}faces.sort((a,b)=>a.z-b.z);ctx.lineWidth=.25;
+  for(const f of faces){let col=f.col.map(n=>Math.round(n*f.shade));ctx.fillStyle=`rgb(${col.join(',')})`;ctx.strokeStyle=ctx.fillStyle;ctx.beginPath();ctx.moveTo(f.p[0][0],f.p[0][1]);ctx.lineTo(f.p[1][0],f.p[1][1]);ctx.lineTo(f.p[2][0],f.p[2][1]);ctx.closePath();ctx.fill();ctx.stroke();}
+ }
+
+}
+
+function updateUnitUI(){
+  const u=units()==='in'?'in':'mm';
+  document.querySelectorAll('[data-unit-type="length"].fieldUnitLabel, [data-unit-type="length"].inputUnit').forEach(el=>el.textContent=u);
+  document.querySelectorAll('.coordUnit,.pointUnits').forEach(el=>el.textContent=u);const head=$('headerUnitStatus');if(head)head.textContent=u.toUpperCase();
+}
+function setMenuOpen(section,open){
+  const btn=section.querySelector('.menuToggle'),body=section.querySelector('.menuBody');
+  if(!btn||!body)return;
+  body.hidden=!open;section.classList.toggle('isOpen',open);btn.setAttribute('aria-expanded',String(open));
+  btn.setAttribute('aria-label',(open?'Collapse ':'Expand ')+section.getAttribute('aria-label'));
+  btn.title=open?'Minimize menu':'Expand menu';btn.querySelector('span').textContent=open?'−':'+';
+}
+function setupMenus(){
+  const sections=[...document.querySelectorAll('aside .menuSection')];
+  sections.forEach(s=>{setMenuOpen(s,false);s.querySelector('.menuToggle').addEventListener('click',()=>setMenuOpen(s,s.querySelector('.menuBody').hidden));});
+  $('expandMenus').addEventListener('click',()=>sections.forEach(s=>setMenuOpen(s,true)));
+  $('collapseMenus').addEventListener('click',()=>sections.forEach(s=>setMenuOpen(s,false)));
+}
+
+function sync(){updateUnitUI();const p=params(),v=validate(p),okay=v.errors.length===0;model={p,v};redrawCoordinates(p);redrawSegments(p);
+ if([p.L,p.M,p.R,p.h,p.left,p.right,p.edge].every(Number.isFinite)&&Math.max(p.L,p.M,p.R,p.h)<10000 && Math.min(p.L,p.M,p.R)>0){try{drawSketch(p);}catch(err){$('profileMessage').textContent=err.message;} $('widthReport').textContent=`OVERALL WIDTH  ${disp(p.width,units()==='in'?3:1)}`;}
+ for(const [id,value] of Object.entries({metricWidth:fmt(fromMM(p.width),4),metricLength:fmt(fromMM(p.door),4),metricTotal:v.parts.length*p.sets,metricHoles:v.requestedHoleCount||0,metricMaxPiece:fmt(fromMM(p.max),4)})){
+  const el=$(id);if(el!==document.activeElement){el.value=value;el.defaultValue=String(value);}
+ }
+ document.querySelectorAll('.summaryValue .summaryUnit').forEach(el=>{if(el.previousElementSibling?.id==='metricWidth'||el.previousElementSibling?.id==='metricLength'||el.previousElementSibling?.id==='metricMaxPiece')el.textContent=units()==='in'?'in':'mm';});
+ $('cutRows').innerHTML=v.parts.map(q=>`<tr><td>Piece ${q.number}</td><td>${disp(q.length+(q.male?p.tongueDepth:0),3)}</td><td>${q.holes.length}</td></tr>`).join('');
+ const previousChoice=$('segmentChoice').selectedIndex;$('segmentChoice').innerHTML=v.parts.map(q=>`<option value="${q.number-1}">P${q.number} · ${disp(q.length,3)} · ${q.holes.length} holes</option>`).join('');
+ if(v.parts.length)$('segmentChoice').selectedIndex=Math.max(0,Math.min(previousChoice,v.parts.length-1));
+ drawLayout(p,v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${v.parts.length} sections · ${v.hpos.length} bores`;$('holeReport').textContent=p.holesOn?`HOLES — ${v.hpos.length}/${v.requestedHoleCount} modeled · ${v.skippedCount} omitted · ${p.recess==='sink'?fmt(p.angle,0)+'° countersink':p.recess==='bore'?'counterbore':'plain bore'}`:'HOLES — disabled';
+ $('profileMessage').textContent=`Total cross-section: ${disp(p.width,3)} wide × ${disp(p.h,3)} high`;
+ $('filletMessage').textContent=`${Object.keys(p.fillets).length} corners rounded · tangent points may reach neighboring nodes; overlapping fillets are rejected.`;$('lockMessage').textContent=p.locksOn?`Recessed socket: ${disp(p.lockDepth,3)} deep / ${disp(p.lockOffset,3)} inset. Extruded tongue: ${disp(p.tongueDepth,3)} long / ${disp(p.tongueOffset,3)} inset. Clearances: ${disp(p.lockDepth-p.tongueDepth,3)} axial and ${disp(p.tongueOffset-p.lockOffset,3)} per side.`:'End locks disabled: flat ends.';$('grainMessage').textContent=p.woodOn?`Grain rotation ${fmt(p.grainAngle,1)}° · printable relief ${disp(p.grainDepth,3)} · spacing ${disp(p.grainPitch,3)}.`:'Wood grain disabled: smooth top surface.';
+ const holeHealth=!p.holesOn?'disabled':v.skippedCount?'bad':v.marginalCount?'caution':'good';
+ $('holeMessage').className='holeAdvice '+holeHealth;
+ $('holeMessage').textContent=!p.holesOn?'Hardware holes are disabled.':v.skippedCount?`⚠ ${v.skippedCount}/${v.requestedHoleCount} requested holes cannot be modeled safely and will be omitted from printed STLs. This profile may not be optimal for screw mounting. Drag the hole line to improve placement. Export remains enabled if the profile itself is valid.`:v.marginalCount?`⚠ ${v.marginalCount} marginal hole(s) have limited remaining material. Export permitted; test fastener seating and structural strength.`:`✓ ${v.hpos.length} mounting holes have acceptable modeled channel clearance. Hole axis ${disp(p.xhole,3)} from left edge.`;
+ $('sketchHoleHealth').textContent=!p.holesOn?'Holes off':v.skippedCount?`✕ ${v.skippedCount} invalid hole(s) · red = omitted`:v.marginalCount?`⚠ ${v.marginalCount} caution hole(s)`:`✓ ${v.hpos.length} hole(s) valid`;
+ $('sketchHoleHealth').style.color=v.skippedCount?'#ffacae':v.marginalCount?'#ffd493':'#a7ead1';
+ $('sinkA').disabled=p.recess!=='sink';$('boreDepth').disabled=p.recess!=='bore';
+ $('checkList').innerHTML=okay?`<span style="color:#a7ead1">✓ Structural profile valid. ${v.skippedCount?'Export allowed with omitted red holes.':'Export available.'}</span>${v.warn.map(e=>`<p class="slim" style="color:#ffd392">⚠ ${escapeHTML(e)}</p>`).join('')}`:v.errors.map(e=>`<p class="slim" style="color:#ffb1b1">✕ ${escapeHTML(e)}</p>`).join('');
+ if(constraintIssue)$('checkList').innerHTML+=`<div class="constraintIssue" role="alert">⛔ ${escapeHTML(constraintIssue.text)}${constraintIssue.ids.length?' · Locked point(s): '+constraintIssue.ids.map(nodeLetter).join(', '):''}</div>`;
+ $('exportAll').disabled=!okay;$('exportOne').disabled=!okay;$('exportDxf').disabled=!okay;$('exportSvg').disabled=!okay;
+ $('summaryNote').textContent=okay?(v.warn.length?'Some features may not be optimal. Review colored holes and warnings. Red holes are omitted from STL; verify strength and fit before printing.':'Geometry checks passed. Print a short sample to verify the floor transition before full production.'):'Fix invalid dimensions before exporting fabrication files.';
+ historyCommit();
+ if(!okay){glr?.clear();return;}
+ try{glr?.update(p,v);}catch(e){console.error('3D error',e);$('checkList').innerHTML+=`<p class="slim" style="color:#ffb1b1">3D build: ${escapeHTML(String(e.message))}</p>`;$('exportAll').disabled=true;$('exportOne').disabled=true;}
+}
+function escapeHTML(str){return String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let syncTimeout;function scheduleSync(){clearTimeout(syncTimeout);syncTimeout=setTimeout(sync,100);}
+function setupDimensionSteppers(){
+ const isLength=e=>e.matches('input[type="number"]') && (e.dataset.unitType==='length'||e.matches('.floatDim, #pointX, #pointY, .coordRow input, .segmentItem input, #lineLength'));
+ const setBase=e=>{if(Number.isFinite(Number(e.value))&&e.value!=='')e.defaultValue=e.value;};
+ document.addEventListener('focusin',event=>{const e=event.target;if(isLength(e)){e.step='0.1';setBase(e);}});
+ document.addEventListener('pointerdown',event=>{const e=event.target;if(isLength(e))setBase(e);},true);
+ document.addEventListener('input',event=>{const e=event.target;if(isLength(e))setBase(e);},true);
+ document.addEventListener('keydown',event=>{
+  const e=event.target;
+  if(!isLength(e)||!['ArrowUp','ArrowDown'].includes(event.key)||event.altKey||event.ctrlKey||event.metaKey)return;
+  const x=Number(e.value);if(!Number.isFinite(x)||e.value==='')return;
+  event.preventDefault();
+  // 0.1 exactly in the displayed unit, even for values outside a 0.1 grid.
+  e.value=fmt(x+(event.key==='ArrowUp'?.1:-.1),5);
+  setBase(e);e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));
+ });
+}
+
+// Scroll zoom uses a pointer-anchored transform; middle mouse panning is independent of editing.
+function sketchSvgPoint(e){const rect=$('sketch').getBoundingClientRect();return {x:(e.clientX-rect.left)*900/rect.width,y:(e.clientY-rect.top)*370/rect.height};}
+function sketchZoomAt(factor,pt={x:450,y:185}){
+ const before=sketchCamera.zoom,after=Math.max(.25,Math.min(18,before*factor));
+ if(after===before)return;
+ sketchCamera.panX=pt.x-(pt.x-sketchCamera.panX)*after/before;
+ sketchCamera.panY=pt.y-(pt.y-sketchCamera.panY)*after/before;
+ sketchCamera.zoom=after;if(model)drawSketch(model.p);
+}
+function sketchResetView(){sketchCamera.zoom=1;sketchCamera.panX=sketchCamera.panY=0;if(model)drawSketch(model.p);}
+function setupSketchInteractions(){
+ const svg=$('sketch');
+ svg.addEventListener('click',e=>{if(sketchSkipClick){sketchSkipClick=false;e.preventDefault();e.stopImmediatePropagation();}},true);
+ svg.addEventListener('wheel',e=>{e.preventDefault();sketchZoomAt(Math.exp(-e.deltaY*.0015),sketchSvgPoint(e));},{passive:false});
+ $('sketchZoomIn').addEventListener('click',()=>sketchZoomAt(1.3));
+ $('sketchZoomOut').addEventListener('click',()=>sketchZoomAt(1/1.3));
+ $('sketchZoomReset').addEventListener('click',sketchResetView);
+ const placeButton=$('placeHoleAxis');
+ const setPlaceMode=on=>{holePlaceMode=!!on;placeButton.setAttribute('aria-pressed',String(holePlaceMode));placeButton.textContent=holePlaceMode?'Click sketch…':'＋ Hole line';};
+ placeButton.addEventListener('click',()=>setPlaceMode(!holePlaceMode));
+ $('placeHoleInMenu').addEventListener('click',()=>{setPlaceMode(true);$('sketchArea').scrollIntoView({block:'nearest',behavior:'smooth'});});
+ svg.addEventListener('click',e=>{
+  if(!holePlaceMode||e.target.closest?.('[data-vertex],[data-segment],[data-hole-marker]'))return;
+  const pos=sketchSvgPoint(e),fit=sketchFit,cam=sketchCamera,p=params();
+  if(!fit)return;
+  const coordinate=fit.minX+((pos.x-cam.panX)/cam.zoom-90)/fit.scale;
+  $('holeX').value=fmt(fromMM(Math.max(0,Math.min(p.width,coordinate-p.xBase))),5);
+  $('holesOn').checked=true;setPlaceMode(false);sync();
+  setMenuOpen(document.querySelector('[data-menu="3"]'),true);
+  e.preventDefault();e.stopImmediatePropagation();
+ },true);
+
+ // Keep svg as the capture target: its child nodes are regenerated each model update.
+ svg.addEventListener('pointerdown',e=>{
+  if(e.button!==0&&e.button!==1)return;
+  const pt=sketchSvgPoint(e), hit=e.target.closest?.('[data-vertex],[data-segment]');
+  const kind=e.button===1||e.button===0&&e.shiftKey?'pan':e.target.closest?.('[data-hole-marker]')?'hole':hit?.dataset.vertex?'vertex':hit?.dataset.segment?'segment':null;
+  if(!kind)return;
+  if(constraintMode&&kind==='segment'){e.preventDefault();return;}
+  e.preventDefault();
+  const id=kind==='vertex'?hit.dataset.vertex:kind==='segment'?hit.dataset.segment:null;
+  const p=params(),base=p.nodes||defaultVertices(p),extra=p.extraTop||[];
+  sketchDrag={kind,id,pointerId:e.pointerId,start:pt,panX:sketchCamera.panX,panY:sketchCamera.panY,
+   fit:{...sketchFit},nodes:base.map(v=>({...v})),extra:extra.map(v=>({...v})),holeOrigin:p.xhole,moving:false};
+  svg.setPointerCapture(e.pointerId);
+  svg.classList.toggle('sketchPanning',kind==='pan');svg.classList.toggle('sketchDragging',kind!=='pan');
+  if(kind==='hole'){setMenuOpen(document.querySelector('[data-menu="3"]'),true);}
+  if(kind==='vertex')selectVertex(id,false);
+  else if(kind==='segment')selectSegment(id);
+ });
+ svg.addEventListener('pointermove',e=>{
+  if(!sketchDrag||e.pointerId!==sketchDrag.pointerId)return;
+  const drag=sketchDrag,pt=sketchSvgPoint(e),dx=pt.x-drag.start.x,dy=pt.y-drag.start.y;
+  if(Math.hypot(dx,dy)<.25&&!drag.moving)return;
+  drag.moving=true;
+  if(drag.kind==='pan'){
+   sketchCamera.panX=drag.panX+dx;sketchCamera.panY=drag.panY+dy;
+   if(model)drawSketch(model.p);return;
+  }
+  // Debounce to one mesh rebuild per browser animation frame without losing the last position.
+  dragPending={drag,dx,dy};
+  if(!sketchDragRaf)sketchDragRaf=requestAnimationFrame(()=>{
+   sketchDragRaf=0;const pending=dragPending;dragPending=null;
+   if(!pending||sketchDrag!==pending.drag)return;
+   applyDraggedGeometry(pending.drag,pending.dx,pending.dy);
+  });
+ });
+ function finish(e){if(!sketchDrag||e.pointerId!==sketchDrag.pointerId)return;
+  // Apply final movement synchronously so mouse release always commits the exact end position.
+  const d=sketchDrag,pt=sketchSvgPoint(e),dx=pt.x-d.start.x,dy=pt.y-d.start.y;
+  if(d.moving&&d.kind!=='pan')applyDraggedGeometry(d,dx,dy);
+  dragPending=null;sketchDrag=null;sketchSkipClick=d.kind!=='pan';svg.classList.remove('sketchPanning','sketchDragging');
+  if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId);
+  if(model&&d.kind!=='pan')sync();
+ }
+ svg.addEventListener('pointerup',finish);svg.addEventListener('pointercancel',finish);
+ svg.addEventListener('auxclick',e=>{if(e.button===1)e.preventDefault();});
+}
+function applyDraggedGeometry(d,dx,dy){
+ const zx=dx/(sketchCamera.zoom*d.fit.scale),zy=-dy/(sketchCamera.zoom*d.fit.scale);
+ if(d.kind==='hole'){
+  const p=params(),value=Math.min(p.width,Math.max(0,Number(d.holeOrigin??p.xhole)+zx));
+  $('holeX').value=fmt(fromMM(value),5);sync();return;
+ }
+ const vertices=d.nodes.map(v=>({...v})),extra=d.extra.map(v=>({...v}));
+ const find=id=>id.startsWith('top')?extra.find(v=>v.id===id):vertices.find(v=>v.id===id);
+ const moveIds=d.kind==='vertex'?[d.id]:(()=>{const lookup=[...topAnchors({...params(),nodes:d.nodes,extraTop:d.extra}),...d.nodes.slice(3)];
+  const pair=lookup.map((v,i)=>[v,lookup[(i+1)%lookup.length]]).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===d.id);
+  return pair?[pair[0].id,pair[1].id]:[];})();
+ for(const id of moveIds){const n=find(id);if(!n||vertexLocks.has(id))continue;n.x+=zx;if(!lockedY(id))n.z+=zy;}
+ // A pinned linked partner also freezes the Y of its mate, while leaving free X movable.
+ for(const id of moveIds){const mate=pairedYMate(id);if(mate&&!moveIds.includes(mate)&&!lockedY(id)){
+   const a=find(id),b=find(mate);if(a&&b)b.z=a.z;
+ }}
+ vertexOverrides=vertices;extraTopPoints=extra;$('preset').value='sketch';sync();
+}
+// All summary cells are writable, including derived counts. Impossible totals are rejected.
+function editSummary(id){
+ const input=$(id),raw=Number(input.value),p=params(),parts=model?.v?.parts?.length||0;
+ if(!Number.isFinite(raw)||raw<0){toast('Enter a valid nonnegative value.');sync();return;}
+ const setMM=(field,v)=>{$(field).value=fmt(fromMM(v),5);};
+ if(id==='metricWidth'){
+  if(vertexLocks.size){toast('Unlock vertices before scaling the entire profile width.');sync();return;}
+  if(raw<=0){toast('Width must be positive.');sync();return;}
+  const target=toMM(raw),base=vertexOverrides||defaultVertices(p),all=[...base,...extraTopPoints];
+  const min=Math.min(...all.map(v=>v.x)),max=Math.max(...all.map(v=>v.x)),width=max-min;
+  if(width<=0){toast('Cannot scale a zero-width profile.');sync();return;}
+  const ratio=target/width;
+  vertexOverrides=base.map(v=>({...v,x:min+(v.x-min)*ratio}));
+  extraTopPoints=extraTopPoints.map(v=>({...v,x:min+(v.x-min)*ratio}));$('preset').value='sketch';
+ }else if(id==='metricLength'){
+  if(raw<=0){toast('Doorway length must be positive.');sync();return;}setMM('doorL',toMM(raw));
+ }else if(id==='metricMaxPiece'){
+  if(raw<=0){toast('Maximum print length must be positive.');sync();return;}setMM('maxL',toMM(raw));
+ }else if(id==='metricTotal'){
+  if(!parts||raw<parts||!Number.isInteger(raw)||raw%parts!==0||raw/parts>100){toast('Total pieces must be a whole-number multiple of '+parts+' pieces per doorway.');sync();return;}
+  $('sets').value=raw/parts;
+ }else if(id==='metricHoles'){
+  if(!parts||!Number.isInteger(raw)||raw%parts!==0||raw/parts>24){toast('Holes per doorway must divide evenly across '+parts+' sections (max 24 per section).');sync();return;}
+  $('holesOn').checked=raw>0;$('holeN').value=raw/parts;
+ }
+ sync();
+}
+function setupSummaryEditors(){
+ const lengthIds=['metricWidth','metricLength','metricMaxPiece'];
+ for(const id of ['metricWidth','metricLength','metricTotal','metricHoles','metricMaxPiece']){
+  const input=$(id);input.addEventListener('change',()=>editSummary(id));
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();input.blur();}});
+  if(lengthIds.includes(id))input.dataset.unitType='length';
+ }
+}
+
+function ready(){setupMenus();updateUnitUI();setupDimensionSteppers();setupSketchInteractions();setupSummaryEditors(); setupSummaryEditors();glr=new GLViewer($('preview'));
+ $('undoSketch').addEventListener('click',undoDesign);
+ document.querySelectorAll('[data-constraint-mode]').forEach(b=>b.addEventListener('click',()=>setConstraintMode(b.dataset.constraintMode)));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&constraintMode){setConstraintMode(null);return;}const editing=e.target.closest?.('input,textarea,[contenteditable="true"]');if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key.toLowerCase()==='z'&&!editing){e.preventDefault();undoDesign();}});
+
+ $('welcomeStart').addEventListener('click',()=>{changeUnits($('welcomeUnits').value);$('welcome').classList.add('dismissed');});
+ $('units').addEventListener('change',e=>{const target=e.target.value; // existing text fields use previous display unit
+   const old=target==='in'?'mm':'in';$('units').value=old;changeUnits(target);
+ });
+ $('preset').addEventListener('change',e=>{vertexLocks.clear();cornerRadii={};vertexOverrides=null;extraTopPoints=[];$('topVertexCount').value='0';clearSketchSelection();applyPreset(e.target.value);});
+ $('topVertexCount').addEventListener('change',e=>configureTopVertices(Number(e.target.value)));
+ $('lineLength').addEventListener('change',()=>{if(selectedSegment)updateSegmentLength(selectedSegment,toMM(Number($('lineLength').value)));});
+ $('closeLineEditor').addEventListener('click',clearSketchSelection);
+ $('sketch').addEventListener('click',e=>{if(e.target===$('sketch')||e.target.tagName.toLowerCase()==='path')clearSketchSelection();});
+ $('togglePointLock').addEventListener('click',()=>toggleVertexLock(selectedCorner));
+ $('pointX').addEventListener('change',()=>updatePointEditor('x'));$('pointY').addEventListener('change',()=>updatePointEditor('z'));
+ $('pointOpenFillet').addEventListener('click',()=>{setMenuOpen(document.querySelector('[data-menu="4"]'),true);document.querySelector('[data-menu="4"]').scrollIntoView({block:'nearest'});});
+ $('openCoordMenu').addEventListener('click',()=>{setMenuOpen(document.querySelector('[data-menu="coords"]'),true);document.querySelector('[data-menu="coords"]').scrollIntoView({block:'nearest'});});
+ $('resetCoordinates').addEventListener('click',()=>{if(vertexLocks.size)return toast('Unlock all vertices before restoring the profile.');vertexOverrides=null;sync();toast('Restored the dimension-defined profile.');});
+ for(const id of [...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','woodOn','grainAngle']){
+  const field=$(id);field.addEventListener('input',scheduleSync);field.addEventListener('change',scheduleSync);
+ }
+ function setSketchDimension(dimId,id){
+  const value=$(dimId).value;
+  if(vertexOverrides&&['dimLeftLip','dimRightLip'].includes(dimId)){
+   const upper=vertexOverrides.find(n=>n.id===(dimId==='dimLeftLip'?'leftUpper':'rightUpper'));
+   const lower=vertexOverrides.find(n=>n.id===(dimId==='dimLeftLip'?'leftLower':'rightLower'));
+   if(Number.isFinite(Number(value)))upper.z=lower.z+toMM(Number(value));
+  }else $(id).value=value;
+ }
+ for(const [dimId,id] of Object.entries(dimLinks)){
+  if(!$(dimId))continue;
+  $(dimId).addEventListener('input',()=>{setSketchDimension(dimId,id);scheduleSync();});
+  $(dimId).addEventListener('change',()=>{setSketchDimension(dimId,id);sync();});
+ }
+ $('applyFillet').addEventListener('click',()=>{if(!selectedCorner)return toast('Select a corner marker.');const radius=num('filletRadius');if(!(radius>0))return toast('Fillet radius must be positive.');const previous=cornerRadii[selectedCorner];cornerRadii[selectedCorner]=radius;const test=validate(params());if(test.errors.length){if(previous===undefined)delete cornerRadii[selectedCorner];else cornerRadii[selectedCorner]=previous;sync();return toast(test.errors[0]);}sync();});
+ $('removeFillet').addEventListener('click',()=>{delete cornerRadii[selectedCorner];sync();});
+ $('clearFillets').addEventListener('click',()=>{cornerRadii={};sync();});
+ $('segmentChoice').addEventListener('change',()=>{if(model&&!model.v.errors.length)glr?.update(model.p,model.v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${model.v.parts.length} sections · ${model.v.hpos.length} bores`;});$('previewFocus').addEventListener('change',()=>{if(model&&!model.v.errors.length)glr?.update(model.p,model.v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${model.v.parts.length} sections · ${model.v.hpos.length} bores`;});
+ document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{currentMode=button.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===button));$('drawingPanel').classList.toggle('hidden',currentMode==='three');$('threePanel').classList.toggle('hidden',currentMode==='sketch');if(currentMode==='three')$('threePanel').style.marginTop='0';else $('threePanel').style.marginTop='15px';glr?.draw();}));
+ const guard=()=>{sync();if(model.v.errors.length){toast(model.v.errors[0]);return false;}return true;};
+ $('inspectSocket').addEventListener('click',()=>{
+  const p=params(),v=validate(p);
+  if(v.errors.length){toast('Correct geometry errors before inspecting the socket.');return;}
+  if(v.parts.length<2||!p.locksOn){toast('A socket exists only when interlocking sections are enabled and the doorway has multiple pieces.');return;}
+  $('previewFocus').value='piece';$('segmentChoice').selectedIndex=1;
+  sync();
+  if(glr){glr.yaw=0;glr.pitch=1.48;glr.zoom=1;glr.pan=[0,0];glr.center=[(p.channelLeft+p.channelRight)/2,0,p.h/2];glr.scale=2.0/Math.max(p.width,90);glr.draw();}
+  $('threePanel').scrollIntoView({block:'nearest',behavior:'smooth'});
+  toast('Showing the open socket at the start of section P2. Drag to rotate.');
+ });
+ $('exportOne').addEventListener('click',()=>{if(!guard())return;let {p,v}=model,i=Math.max(0,$('segmentChoice').selectedIndex),part=v.parts[i];try{download(new Blob([makeSTL(triangleMesh(p,part),'P'+part.number)],{type:'model/stl'}),`threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm.stl`);toast('STL generated with bores, textured top (if enabled), fillets and mating locks.');}catch(e){toast('STL export error: '+e.message);}});
+ $('exportSvg').addEventListener('click',()=>{if(guard())download(new Blob([svgExport(model.p)],{type:'image/svg+xml'}),'threshold_profile.svg');});
+ $('exportDxf').addEventListener('click',()=>{if(guard())download(new Blob([dxf(model.p)],{type:'application/dxf'}),'threshold_profile_mm.dxf');});
+ $('exportJson').addEventListener('click',()=>{if(guard())download(new Blob([projectSave(model.p)],{type:'application/json'}),'threshold_project.json');});
+ $('importJson').addEventListener('click',()=>{$('jsonFile').click();});
+ $('jsonFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{openProject(JSON.parse(await f.text()));toast('Project parameters loaded.');}catch(err){toast(err.message);}e.target.value='';});
+ $('exportAll').addEventListener('click',()=>{if(!guard())return;let {p,v}=model;try{
+ const entries=[['README.txt',`FLOORING THRESHOLD STUDIO | Print package v2.4\n\nLength and cross-section dimensions are in millimeters. Binary STL coordinate units are millimeters.\n\nCross section derived from the supplied user sketch.\nInstalled length: ${fmt(p.door,3)} mm\nWidth: ${fmt(p.L+p.M+p.R,3)} mm\nPeak height: ${fmt(p.h,3)} mm\nQuantity of doorways: ${p.sets}\nSegments per doorway: ${v.parts.length}\nFasteners per section: ${p.holeN}\nDoorway fasteners modeled: ${v.hpos.length} of ${v.requestedHoleCount} requested\nUnsafe red holes OMITTED: ${v.skippedCount}\n${v.skippedCount?'WARNING: The design has omitted red mounting holes. Correct their placement before manufacturing.\n':''}\nSTL files each represent ONE piece; print ${p.sets} copies of every STL.\nFor print-flat T-cap, orient the broad flat face against the build plate, with the underside center stem facing upward. Shallow/disabled wood grain recommended when first-layer adhesion requires a fully planar face. Vertex locks constrain editing only, not physical parts.\nPrint side/orientation, slip resistance, floor clearances, structural loads, fasteners and fit must be independently verified. Interior segment joints use opposing socket and tongue connectors when enabled; endmost outer caps remain flat. Independent tongue and socket offsets/depths control the mating fit. Wood-grain surface relief (if enabled) is embedded in each STL. Rotate grain in section 07. Socket opens on the leading face of P2 and later sections. All dimensions nominal. A circular fillet must fit tangentially on the two edges; 90-degree fillets may have radius equal to the shorter edge.\n`],['threshold_profile_mm.dxf',dxf(p)],['threshold_profile.svg',svgExport(p)],['threshold_cut_schedule.csv',csvExport(p,v)],['hole_position_checks.csv',holeChecksCsv(v)],['threshold_project.json',projectSave(p)]];
+ for(const part of v.parts)entries.push([`stl/threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm.stl`,makeSTL(triangleMesh(p,part),'segment '+part.number)]);
+ download(zipStored(entries),'Flooring_Threshold_Print_Package.zip');toast(`Generated ${v.parts.length} STLs + drawing, DXF and schedule.`);
+ }catch(err){console.error(err);toast('Package error: '+err.message);}});
+ sync();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
+</script></body></html>
