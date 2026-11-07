@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Flooring Threshold Studio · v2.2</title>
+<title>Flooring Threshold Studio · v3.1</title>
 <style>
 :root{font-family:Inter,'Segoe UI',Arial,sans-serif;color:#e6edf6;background:#0d1420;font-synthesis:none}*{box-sizing:border-box}
 body{margin:0}button,input,select{font:inherit}header{height:64px;background:#151f2f;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #2c3b4c;gap:10px}header strong{font-size:17px;letter-spacing:.025em}.small{color:#91a3b7;font-size:12px;line-height:1.45}.pill{background:#263e55;color:#b9d9ef;border-radius:15px;padding:6px 10px;font-size:11px;white-space:nowrap}
@@ -100,7 +100,7 @@ aside{padding:16px 13px}
 .orbitReadout{font-size:9px;color:#98b5ce;white-space:nowrap}
 .orbitHelp{font-size:10px;color:#b1c9dc;text-align:center;line-height:1.35}
 @media(max-width:700px){.orbitWidget{width:128px;right:7px;top:7px;padding:5px}.viewCube{width:80px;height:80px}.viewPreset{font-size:9px;min-height:22px}.viewHint{max-width:calc(100% - 150px)}.viewerNote{max-width:calc(100% - 155px)}}
-/* V2.4 sketch constraint tools, undo history and lock diagnostics */
+/* V2.5 sketch constraint tools, undo history and lock diagnostics */
 .sketchConstraint{min-width:30px;min-height:28px;font-size:15px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;padding:3px 7px}
 .sketchConstraint svg{width:18px;height:18px;overflow:visible;pointer-events:none}
 .sketchConstraint[aria-pressed="true"]{background:#94692e;border-color:#ffd483;color:#fff5d6;box-shadow:0 0 0 1px #dfa352}
@@ -126,18 +126,57 @@ aside{padding:16px 13px}
 .coordRow .pointPin[aria-pressed="true"]{color:#ffe0a0;border-color:#a88845;background:#3b3021}
 .coordRow input:disabled{opacity:.48;cursor:not-allowed}
 .sketchLockTag{font-family:Segoe UI,Arial;font-size:13px;pointer-events:none;paint-order:stroke;stroke:#122136;stroke-width:2}
+/* v2.9: persistent line dimensions, safe values, actionable error indicators */
+.segmentItem{position:relative}
+.segmentItem.lengthPinned{border-color:#b38d4b;background:#283342}
+.linePin{border:1px solid #4a6377;border-radius:4px;color:#a7cbe2;background:#1b3449;font-size:11px;min-width:25px;height:25px;cursor:pointer;flex-shrink:0;padding:1px 3px}
+.linePin[aria-pressed="true"]{color:#ffe1a4;background:#644723;border-color:#c99a47}
+.linePin:focus-visible{outline:2px solid #a5dfff}
+#lineLockToggle{font-size:11px;margin-top:7px;width:100%;padding:6px}
+.inputInvalid{outline:2px solid #fa7269!important;border-color:#f36c6e!important;background:#482633!important}
+.inputCaution{border-color:#daa150!important;box-shadow:inset 0 0 0 1px #bf893d}
+.menuSection.menuError .menuHeading{border-left:4px solid #f36b68;background:#472930}
+.menuSection.menuError .menuHeading h3{color:#ffd0ce;animation:menuIssueFlash 1.45s ease-in-out infinite}
+.menuSection.menuWarning .menuHeading{border-left:4px solid #d9a34a;background:#423322}
+.menuSection.menuWarning .menuHeading h3{color:#ffe0a1;animation:menuIssueFlash 2.5s ease-in-out infinite}
+@keyframes menuIssueFlash{0%,100%{opacity:1}50%{opacity:.4}}
+@media (prefers-reduced-motion:reduce){.menuSection.menuError .menuHeading h3,.menuSection.menuWarning .menuHeading h3{animation:none}}
+.menuIssueText{color:#ffbeb6;font-size:10px;padding:0 11px 9px;line-height:1.4}
+.menuIssueText.warning{color:#e9c58f}
+#constraintStatus{max-width:240px}
+
+/* v3.0 — always-visible line dimensions and photo-inspired symmetric default */
+.liveDimensionsPanel{border:1px solid #426783;background:#172a40;border-radius:10px;padding:11px 9px 9px;margin:0 0 10px}
+.liveDimensionsTitle{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:#bce6ff;letter-spacing:.065em;margin-bottom:8px}
+.liveDimensionsTitle span{font-size:10px;color:#89c5e5;border:1px solid #466b86;padding:3px 6px;border-radius:6px}
+.profileKeyDims{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:0 0 9px}
+.liveKeyDim{background:#20354c;border:1px solid #3b5872;border-radius:5px;padding:5px;display:flex;flex-direction:column;gap:2px;font-variant-numeric:tabular-nums}
+.liveKeyDim strong{font-size:10px;color:#9fd7fc}.liveKeyDim span{font-size:11px;color:#fff;font-weight:600;white-space:nowrap}
+.segmentScroller{max-height:204px;overflow:auto;scrollbar-color:#527b9c transparent;padding-right:3px}
+.liveDimensionsPanel .segmentGrid{gap:5px}
+.liveDimensionsPanel .segmentItem{padding:5px 4px;gap:4px}
+.liveDimensionsPanel .segmentName{min-width:18px;font-size:10px}
+.liveDimensionsPanel .linePin{min-width:22px;width:22px;height:23px;font-size:10px;padding:0}
+.liveDimensionsPanel .segmentItem input{font-size:11px;padding:5px 19px 5px 3px}
+.liveDimensionsPanel .inputUnit{font-size:9px;right:3px}
+.liveDimsFootnote{font-size:10px;margin-top:7px}
 </style></head><body>
 <div id="welcome" aria-modal="true" role="dialog" aria-labelledby="welcomeTitle"><div class="welcome-card"><div class="welcome-mark">▱</div><div class="welcome-eyebrow">FLOORING THRESHOLD STUDIO</div><h1 id="welcomeTitle">Design your transition.</h1><p>Create a dimensioned flooring threshold, add per-piece fasteners and corner fillets, then generate interlocking print-length segments.</p><label for="welcomeUnits">Primary dimensions</label><select id="welcomeUnits"><option selected value="in">Inches (in)</option><option value="mm">Millimeters (mm)</option></select><button class="btn welcome-start" id="welcomeStart">Start designing &nbsp; →</button><span class="welcome-footnote">All STL files export in millimeters · Works offline.</span></div></div>
-<header><div><strong>▱ FLOORING THRESHOLD STUDIO</strong> <span class="small">/ profile generator</span></div><span class="pill">V2.4 • <span id="headerUnitStatus">IN</span> • OFFLINE READY</span></header>
+<header><div><strong>▱ FLOORING THRESHOLD STUDIO</strong> <span class="small">/ profile generator</span></div><span class="pill">V3.0 • <span id="headerUnitStatus">IN</span> • OFFLINE READY</span></header>
 <main>
 <aside><div class="menuToolbar"><span class="menuToolbarTitle">PARAMETERS</span><div class="menuToolbarActions"><button type="button" class="toolbarMini" id="expandMenus">Expand all</button><button type="button" class="toolbarMini" id="collapseMenus">Collapse all</button></div></div>
+<div class="liveDimensionsPanel" role="group" aria-label="Live editable sketch line dimensions">
+  <div class="liveDimensionsTitle"><b>LIVE PROFILE LINE LENGTHS</b><span id="liveLengthUnit">in</span></div>
+  <div id="profileKeyDims" class="profileKeyDims" aria-label="Main cross-section dimensions"></div>
+  <div class="segmentScroller"><div class="segmentGrid" id="segmentLengths"></div></div>
+  <div class="small liveDimsFootnote">Every outline line appears above; scroll to see the others. Edit a number to fix its length 🔒. Click 🔒 to release. Lengths update as you change the sketch.</div>
+</div>
 <section class="menuSection" data-menu="1" aria-label="01 — PROFILE GEOMETRY"><div class="menuHeading"><h3>01 — PROFILE GEOMETRY</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody1" aria-label="Expand 01 — PROFILE GEOMETRY" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody1" hidden>
-<div class="split"><div><label>Display units</label><select id="units"><option value="in" selected>inches</option><option value="mm">millimeters</option></select></div><div><label>Profile preset</label><select id="preset"><option value="sketch">Original sketch</option><option value="flat">Symmetric reducer</option><option value="mirror">Mirrored original · right-to-left reducer</option><option value="printFlat">Print-flat · low T-cap (face-down)</option></select></div></div>
+<div class="split"><div><label>Display units</label><select id="units"><option value="in" selected>inches</option><option value="mm">millimeters</option></select></div><div><label>Profile preset</label><select id="preset"><option value="sampleSym" selected>Printed sample · symmetric T-profile</option><option value="sketch">Original asymmetric sketch</option><option value="flat">Symmetric reducer</option><option value="mirror">Mirrored original · right-to-left reducer</option><option value="printFlat">Print-flat · low T-cap (face-down)</option></select></div></div>
 <label>Top profile curve</label><select id="curve"><option value="smooth" selected>Soft crown</option><option value="linear">Straight segments</option></select>
 <label>Additional vertices on top profile</label><select id="topVertexCount"><option value="0" selected>None · use A, B, C</option><option value="1">1 extra (J)</option><option value="2">2 extra (J–K)</option><option value="3">3 extra (J–L)</option><option value="4">4 extra (J–M)</option><option value="5">5 extra (J–N)</option></select>
 <div class="small" style="margin-top:9px">Select a vertex and click Lock to pin its X/Y position. Locked points cannot move during dragging, line edits, or coordinate changes. When an I/H or D/E member is pinned, both members hold their Y coordinates. Unlock to edit. Click or drag a vertex to edit its X/Y coordinates or add a fillet. Drag a line to move both endpoints; click its two-letter label to edit its length. New J–N vertices follow the left-to-right top contour. Changing their count redistributes them; the curve passes through each control point.</div>
-<h3 style="margin-top:15px;margin-bottom:7px">Individual line lengths</h3><div class="segmentGrid" id="segmentLengths"></div>
-<div class="small" style="margin-top:7px">Length is the straight-line distance between the named vertices. When one endpoint is locked, the other endpoint adjusts; when both endpoints are locked, the segment is fixed.</div><div class="notice" style="margin-top:8px">Print-flat T-cap: low, flat textured face for printing face-down on the build plate; an upper strip tapers into a central anchoring stem. Flat faces print easiest with texture disabled or extremely shallow. Test-fit and verify fastening strength before use.</div>
+<div class="small" style="margin-top:8px">The live editable two-letter dimensions are always shown above Section 01. Each length locks after editing; click the padlock to release.</div><div class="notice" style="margin-top:8px">New photo-inspired symmetrical T profile: IH = 0.8 in, HG = 0.2 in and GF = 0.45 in, reflected across the central drilling axis. The mirror is a starting shape; edits can make it asymmetric. Print-flat T-cap: low, flat textured face for printing face-down on the build plate; an upper strip tapers into a central anchoring stem. Flat faces print easiest with texture disabled or extremely shallow. Test-fit and verify fastening strength before use.</div>
 <div id="baseParameters" hidden><input id="leftW" value="1" type="number" step="0.1"><input id="midW" value="2" type="number" step="0.1"><input id="rightW" value="1" type="number" step="0.1"><input id="crest" value="0.72" type="number" step="0.1"><input id="leftClear" value="0.6" type="number" step="0.1"><input id="rightRise" value="0.23" type="number" step="0.1"><input id="leftEdge" value="0.05125" type="number" step="0.1"><input id="edge" value="0.055" type="number" step="0.1"></div><div id="profileMessage" class="status"></div></div></section>
 <section class="menuSection" data-menu="coords" aria-label="02 — VERTEX COORDINATES"><div class="menuHeading"><h3>02 — VERTEX COORDINATES</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBodyCoords" aria-label="Expand 02 — VERTEX COORDINATES" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBodyCoords" hidden>
 <p class="small">Choose any labeled sketch node (A–I, plus optional J–N) or enter its X and Y here. X is horizontal across the threshold; Y is vertical above the floor datum. Every corner has its own editable coordinates; the selected curve setting controls the upper profile between top vertices. <strong>I ↔ H and D ↔ E share Y only.</strong> B (crest) is independent; all X coordinates remain independently editable.</p>
@@ -149,10 +188,13 @@ aside{padding:16px 13px}
 <div class="small">Click the sketch to drop a vertical drilling axis, or drag its dashed line left/right. The location controls all section holes; lengthwise hole positions remain per section.</div>
 <div id="holeMessage" class="holeAdvice" aria-live="polite"></div></div></section>
 <section class="menuSection" data-menu="4" aria-label="05 — CORNER FILLETS"><div class="menuHeading"><h3>05 — CORNER FILLETS</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody4" aria-label="Expand 04 — CORNER FILLETS" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody4" hidden><p class="small">Select a node and enter its radius. Tangent points may reach the next node, using the entire adjoining edge. At acute corners the exact radius may be limited by the corner angle. Fillets export to STL, SVG, and DXF.</p><div class="cornerHelp"><b id="cornerSelection">No corner selected</b><div class="split"><div><label>Fillet radius<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="filletRadius">in</span></label><div class="unitField"><input data-unit-type="length" id="filletRadius" type="number" step="0.1" value="0.02"><span class="inputUnit" data-unit-type="length" data-unit-for="filletRadius" aria-hidden="true">in</span></div></div><div><label>&nbsp;</label><button class="btn secondary" id="applyFillet" style="width:100%">Apply radius</button></div></div><button class="btn secondary wide" id="removeFillet">Remove selected fillet</button><button class="btn secondary wide" id="clearFillets">Clear all fillets</button><div class="small" id="filletMessage">Orange = filleted; blue = available. Full-edge fillets are supported.</div></div></div></section>
-<section class="menuSection" data-menu="5" aria-label="06 — SECTION END LOCKS"><div class="menuHeading"><h3>06 — SECTION END LOCKS</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody5" aria-label="Expand 05 — SECTION END LOCKS" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody5" hidden><label class="checkbox"><input type="checkbox" id="locksOn" checked>Enable interlocking tongue + socket</label><div class="split"><div><label>Socket profile inset / offset<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockOffset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockOffset" step="0.1" value="0.08"><span class="inputUnit" data-unit-type="length" data-unit-for="lockOffset" aria-hidden="true">in</span></div></div><div><label>Socket cut / removal depth<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockDepth" step="0.1" value="0.35"><span class="inputUnit" data-unit-type="length" data-unit-for="lockDepth" aria-hidden="true">in</span></div></div>
+<section class="menuSection" data-menu="5" aria-label="06 — SECTION END LOCKS"><div class="menuHeading"><h3>06 — SECTION END LOCKS</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody5" aria-label="Expand 05 — SECTION END LOCKS" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody5" hidden><label class="checkbox"><input type="checkbox" id="locksOn" checked>Enable interlocking tongue + socket</label><label style="margin-top:10px">Geometry handling</label><select id="geometryMode"><option value="auto" selected>Adaptive · export body when joints cannot fit</option><option value="strict">Strict · require all requested joints</option></select><div class="small" style="margin:6px 0 10px">Adaptive mode preserves your entered tongue/socket dimensions in the project, but temporarily omits impossible joints from the preview and printed STLs. Angled step walls are permitted when a closed, triangulated body can be created. A clear warning and export manifest identify every omission.</div><div class="split"><div><label>Socket profile inset / offset<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockOffset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockOffset" step="0.1" value="0.08"><span class="inputUnit" data-unit-type="length" data-unit-for="lockOffset" aria-hidden="true">in</span></div></div><div><label>Socket cut / removal depth<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="lockDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="lockDepth" step="0.1" value="0.35"><span class="inputUnit" data-unit-type="length" data-unit-for="lockDepth" aria-hidden="true">in</span></div></div>
 <div><label>Tongue profile inset / offset<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="tongueOffset">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="tongueOffset" step="0.1" value="0.088"><span class="inputUnit" data-unit-type="length" data-unit-for="tongueOffset" aria-hidden="true">in</span></div></div>
 <div><label>Tongue extrusion length<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="tongueDepth">in</span></label><div class="unitField"><input data-unit-type="length" type="number" id="tongueDepth" step="0.1" value="0.315"><span class="inputUnit" data-unit-type="length" data-unit-for="tongueDepth" aria-hidden="true">in</span></div></div>
-</div><button class="btn secondary wide" id="inspectSocket" type="button">Inspect socket mouth in 3D</button><div class="small" id="lockMessage">Socket is a real recessed pocket cut into the start of each joining section; the tongue extends from the other end. Enter each profile offset and axial depth independently. Ensure tongue is narrower and shorter than the socket.</div></div></section>
+</div>
+<label class="checkbox" style="margin-top:13px"><input type="checkbox" id="floorOpenSocket">Floor-open mating lock — extend tongue/socket to bottom edge</label>
+<div class="small" id="floorOpenInfo" style="margin:6px 0 10px">When enabled, the socket has no bottom wall under the central channel. The tongue's lower face continues down to the floor-contact plane; the side and top offsets remain adjustable. Test the joint for strength and tolerances.</div>
+<button class="btn secondary wide" id="inspectSocket" type="button">Inspect socket mouth in 3D</button><div class="small" id="lockMessage">Socket is a real recessed pocket cut into the start of each joining section; the tongue extends from the other end. Enter each profile offset and axial depth independently. Ensure tongue is narrower and shorter than the socket.</div></div></section>
 <section class="menuSection" data-menu="texture" aria-label="07 — TOP SURFACE TEXTURE"><div class="menuHeading"><h3>07 — TOP SURFACE TEXTURE</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBodyTexture" aria-label="Expand 07 — TOP SURFACE TEXTURE" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBodyTexture" hidden>
 <label class="checkbox"><input id="woodOn" type="checkbox">Emboss a wood-grain relief on the top surface</label>
 <div class="split"><div><label>Grain rotation (°)<span class="fieldUnitLabel">°</span></label><div class="unitField"><input id="grainAngle" type="number" step="1" min="-180" max="180" value="0"><span class="inputUnit">°</span></div></div>
@@ -160,10 +202,14 @@ aside{padding:16px 13px}
 <div><label>Grain line spacing<span class="fieldUnitLabel" data-unit-type="length" data-unit-for="grainPitch">in</span></label><div class="unitField"><input data-unit-type="length" id="grainPitch" type="number" min="0.01" step="0.1" value="0.21"><span class="inputUnit" data-unit-type="length" data-unit-for="grainPitch">in</span></div></div></div>
 <div class="small">0° runs along the doorway; 90° runs across it. This is real, low-relief printable geometry in preview and STL, not an image or color texture. Ridges taper to zero at print-section ends and fastener openings.</div>
 <div id="grainMessage" class="status"></div></div></section>
-<section class="menuSection" data-menu="6" aria-label="08 — EXPORT / PROJECT"><div class="menuHeading"><h3>08 — EXPORT / PROJECT</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody6" aria-label="Expand 08 — EXPORT / PROJECT" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody6" hidden><button class="btn wide" id="exportAll">Download print package (.zip)</button><button class="btn secondary wide" id="exportOne">Export selected segment (.stl)</button><label>Select segment</label><select id="segmentChoice"></select><div class="split"><button class="btn secondary" id="exportDxf">Profile DXF</button><button class="btn secondary" id="exportSvg">Drawing SVG</button><button class="btn secondary" id="exportJson">Save project JSON</button><button class="btn secondary" id="importJson">Load project JSON</button></div><input type="file" id="jsonFile" accept=".json,application/json" class="hidden"><div class="notice">3D printable STLs include real through-holes, recessed fastener heads, rounded profile edges and end locks. Verify printer fit, layer orientation, fasteners, slip resistance, and structural suitability before installation.</div></div></section>
+<section class="menuSection" data-menu="grips" aria-label="08 — GRIP TEETH"><div class="menuHeading"><h3>08 — GRIP TEETH</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBodyGrips" aria-label="Expand 08 — GRIP TEETH" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBodyGrips" hidden>
+<label>Grip location</label><select id="gripSides"><option value="none" selected>None · smooth underside</option><option value="left">Left wing</option><option value="right">Right wing</option><option value="both">Both wings</option></select>
+<div class="split"><div><label>Footprint width <span class="fieldUnitLabel" data-unit-type="length" data-unit-for="gripW">in</span></label><div class="unitField"><input id="gripW" type="number" data-unit-type="length" step="0.1" min="0.1" value="0.15748"><span class="inputUnit" data-unit-type="length" data-unit-for="gripW">in</span></div></div><div><label>Tooth length <span class="fieldUnitLabel" data-unit-type="length" data-unit-for="gripL">in</span></label><div class="unitField"><input id="gripL" type="number" data-unit-type="length" step="0.1" min="0.1" value="0.31496"><span class="inputUnit" data-unit-type="length" data-unit-for="gripL">in</span></div></div><div><label>Clear gap <span class="fieldUnitLabel" data-unit-type="length" data-unit-for="gripGap">in</span></label><div class="unitField"><input id="gripGap" type="number" data-unit-type="length" step="0.1" min="0" value="0.23622"><span class="inputUnit" data-unit-type="length" data-unit-for="gripGap">in</span></div></div><div><label>Tooth protrusion <span class="fieldUnitLabel" data-unit-type="length" data-unit-for="gripHeight">in</span></label><div class="unitField"><input id="gripHeight" type="number" data-unit-type="length" step="0.1" min="0.01" value="0.03937"><span class="inputUnit" data-unit-type="length" data-unit-for="gripHeight">in</span></div></div></div>
+<div class="small" style="margin-top:9px">Default: 4 mm width across the wing × 8 mm along the doorway, with 6 mm clear gaps. Each triangular underside tooth protrudes 1 mm by default. The pattern is continuous in spacing across the installed length and is actual STL surface geometry. Spikes may require supports depending on build orientation. Test grip and avoid fragile wing tips.</div><div id="gripMessage" class="status"></div></div></section>
+<section class="menuSection" data-menu="6" aria-label="09 — EXPORT / PROJECT"><div class="menuHeading"><h3>09 — EXPORT / PROJECT</h3><button type="button" class="menuToggle" aria-expanded="false" aria-controls="menuBody6" aria-label="Expand 08 — EXPORT / PROJECT" title="Expand menu"><span aria-hidden="true">+</span></button></div><div class="menuBody" id="menuBody6" hidden><button class="btn wide" id="exportPrintReady">Download PRINT-ORIENTED package (.zip)</button><label>Build-plate orientation</label><select id="printOrientation"><option value="auto" selected>Auto · flat outside ends, otherwise socket</option><option value="start">Beginning end downward</option><option value="end">Finishing end downward</option><option value="grain">Top / wood grain downward</option></select><div class="small" style="margin:5px 0 12px">The auto option positions each section vertically: flat outer ends face the bed, internal sections sit on the recessed socket mouth. Check resulting Z height against your printer. Top/grain-down is available as an alternative.</div><button class="btn secondary wide" id="exportAll">Download original CAD-oriented package (.zip)</button><button class="btn secondary wide" id="exportOne">Export selected segment (.stl)</button><label>Select segment</label><select id="segmentChoice"></select><div class="split"><button class="btn secondary" id="exportDxf">Profile DXF</button><button class="btn secondary" id="exportSvg">Drawing SVG</button><button class="btn secondary" id="exportJson">Save project JSON</button><button class="btn secondary" id="importJson">Load project JSON</button></div><input type="file" id="jsonFile" accept=".json,application/json" class="hidden"><div class="notice">3D printable STLs include real through-holes, recessed fastener heads, rounded profile edges and end locks. Verify printer fit, layer orientation, fasteners, slip resistance, and structural suitability before installation.</div></div></section>
 </aside>
 <div class="workspace"><div class="workspaceTop"><div class="workspaceTitle">PROFILE WORKSPACE <small>Floor reducer · parametric cross-section and 3D manufacturing preview</small></div><div class="switcher"><button data-mode="both" class="active">Split view</button><button data-mode="sketch">2D sketch</button><button data-mode="three">3D model</button></div></div><div class="canvasPanel"><div class="panel" id="drawingPanel"><div class="panelHead"><b>01 / SECTION SKETCH</b><div class="sketchTools"><span style="font-size:10px;color:#98b2c7">Wheel zoom · middle-drag pan · left-drag geometry</span><button class="sketchToolBtn" type="button" id="undoSketch" title="Undo last sketch/project change (Ctrl+Z)" disabled>↶ Undo</button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="equal" aria-pressed="false" aria-label="Equal length: select reference line and target line" title="Equal length · pick reference, then target">=</button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="parallel" aria-pressed="false" aria-label="Parallel: rotate target line to reference angle" title="Parallel · pick reference, then target"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M4 16L13 7M11 21L20 12"/></svg></button><button class="sketchToolBtn sketchConstraint" type="button" data-constraint-mode="mirror" aria-pressed="false" aria-label="Mirror: reflect target angle across vertical drilling line" title="Mirror angle over vertical hole axis · pick reference, then target"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-dasharray="2 2" d="M12 2v20"/><path d="M10 5L3 12l7 7M14 5l7 7-7 7"/></svg></button><span id="constraintStatus" role="status">Choose a tool, then two lines</span><button class="sketchToolBtn holeSketchButton" type="button" id="placeHoleAxis" aria-pressed="false" title="Click in the 2D sketch to place the hole centerline">＋ Hole line</button><button class="sketchToolBtn" type="button" id="sketchZoomOut" title="Zoom out">−</button><span id="sketchZoomLabel" class="sketchZoomLabel">100%</span><button class="sketchToolBtn" type="button" id="sketchZoomIn" title="Zoom in">+</button><button class="sketchToolBtn" type="button" id="sketchZoomReset" title="Reset zoom and pan">Fit</button></div></div><div class="sketchArea" id="sketchArea"><svg id="sketch" aria-label="Floor threshold cross section with selectable vertex and line lengths"></svg>
-<div class="lineEditor hidden" id="lineEditor"><div class="pointEditorTitle"><b id="lineEditorName">AB length</b><button type="button" class="pointEditorButton" id="closeLineEditor" aria-label="Close length edit">✕</button></div><label>Length <span class="pointUnits">in</span><input id="lineLength" type="number" step="0.1" aria-label="Selected line length"></label></div>
+<div class="lineEditor hidden" id="lineEditor"><div class="pointEditorTitle"><b id="lineEditorName">AB length</b><button type="button" class="pointEditorButton" id="closeLineEditor" aria-label="Close length edit">✕</button></div><label>Length <span class="pointUnits">in</span><input id="lineLength" type="number" min="0.01" step="0.1" aria-label="Selected line length"></label><button id="lineLockToggle" class="sketchToolBtn" type="button" aria-pressed="false">🔓 Lock this length</button></div>
 <div class="pointEditor hidden" id="pointEditor"><div class="pointEditorTitle"><b id="pointEditorName">Point A</b><button type="button" class="pointEditorButton" id="pointOpenFillet">Fillet →</button></div><button type="button" id="togglePointLock" class="pointLockButton" aria-pressed="false">🔓 Lock selected point</button><div class="pointEditorGrid"><label>X <span class="pointUnits">in</span><input type="number" step="0.1" id="pointX" aria-label="Selected point X coordinate"></label><label>Y <span class="pointUnits">in</span><input type="number" step="0.1" id="pointY" aria-label="Selected point Y coordinate"></label></div><div id="pointPairStatus" aria-live="polite">Y coordinate independent</div><button type="button" class="pointEditorButton" id="openCoordMenu">Edit all points →</button></div></div><div class="sketchFooter"><span id="widthReport">OVERALL WIDTH —</span><span id="sketchHoleHealth" aria-live="polite">Hole axis —</span><span>Wheel zoom · middle-button pan · drag nodes or lines</span></div></div><div class="panel" id="threePanel" style="margin-top:15px"><div class="panelHead"><b>02 / PRINT MODEL</b><select id="previewFocus" aria-label="Preview scope" style="width:auto;max-width:180px;padding:5px 7px;font-size:11px"><option value="whole">Full doorway</option><option value="piece">Selected segment</option></select></div><div class="previewOuter"><canvas id="preview" aria-label="Interactive 3D print model: drag to orbit, middle-drag to pan, scroll to zoom"></canvas><span class="viewHint">Left-drag 360° orbit · Middle-drag / Shift-drag pan · Wheel zoom</span><span class="viewerNote" id="modelInfo">—</span><div class="orbitWidget" aria-label="3D view cube and face selection"><div class="orbitTitle">VIEW CUBE</div><canvas id="viewCube" class="viewCube" width="204" height="204" tabindex="0" role="button" aria-label="Click a visible cube face to align the model view" title="Click a cube face or use the view buttons below"></canvas><div class="viewPresets"><button type="button" class="viewPreset" data-camera-view="top">Top</button><button type="button" class="viewPreset" data-camera-view="front">Front</button><button type="button" class="viewPreset" data-camera-view="left">Left</button><button type="button" class="viewPreset" data-camera-view="right">Right</button><button type="button" class="viewPreset" data-camera-view="back">Back</button><button type="button" class="viewPreset" data-camera-view="bottom">Bottom</button><button type="button" class="viewPreset" data-camera-view="iso">Iso</button><button type="button" class="viewPreset" data-camera-view="fit">Fit</button></div><div class="orbitReadout" id="orbitReadout" aria-live="polite">Free orbit</div></div></div><div class="sketchFooter"><span id="holeReport">HOLES —</span><span>STL = mm · top grain (if enabled) is physical relief</span></div></div><div class="bottomRow"><div class="smallPanel"><b>Installation layout</b><svg id="layout" viewBox="0 0 680 110" style="width:100%;display:block" aria-label="Print-segment and mounting-hole layout"></svg><span class="small" id="layoutCaption">—</span></div><div class="smallPanel"><b>Design checks</b><div id="checkList" class="status"></div></div></div></div></div>
 <div class="report"><h3>PROJECT SUMMARY</h3>
 <div class="summaryIntro">Editable parameters · updates profile and print layout</div>
@@ -178,17 +224,17 @@ aside{padding:16px 13px}
 <script>
 'use strict';
 const $=id=>document.getElementById(id), U=25.4;
-const fields=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch'];
-const unitDependentIds=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch','filletRadius'];
+const fields=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch','gripW','gripL','gripGap','gripHeight'];
+const unitDependentIds=['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','doorL','maxL','endInset','holeX','boreD','headD','boreDepth','lockOffset','lockDepth','tongueOffset','tongueDepth','grainDepth','grainPitch','gripW','gripL','gripGap','gripHeight','filletRadius'];
 const dimLinks={dimLeftLip:'leftEdge',dimRightLip:'edge',dimLeftW:'leftW',dimMidW:'midW',dimRightW:'rightW',dimCrest:'crest',dimRightRise:'rightRise'};
 const $val=id=>Number($(id).value), units=()=> $('units').value, toMM=v=>v*(units()==='in'?U:1), fromMM=v=>v/(units()==='in'?U:1), fmt=(v,d=3)=>Number.isFinite(v)?Number(v.toFixed(d)).toString():'—', disp=(v,d=2)=>`${fmt(fromMM(v),d)} ${units()==='in'?'in':'mm'}`;
-let model=null, glr=null, rendering=false, toastTimer=null, currentMode='both', selectedCorner=null, selectedSegment=null, cornerRadii={}, vertexOverrides=null, extraTopPoints=[], vertexLocks=new Set();
+let model=null, glr=null, rendering=false, toastTimer=null, currentMode='both', selectedCorner=null, selectedSegment=null, cornerRadii={}, vertexOverrides=null, extraTopPoints=[], vertexLocks=new Set(), lengthLocks={};
 const sketchCamera={zoom:1,panX:0,panY:0};
 let sketchFit=null,sketchDrag=null,sketchDragRaf=0,dragPending=null,sketchSkipClick=false,holePlaceMode=false;
 let constraintMode=null,constraintReference=null,constraintIssue=null;
 const undoStack=[];let historyLast=null,historyApplying=false,historySuspend=0;
-const historyIds=[...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','woodOn','grainAngle','preset','topVertexCount','units'];
-function designSnapshot(){return JSON.stringify({inputs:Object.fromEntries(historyIds.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),points:vertexOverrides,top:extraTopPoints,fillets:cornerRadii,locks:[...vertexLocks]});}
+const historyIds=[...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','floorOpenSocket','woodOn','grainAngle','gripSides','gripW','gripL','gripGap','gripHeight','printOrientation','preset','topVertexCount','units'];
+function designSnapshot(){return JSON.stringify({inputs:Object.fromEntries(historyIds.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),points:vertexOverrides,top:extraTopPoints,fillets:cornerRadii,locks:[...vertexLocks],lengthLocks:{...lengthLocks}});}
 function historyCommit(){if(historyApplying||historySuspend>0||sketchDrag)return;const state=designSnapshot();if(historyLast===null){historyLast=state;return;}if(historyLast!==state){undoStack.push(historyLast);if(undoStack.length>75)undoStack.shift();historyLast=state;}$('undoSketch').disabled=!undoStack.length;}
 function historyPause(fn){historySuspend++;try{return fn();}finally{historySuspend--;if(!historySuspend)historyCommit();}}
 function undoDesign(){if(!undoStack.length)return;const previous=undoStack.pop(),state=JSON.parse(previous);historyApplying=true;try{
@@ -196,7 +242,7 @@ function undoDesign(){if(!undoStack.length)return;const previous=undoStack.pop()
   const el=$(id);if(el.type==='checkbox')el.checked=Boolean(value);else el.value=value;
  }
  vertexOverrides=state.points?state.points.map(v=>({...v})):null;
- extraTopPoints=(state.top||[]).map(v=>({...v}));cornerRadii={...state.fillets};vertexLocks=new Set(state.locks||[]);
+ extraTopPoints=(state.top||[]).map(v=>({...v}));cornerRadii={...state.fillets};vertexLocks=new Set(state.locks||[]);lengthLocks={...(state.lengthLocks||{})};
  constraintMode=null;constraintReference=null;constraintIssue=null;updateConstraintUI();
  selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');
  sync();historyLast=designSnapshot();
@@ -204,7 +250,7 @@ function undoDesign(){if(!undoStack.length)return;const previous=undoStack.pop()
 
 
 const num=id=>toMM($val(id));
-function params(){const p={L:num('leftW'),M:num('midW'),R:num('rightW'),h:num('crest'),left:num('leftClear'),right:num('rightRise'),leftEdge:num('leftEdge'),edge:num('edge'),door:num('doorL'),max:num('maxL'),sets:Math.floor($val('sets')),splitMode:$('splitMode').value,curve:$('curve').value,holesOn:$('holesOn').checked,holeN:Math.floor($val('holeN')),inset:num('endInset'),xhole:num('holeX'),bore:num('boreD'),head:num('headD'),recess:$('recess').value,angle:$val('sinkA'),boreDepth:num('boreDepth'),locksOn:$('locksOn').checked,lockOffset:num('lockOffset'),lockDepth:num('lockDepth'),tongueOffset:num('tongueOffset'),tongueDepth:num('tongueDepth'),woodOn:$('woodOn').checked,grainAngle:$val('grainAngle'),grainDepth:num('grainDepth'),grainPitch:num('grainPitch'),fillets:{...cornerRadii},extraTop:extraTopPoints.map(n=>({...n}))};
+function params(){const p={L:num('leftW'),M:num('midW'),R:num('rightW'),h:num('crest'),left:num('leftClear'),right:num('rightRise'),leftEdge:num('leftEdge'),edge:num('edge'),door:num('doorL'),max:num('maxL'),sets:Math.floor($val('sets')),splitMode:$('splitMode').value,curve:$('curve').value,holesOn:$('holesOn').checked,holeN:Math.floor($val('holeN')),inset:num('endInset'),xhole:num('holeX'),bore:num('boreD'),head:num('headD'),recess:$('recess').value,angle:$val('sinkA'),boreDepth:num('boreDepth'),locksOn:$('locksOn').checked,floorOpenSocket:$('floorOpenSocket').checked,geometryMode:$('geometryMode').value,lockOffset:num('lockOffset'),lockDepth:num('lockDepth'),tongueOffset:num('tongueOffset'),tongueDepth:num('tongueDepth'),woodOn:$('woodOn').checked,grainAngle:$val('grainAngle'),grainDepth:num('grainDepth'),grainPitch:num('grainPitch'),gripSides:$('gripSides').value,gripW:num('gripW'),gripL:num('gripL'),gripGap:num('gripGap'),gripHeight:num('gripHeight'),fillets:{...cornerRadii},extraTop:extraTopPoints.map(n=>({...n}))};
  if(vertexOverrides){
   p.nodes=vertexOverrides.map(n=>({...n}));
   const node=id=>p.nodes.find(q=>q.id===id);
@@ -327,7 +373,7 @@ function validate(p){const errors=[],warn=[];
  if(p.locksOn){
   if(!Number.isFinite(p.lockOffset)||p.lockOffset<=0||!Number.isFinite(p.tongueOffset)||p.tongueOffset<=0)errors.push('Socket and tongue offsets must be positive.');
   if(!Number.isFinite(p.lockDepth)||p.lockDepth<=0||!Number.isFinite(p.tongueDepth)||p.tongueDepth<=0)errors.push('Socket and tongue depths must be positive.');
-  if(p.tongueOffset<=p.lockOffset+.02)errors.push('Tongue offset must exceed socket offset to provide radial clearance.');
+  if(p.tongueOffset<=p.lockOffset+.02)errors.push('Tongue offset must exceed socket offset to provide radial clearance. Use the Repair mating clearance button below or edit section 06.');
   if(p.tongueDepth>=p.lockDepth-.05)errors.push('Tongue length must be shorter than socket depth to leave axial clearance.');
   if(p.tongueDepth>=p.max*.75)errors.push('Tongue extends too far for current max print length.');
   if(p.lockDepth>=p.max*.65)errors.push('Socket cut is too deep for current max print length.');
@@ -335,10 +381,19 @@ function validate(p){const errors=[],warn=[];
   if(p.lockOffset*2>=p.channelRight-p.channelLeft-1)errors.push('Socket inset exceeds central channel width.');
   const bottomAt=x=>crossIntersections(roundedProfile(p),x+1e-7)[0]?.z??0;
   const minThick=Math.min(topZ(p,p.channelLeft)-bottomAt(p.channelLeft+0.1),topZ(p,p.channelRight)-bottomAt(p.channelRight-0.1));
-  if(2*p.tongueOffset>=minThick-.4)errors.push('Tongue inset is too tall for the central channel.');
-  if(2*p.lockOffset>=minThick-.4)errors.push('Socket inset is too tall for the central channel.');
+  if((p.floorOpenSocket?1:2)*p.tongueOffset>=minThick-.4)errors.push('Tongue inset is too tall for the central channel.');
+  if((p.floorOpenSocket?1:2)*p.lockOffset>=minThick-.4)errors.push('Socket inset is too tall for the central channel.');
+ }
+ if(p.gripSides!=='none'){
+  if(!Number.isFinite(p.gripW)||p.gripW<=0||p.gripW>30)errors.push('Grip width must be 0–30 mm.');
+  if(!Number.isFinite(p.gripL)||p.gripL<1||p.gripL>50)errors.push('Grip tooth length must be 1–50 mm.');
+  if(!Number.isFinite(p.gripGap)||p.gripGap<0||p.gripGap>50)errors.push('Grip tooth gap must be 0–50 mm.');
+  if(!Number.isFinite(p.gripHeight)||p.gripHeight<=0||p.gripHeight>3)errors.push('Grip protrusion must be 0–3 mm.');
+  if(p.gripW+4>Math.min(p.L,p.R)&&p.gripSides==='both')warn.push('Grip footprint is wide for the available wing length; one or both rows may not generate.');
+  warn.push('Grip spikes under the wings can change bed contact and require support or a different print orientation. Verify traction and edge strength.');
  }
  if(p.woodOn){
+  if(p.gripSides!=='none')errors.push('Simultaneous printable wood grain and grip teeth are not supported by the current mesh tiler; switch to Adaptive mode to retain teeth and omit grain, or disable one effect.');
   if(!Number.isFinite(p.grainAngle)||Math.abs(p.grainAngle)>180)errors.push('Grain rotation must be between -180° and 180°.');
   if(!Number.isFinite(p.grainPitch)||p.grainPitch<1.5||p.grainPitch>40)errors.push('Grain spacing must be 1.5–40 mm.');
   if(!Number.isFinite(p.grainDepth)||p.grainDepth<=0||p.grainDepth>1)errors.push('Grain relief depth must be between 0 and 1 mm.');
@@ -357,13 +412,21 @@ function validate(p){const errors=[],warn=[];
    const a=ns[i],b=ns[(i+1)%ns.length],c=ns[j],d=ns[(j+1)%ns.length];
    if(cross(a,b,c)*cross(a,b,d)<-1e-6&&cross(c,d,a)*cross(c,d,b)<-1e-6)errors.push(`Profile crosses itself near points ${nodeLetter(a.id)} and ${nodeLetter(c.id)}.`);
   }
-  if(!(p.channelRight>p.channelLeft+4))errors.push('The central mounting channel must have positive width.');if(ns.find(n=>n.id==='leftStepTop').x>ns.find(n=>n.id==='leftStepBottom').x+1e-5)errors.push('Left step upper X cannot exceed its floor X (unsupported overhang).');if(ns.find(n=>n.id==='rightStepBottom').x>ns.find(n=>n.id==='rightStepTop').x+1e-5)errors.push('Right step floor X cannot exceed its upper X (unsupported overhang).');
+  if(!(p.channelRight>p.channelLeft+4))errors.push('The central mounting channel must have positive width.');
+  if(ns.find(n=>n.id==='leftStepTop').x>ns.find(n=>n.id==='leftStepBottom').x+1e-5)(p.locksOn?errors:warn).push(p.locksOn?'Left step extends beyond its floor X. Keyed joint caps require step-wall repair.':'Left step leans outward: using general polygon end-cap triangulation; verify slicing and physical fit.');
+  if(ns.find(n=>n.id==='rightStepBottom').x>ns.find(n=>n.id==='rightStepTop').x+1e-5)(p.locksOn?errors:warn).push(p.locksOn?'Right step floor extends beyond its upper X. Keyed joint caps require step-wall repair.':'Right step leans outward: using general polygon end-cap triangulation; verify slicing and physical fit.');
   if(ns.find(n=>n.id==='rightUpper').x<=ns.find(n=>n.id==='crest').x)errors.push('Upper profile points A–C must progress left to right.');
  }
  const anchors=topAnchors(p);if(anchors.some((q,i)=>i&&q.x<=anchors[i-1].x+.03))errors.push('Top profile controls must have distinct, increasing X coordinates between A and C.');
  if((p.extraTop||[]).some(q=>!Number.isFinite(q.x)||!Number.isFinite(q.z)||q.x<=anchors[0].x||q.x>=anchors[anchors.length-1].x))errors.push('Additional upper vertices must stay between A and C.');
- const parts=errors.length?[]:segments(p);
- if(!parts.length)errors.push('Unable to split the doorway at this print length.');
+ // The splitter is independent of other cross-section errors. A previous
+ // unrelated geometry error must not manufacture a second false split error.
+ const splitInputsReady=Number.isFinite(p.door)&&p.door>0&&Number.isFinite(p.max)&&p.max>0&&(!p.locksOn||(Number.isFinite(p.tongueDepth)&&p.tongueDepth>0));
+ const parts=splitInputsReady?segments(p):[];
+ if(splitInputsReady&&!parts.length){
+  const minLength=p.locksOn?p.tongueDepth+1:1;
+  errors.push(`Print segmentation requires max print length greater than ${fmt(minLength,2)} mm (including tongue extension), and no more than 100 sections. Increase max print length, shorten the tongue, or reduce section count.`);
+ }
  if(parts.length>100)errors.push('Too many sections (100 maximum).');
  const hpos=holes(p,parts);if(hpos.length>450)errors.push('Too many total bores to preview. Reduce mounting holes or segment count (max 450).');
  const requestedHoleCount=hpos.length;
@@ -392,6 +455,39 @@ function validate(p){const errors=[],warn=[];
  try{const poly=roundedProfile(p);if(!poly||poly.length<8)errors.push('Fillet profile could not be generated.');}catch(e){errors.push('Fillet geometry: '+e.message);}
  return {errors:[...new Set(errors)],warn:[...new Set(warn)],parts,hpos:acceptedHpos,holeChecks,requestedHoleCount,skippedCount:skipped.length,marginalCount:marginal.length};
 }
+// Adaptive manufacturing checks: recover a printable threshold BODY rather than
+// trapping a custom profile behind end-lock clearance/step-wall restrictions.
+// Original requested dimensions remain in the project JSON and UI.
+function manufacturingModel(requested){
+ const original=validate(requested);
+ const recoverable=original.errors.filter(msg=>/^(Tongue offset must|Tongue length must|Tongue extends too far|Socket cut is too deep|Tongue inset exceeds|Socket inset exceeds|Tongue inset is too tall|Socket inset is too tall|Socket and tongue offsets must|Socket and tongue depths must|Left step extends beyond|Right step floor extends beyond)/.test(msg));
+ const adaptive=requested.geometryMode==='auto';
+ const omitLocks=adaptive&&requested.locksOn&&recoverable.length>0;
+ // Current surface tiler cannot reliably weld the combination of finely
+ // subdivided grain relief with raised grip teeth. Keep the mechanical grips.
+ const omitGrain=adaptive&&requested.woodOn&&requested.gripSides!=='none';
+ const p={...requested,...(omitLocks?{locksOn:false}:{}),...(omitGrain?{woodOn:false}:{})};
+ const v=omitLocks||omitGrain?validate(p):original;
+ if(omitLocks){
+  v.warn.unshift('ADAPTIVE EXPORT: Interlocking tongue/socket features are NOT INCLUDED in the STL, because their current offsets/step walls cannot form valid joints. All pieces have flat ends. Adjust joint settings or switch to Strict mode to reinstate them.');
+  v.warn.push(...recoverable.map(msg=>'Original joint design: '+msg));
+ }
+ if(omitGrain)v.warn.unshift('ADAPTIVE EXPORT: Wood-grain relief omitted from the printed model to preserve a watertight mesh when underside grip teeth are enabled. Grip teeth remain. Your requested grain settings are saved.');
+ return {p,v,requested,omitted:omitLocks?recoverable:[],omittedGrain:omitGrain};
+}
+function manufacturingNotes(model){
+ const {p,requested,omitted}=model;
+ return [
+  'Flooring Threshold Studio v3.1 — GEOMETRY / FABRICATION STATUS',
+  '',`Requested end locks: ${requested.locksOn?'YES':'NO'}`,
+  `End locks present in exported STLs: ${p.locksOn?'YES':'NO'}`, `Floor-open socket/tongue requested: ${requested.floorOpenSocket?'YES':'NO'}`, `Floor-open socket/tongue in STL: ${p.locksOn&&p.floorOpenSocket?'YES':'NO'}`,
+  `Mode: ${requested.geometryMode==='auto'?'Adaptive':'Strict'}`,`Wood-grain relief requested: ${requested.woodOn?'YES':'NO'}`,`Wood-grain relief in exported STL: ${p.woodOn?'YES':'NO'}`, `Grip teeth: ${p.gripSides}`,
+  ...(model.omittedGrain?['','CAUTION — WOOD-GRAIN RELIEF OMITTED TO PRESERVE MESH CLOSURE. Grip teeth retained.']:[]),
+  ...(omitted.length?['','CAUTION — ALL TONGUE/SOCKET JOINTS OMITTED; EXPORTED SECTIONS HAVE FLAT ENDS.','These parts will NOT mechanically interlock:',...omitted.map(e=>'- '+e)]:[]),
+  '',...model.v.warn.map(w=>'WARNING: '+w),
+  '', 'Verify all parts in your slicer and test-fit. Body-only sections require a different fastening/alignment strategy.'
+ ].join('\n');
+}
 function toast(s){const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),3800);}
 function setDimsFromSidebar(){for(const [a,b] of Object.entries(dimLinks))if($(a)&&document.activeElement!==$(a)){const custom=!!vertexOverrides&&['dimLeftLip','dimRightLip'].includes(a);const val=custom?fromMM(params()[a==='dimLeftLip'?'leftEdge':'edge']):$val(b);$(a).value=fmt(val,units()==='in'?4:2);$(a).defaultValue=$(a).value;}}
 function changeUnits(next){const prior=units();if(prior===next)return;const factor=next==='in'?1/U:U;for(const id of unitDependentIds){const e=$(id);if(e.value!==''&&Number.isFinite(Number(e.value)))e.value=fmt(Number(e.value)*factor,next==='in'?5:5);} $('units').value=next;sync();}
@@ -400,7 +496,26 @@ function applyPreset(which){
  const setBase=(w,m,r,crest,left,right,edge,leftEdge)=>{
   Object.entries({leftW:w,midW:m,rightW:r,crest,leftClear:left,rightRise:right,edge,leftEdge}).forEach(([id,mm])=>setField(id,mm));
  };
- if(which==='sketch'){
+ if(which==='sampleSym'){
+  // Photo-inspired mirrored T threshold. I-H = 0.8 in, H-G = 0.2 in,
+  // G-F = 0.45 in; centerline at the midpoint of G-F and total 2.05 in.
+  // Symmetry is in the initial control points, not a permanent constraint:
+  // all corners remain individually editable and line lengths may be locked.
+  const inch=25.4, wing=.8*inch, stem=.45*inch, mid=wing+stem/2;
+  const lower=.2*inch,tip=.25*inch,crown=.40*inch,W=2*wing+stem;
+  setBase(wing,stem,wing,crown,lower,lower,tip-lower,tip-lower);
+  vertexOverrides=[
+   ['leftUpper',0,tip],['crest',mid,crown],['rightUpper',W,tip],
+   ['rightLower',W,lower],['rightStepTop',wing+stem,lower],
+   ['rightStepBottom',wing+stem,0],['leftStepBottom',wing,0],
+   ['leftStepTop',wing,lower],['leftLower',0,lower]
+  ].map(([id,x,z])=>({id,x,z}));
+  $('curve').value='smooth';
+  // Keep the screw drill axis aligned with the actual mirror center.
+  setField('holeX',mid);setField('boreD',.125*inch);setField('headD',.19*inch);
+  // Existing joint dimensions remain adjustable; the sample does not
+  // hard-lock values before the user edits them.
+ }else if(which==='sketch'){
   vertexOverrides=null;setBase(25.4,50.8,25.4,18.288,15.24,5.842,1.397,1.30175);
  }else if(which==='flat'){
   vertexOverrides=null;setBase(25.4,50.8,25.4,12.7,1.524,1.524,1.524,1.524);
@@ -460,22 +575,13 @@ function selectVertex(id,openMenu=false){
 function setPointFields(n){if(document.activeElement!==$('pointX')){$('pointX').value=fmt(fromMM(n.x),units()==='in'?4:2);$('pointX').defaultValue=$('pointX').value;}
  if(document.activeElement!==$('pointY')){$('pointY').value=fmt(fromMM(n.z),units()==='in'?4:2);$('pointY').defaultValue=$('pointY').value;}}
 function updateVertex(id,axis,value){
- if(!Number.isFinite(value))return;
- if(vertexLocks.has(id)||axis==='z'&&lockedY(id)){toast('Point '+nodeLetter(id)+' is locked'+(axis==='z'?' vertically':'')+'. Unlock the point (and linked partner, if pinned) to move it.');sync();return;}
- if(id.startsWith('top')){const q=extraTopPoints.find(a=>a.id===id);if(!q)return;q[axis]=value;sync();return;}
- if(!vertexOverrides)vertexOverrides=defaultVertices(params());
- const q=vertexOverrides.find(a=>a.id===id);if(!q)return;
- q[axis]=value;
- // Y links are explicit and symmetrical (I ↔ H, D ↔ E). B/crest must stay fixed.
- // X edits must never move another point.
- if(axis==='z'){
-  const mate=pairedYMate(id);
-  if(mate)vertexOverrides.find(a=>a.id===mate).z=value;
- }
- // Geometry-only nominal controls cannot silently replace individually edited nodes.
- $('preset').value='sketch';sync();
+ if(!Number.isFinite(value)){sync();return;}
+ if(vertexLocks.has(id)||axis==='z'&&lockedY(id)){toast('Point '+nodeLetter(id)+' is locked; unlock it to move.');sync();return;}
+ const pinned=[id+':'+axis];const mate=axis==='z'?pairedYMate(id):null;if(mate)pinned.push(mate+':z');
+ const success=geometryMutation(({byId})=>{const n=byId[id];if(!n)throw Error('Vertex not found');n[axis]=value;if(mate&&byId[mate])byId[mate].z=value;},pinned,'Cannot edit point '+nodeLetter(id));
+ if(success)constraintIssue=null;
 }
-function updatePointEditor(axis){updateVertex(selectedCorner,axis,num(axis==='x'?'pointX':'pointY'));}
+function updatePointEditor(axis){const input=$(axis==='x'?'pointX':'pointY');if(input.value.trim()===''||!Number.isFinite(Number(input.value))){toast('Enter a finite coordinate.');sync();return;}const v=num(input.id);if(Math.abs(v)>2000||axis==='z'&&(v< -5||v>500)){toast('Coordinate is outside the supported profile bounds.');sync();return;}updateVertex(selectedCorner,axis,v);}
 function redrawCoordinates(p){
  const nodes=[...(p.nodes||defaultVertices(p)),...(p.extraTop||[])],rows=$('coordinateRows');
  if(rows.querySelectorAll('.coordRow').length!==nodes.length || [...rows.querySelectorAll('.coordRow')].some((row,i)=>row.dataset.node!==nodes[i].id)){
@@ -507,7 +613,11 @@ function redrawCoordinates(p){
 function segmentPairs(p){
  const anchors=topAnchors(p),base=p.nodes||defaultVertices(p),lower=base.slice(3);
  const outline=[...anchors,...lower];
- return outline.map((q,i)=>[q,outline[(i+1)%outline.length]]);
+ // Label the lower perimeter from the outer left tip inward, matching
+ // the user's IH / HG / GF dimension notation. Flipping pair order does
+ // not change the polygon or its connected vertices.
+ return outline.map((q,i)=>{const next=outline[(i+1)%outline.length];
+  return ['rightLower','rightStepTop','rightStepBottom','leftStepBottom','leftStepTop'].includes(q.id)?[next,q]:[q,next];});
 }
 function segmentLength(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 // One-shot geometric modifiers use the shared polygon vertex, not copied line geometry.
@@ -526,7 +636,7 @@ function constraintPosition(ref,target,kind){
  return {x:vec.x*lt*sign,z:vec.z*lt*sign};
 }
 function constraintFailure(msg,ids=[]){
- constraintIssue={text:msg,ids};constraintMode=null;constraintReference=null;updateConstraintUI();sync();
+ constraintIssue={text:msg,ids,signature:designSnapshot()};constraintMode=null;constraintReference=null;updateConstraintUI();sync();
  if(ids.length){document.querySelectorAll('#sketch .constraint-flash').forEach(el=>el.classList.remove('constraint-flash'));
    for(const id of ids){const g=document.querySelector(`#sketch [data-node-group="${id}"]`);if(g){g.classList.remove('constraint-flash');void g.getBoundingClientRect();g.classList.add('constraint-flash');}}
  }
@@ -543,38 +653,63 @@ function attemptConstraint(kind,referenceName,targetName){
  if(Math.hypot(t.x-vec.x,t.z-vec.z)<.00001){
   constraintMode=null;constraintReference=null;constraintIssue=null;updateConstraintUI();sync();toast('Lines already meet this modifier.');return true;
  }
- // Keep the target's first endpoint stationary, unless it is movable and the
- // second endpoint is locked. A locked anchor is allowed; moving a lock is not.
- const [a,b]=target,moveId=vertexLocks.has(b.id)?a.id:b.id,anchorId=moveId===b.id?a.id:b.id;
- const destination=moveId===b.id?{x:a.x+vec.x,z:a.z+vec.z}:{x:b.x-vec.x,z:b.z-vec.z};
- const prior=moveId===b.id?b:a,dx=destination.x-prior.x,dz=destination.z-prior.z;
- const blockers=[];
- if(vertexLocks.has(a.id)&&vertexLocks.has(b.id))return constraintFailure(`Cannot apply ${kind}: both points ${nodeLetter(a.id)} and ${nodeLetter(b.id)} are locked. Unlock an endpoint of ${targetName}.`,[a.id,b.id]);
- if(vertexLocks.has(moveId)&&(Math.abs(dx)>.00001||Math.abs(dz)>.00001))blockers.push(moveId);
- const mate=pairedYMate(moveId);
- if(mate&&Math.abs(dz)>.00001&&vertexLocks.has(mate))blockers.push(mate);
- if(blockers.length)return constraintFailure(`Cannot apply ${kind}: locked point ${blockers.map(nodeLetter).join(', ')} prevents movement of line ${targetName}. Unlock ${blockers.map(nodeLetter).join(' / ')} and retry.`,blockers);
- const base=(p.nodes||defaultVertices(p)).map(n=>({...n})),top=(p.extraTop||[]).map(n=>({...n}));
- const find=id=>id.startsWith('top')?top.find(q=>q.id===id):base.find(q=>q.id===id);
- const moved=find(moveId);if(!moved)return constraintFailure('Target endpoint not found.');
- moved.x=destination.x;moved.z=destination.z;
- if(mate&&Math.abs(dz)>.00001){const linked=find(mate);if(linked)linked.z=destination.z;}
+ const [a,b]=target;
  const oldBase=vertexOverrides,oldTop=extraTopPoints,oldPreset=$('preset').value;
- vertexOverrides=base;extraTopPoints=top;$('preset').value='sketch';
- // Reject a modifier that breaks an otherwise valid cross-section, and restore
- // the entire model to avoid orphaned endpoints or half-updated linked nodes.
- const wasValid=validate(p).errors.length===0;
- const errors=validate(params()).errors;
- const updatedTarget=lineForName(params(),targetName),actual=updatedTarget&&segmentVector(updatedTarget);
- const newNorm=actual&&Math.hypot(actual.x,actual.z),oldNorm=Math.hypot(vec.x,vec.z);
- const satisfied=!!actual&&Math.hypot(actual.x-vec.x,actual.z-vec.z)<Math.max(.02,oldNorm*.001);
- if(!satisfied){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
-  return constraintFailure(`Cannot apply ${kind} to ${targetName}: linked-point Y constraints prevent the requested rotation or length.`);}
- if(wasValid&&errors.length){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
-  return constraintFailure(`Cannot apply ${kind} to ${targetName}: ${errors[0]}`);}
+ const baselineErrors=manufacturingModel(p).v.errors;
+ const blocked=new Set(),reasons=[];
+ // Try either endpoint as the movable endpoint. Prefer moving a non-linked
+ // endpoint (e.g. C instead of D on CD, keeping D/E on their common Y).
+ // Adjacent sketch lines use the same vertex objects, so their connections
+ // are preserved even when one candidate requires changing a shared corner.
+ const trials=[
+  {move:b.id,anchor:a.id,goal:{x:a.x+vec.x,z:a.z+vec.z}},
+  {move:a.id,anchor:b.id,goal:{x:b.x-vec.x,z:b.z-vec.z}}
+ ].sort((u,v)=>Number(!!pairedYMate(u.move))-Number(!!pairedYMate(v.move)));
+ let chosen=null;
+ for(const trial of trials){
+  const existing=trial.move===a.id?a:b;
+  const dx=trial.goal.x-existing.x,dz=trial.goal.z-existing.z;
+  if(vertexLocks.has(trial.move)&&(Math.abs(dx)>1e-5||Math.abs(dz)>1e-5)){
+   blocked.add(trial.move);continue;
+  }
+  const mate=pairedYMate(trial.move);
+  if(mate&&Math.abs(dz)>1e-5&&vertexLocks.has(mate)){
+   blocked.add(mate);continue;
+  }
+  const base=(p.nodes||defaultVertices(p)).map(n=>({...n}));
+  const top=(p.extraTop||[]).map(n=>({...n}));
+  const find=id=>id.startsWith('top')?top.find(q=>q.id===id):base.find(q=>q.id===id);
+  const moved=find(trial.move);
+  if(!moved){reasons.push('Target endpoint not found.');continue;}
+  moved.x=trial.goal.x;moved.z=trial.goal.z;
+  if(mate&&Math.abs(dz)>1e-5){const linked=find(mate);if(linked)linked.z=trial.goal.z;}
+  vertexOverrides=base;extraTopPoints=top;$('preset').value='sketch';
+  try{
+   const candidate=params(),candidateLine=lineForName(candidate,targetName);
+   const actual=candidateLine&&segmentVector(candidateLine);
+   const satisfied=!!actual&&Math.hypot(actual.x-vec.x,actual.z-vec.z)<Math.max(.02,Math.hypot(vec.x,vec.z)*.001);
+   if(!satisfied){reasons.push(`Linked I/H or D/E movement prevents ${nodeLetter(trial.move)} from satisfying ${kind}.`);continue;}
+   const errors=manufacturingModel(candidate).v.errors;
+   const added=errors.filter(error=>!baselineErrors.includes(error));
+   if(added.length){reasons.push(`Moving ${nodeLetter(trial.move)} causes: ${added[0]}`);continue;}
+   chosen={base,top,move:trial.move,anchor:trial.anchor};break;
+  }catch(err){reasons.push(`Moving ${nodeLetter(trial.move)} causes: ${String(err.message||err)}`);}
+  finally{
+   // Each attempt starts from exactly the same original geometry.
+   vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
+  }
+ }
+ if(!chosen){
+  vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
+  const pins=[...blocked],detail=reasons[0];
+  if(pins.length&&!reasons.length)return constraintFailure(`Cannot apply ${kind} to ${targetName}: locked point ${pins.map(nodeLetter).join(', ')} prevents the required movement. Unlock it and retry.`,pins);
+  const lockSuffix=pins.length?` Other possible movement blocked by locked point ${pins.map(nodeLetter).join(', ')}.`:'';
+  return constraintFailure(`Cannot apply ${kind} to ${targetName}: neither endpoint can satisfy this edit while keeping a valid profile. ${detail||'Review the current geometry.'}${lockSuffix}`,pins);
+ }
+ vertexOverrides=chosen.base;extraTopPoints=chosen.top;$('preset').value='sketch';if(kind==='equal')lengthLocks[targetName]=Math.hypot(vec.x,vec.z);
  constraintIssue=null;constraintMode=null;constraintReference=null;updateConstraintUI();
  historyPause(()=>sync());
- toast(`${kind==='equal'?'Equal':kind==='parallel'?'Parallel':'Mirror'} applied: ${targetName} updated from ${referenceName}.`);
+ toast(`${kind==='equal'?'Equal':kind==='parallel'?'Parallel':'Mirror'} applied: moved ${nodeLetter(chosen.move)} so ${targetName} matches ${referenceName}.`);
  return true;
 }
 function updateConstraintUI(){
@@ -591,36 +726,118 @@ function chooseConstraintLine(name){
  attemptConstraint(constraintMode,constraintReference,name);return true;
 }
 
-function updateSegmentLength(name,length){
- if(!(Number.isFinite(length)&&length>.05))return toast('Line length must be positive.');
- const p=params(),pair=segmentPairs(p).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);
- if(!pair)return;
- const [a,b]=pair,old=segmentLength(a,b);
- if(old<1e-6)return toast('Cannot resize a zero-length line.');
- if(vertexLocks.has(a.id)&&vertexLocks.has(b.id))return toast('Both endpoints are locked. Unlock one to resize.');
- if(vertexLocks.has(b.id)){
-  const next={x:b.x+(a.x-b.x)*length/old,z:b.z+(a.z-b.z)*length/old};
-  updateVertex(a.id,'x',next.x);updateVertex(a.id,'z',next.z);return;
+
+// Persistent driving dimensions. A line length entered by the user is a
+// constraint, not merely a one-off resize. Editing it replaces that target.
+// Locked vertices and explicitly edited coordinates act as hard anchors.
+function constraintNodes(){const p=params();return {base:(p.nodes||defaultVertices(p)).map(n=>({...n})),top:(p.extraTop||[]).map(n=>({...n}))};}
+function constraintLookup(base,top){return Object.fromEntries([...base,...top].map(n=>[n.id,n]));}
+function solveLengths(base,top,fixed=new Set(),editedLine=null){
+ const byId=constraintLookup(base,top),polygon=[...topAnchors({...params(),nodes:base,extraTop:top}),...base.slice(3)];
+ const available=new Map(polygon.map((n,i)=>[nodeLetter(n.id)+nodeLetter(polygon[(i+1)%polygon.length].id),[n.id,polygon[(i+1)%polygon.length].id]]));
+ const rules=Object.entries(lengthLocks).filter(([key])=>available.has(key));
+ if(!rules.length)return {ok:true};
+ const stop=new Set([...vertexLocks].flatMap(id=>[id+':x',id+':z']));for(const f of fixed)stop.add(f);
+ const permit=(id,axis)=>!stop.has(id+':'+axis) && !(axis==='z'&&pairedYMate(id)&&stop.has(pairedYMate(id)+':z'));
+ const setAxis=(id,axis,value)=>{const n=byId[id];if(!n||!permit(id,axis))return false;n[axis]=value;
+  if(axis==='z'){const mate=pairedYMate(id);if(mate&&byId[mate])byId[mate].z=value;}return true;};
+ // A small iterative distance-constraint solver. It never breaks shared vertices.
+ let worst='';for(let i=0;i<120;i++){
+  let maxErr=0;
+  for(const [name,target] of rules){const [aid,bid]=available.get(name),a=byId[aid],b=byId[bid];
+   const dx=b.x-a.x,dz=b.z-a.z,dist=Math.hypot(dx,dz),err=dist-target;
+   maxErr=Math.max(maxErr,Math.abs(err));if(Math.abs(err)<.00025)continue;worst=name;
+   if(dist<.000001)return {ok:false,message:`${name} is zero length and cannot satisfy its locked length.`};
+   const ux=dx/dist,uz=dz/dist;
+   const moves=[];
+   for(const [n,id,sign] of [[a,aid,-1],[b,bid,1]]){
+    if(permit(id,'x'))moves.push({id,axis:'x',component:ux,sign});
+    if(permit(id,'z'))moves.push({id,axis:'z',component:uz,sign});
+   }
+   const denom=moves.reduce((v,m)=>v+m.component*m.component,0);
+   if(denom<.0000001)return {ok:false,message:`Line ${name} cannot stay at ${fmt(target,2)} mm: connected points are fixed or locked.`};
+   // Distribute correction over only the coordinates that are permitted.
+   const corrections=new Map();for(const m of moves){const key=m.id+':'+m.axis,delta=-err*m.sign*m.component/denom;
+    corrections.set(key,(corrections.get(key)||0)+delta);}
+   for(const [key,delta] of corrections){const at=key.lastIndexOf(':'),id=key.slice(0,at),axis=key.slice(at+1);setAxis(id,axis,byId[id][axis]+delta);}
+  }
+  if(maxErr<.003)break;
  }
- const end={x:a.x+(b.x-a.x)*length/old,z:a.z+(b.z-a.z)*length/old};
- if(b.id.startsWith('top'))updateVertex(b.id,'x',end.x),updateVertex(b.id,'z',end.z);
- else {if(!vertexOverrides)vertexOverrides=defaultVertices(p);const q=vertexOverrides.find(n=>n.id===b.id);q.x=end.x;q.z=end.z;const mate=pairedYMate(b.id);if(mate)vertexOverrides.find(n=>n.id===mate).z=end.z;sync();}
+ for(const [name,target] of rules){const [aid,bid]=available.get(name),a=byId[aid],b=byId[bid];if(Math.abs(Math.hypot(b.x-a.x,b.z-a.z)-target)>.03)return {ok:false,message:`Locked length ${name} conflicts with another length, fixed point, or linked-Y constraint. Unlock a 🔒 length or point to continue.`};}
+ return {ok:true};
+}
+function geometryMutation(fn,fixed=[],description='The requested edit'){
+ const old={base:vertexOverrides?vertexOverrides.map(n=>({...n})):null,top:extraTopPoints.map(n=>({...n})),preset:$('preset').value,locks:{...lengthLocks}};
+ const before=manufacturingModel(params()).v.errors;
+ const {base,top}=constraintNodes(),byId=constraintLookup(base,top);
+ let done=false;
+ try{
+  fn({base,top,byId});
+  const solved=solveLengths(base,top,new Set(fixed));if(!solved.ok)throw Error(solved.message);
+  vertexOverrides=base;extraTopPoints=top;$('preset').value='sketch';
+  const after=manufacturingModel(params()).v.errors,added=after.filter(e=>!before.includes(e));
+  if(added.length)throw Error(added[0]);
+  done=true;
+ }catch(e){vertexOverrides=old.base;extraTopPoints=old.top;$('preset').value=old.preset;lengthLocks=old.locks;
+  const msg=description+': '+String(e.message||e);constraintIssue={text:msg,ids:[],signature:designSnapshot()};updateConstraintUI();toast(msg);
+ }finally{sync();}
+ return done;
+}
+function toggleLengthLock(name){
+ const pair=lineForName(params(),name);if(!pair)return;
+ if(Object.hasOwn(lengthLocks,name)){delete lengthLocks[name];toast(name+' is now free to change.');}
+ else lengthLocks[name]=segmentLength(...pair);
+ sync();
+}
+function refreshLineLockUI(){
+ const el=$('lineLockToggle');if(!el)return;
+ const active=!!selectedSegment&&Object.hasOwn(lengthLocks,selectedSegment);
+ el.textContent=active?'🔒 Unlock '+selectedSegment:'🔓 Lock '+(selectedSegment||'line');el.disabled=!selectedSegment;
+ el.setAttribute('aria-pressed',String(active));
+}
+function updateSegmentLength(name,length){
+ if(!(Number.isFinite(length)&&length>.05)){toast('Line length must be greater than 0.05 mm.');sync();return;}
+ const p=params(),pair=lineForName(p,name);if(!pair)return;
+ const [a,b]=pair,oldLength=segmentLength(a,b);
+ if(Object.hasOwn(lengthLocks,name)&&Math.abs(oldLength-length)<.005){sync();return;}
+ if(oldLength<.001){toast('Cannot resize a zero-length line.');return;}
+ if(vertexLocks.has(a.id)&&vertexLocks.has(b.id)){constraintIssue={text:`Cannot resize ${name}: both endpoints are locked.`,ids:[a.id,b.id],signature:designSnapshot()};sync();return;}
+ const changed=geometryMutation(({byId})=>{
+  const move=vertexLocks.has(b.id)?a:b,anchor=move.id===a.id?b:a;
+  const dir={x:move.x-anchor.x,z:move.z-anchor.z},k=length/Math.max(.00001,Math.hypot(dir.x,dir.z));
+  const n=byId[move.id];n.x=anchor.x+dir.x*k;n.z=anchor.z+dir.z*k;
+  const mate=pairedYMate(move.id);if(mate&&byId[mate]){if(vertexLocks.has(mate)&&Math.abs(byId[mate].z-n.z)>.0001)throw Error('Linked point '+nodeLetter(mate)+' is locked.');byId[mate].z=n.z;}
+  lengthLocks[name]=length;
+ },[vertexLocks.has(b.id)?b.id+':x':a.id+':x',vertexLocks.has(b.id)?b.id+':z':a.id+':z', (vertexLocks.has(b.id)?a.id:b.id)+':x',(vertexLocks.has(b.id)?a.id:b.id)+':z'].slice(0,2),`Cannot set ${name}`);
+ if(changed){constraintIssue=null;refreshLineLockUI();toast(`${name} locked at ${disp(length,3)}. Click 🔒 to release.`);}
 }
 function selectSegment(name){
  selectedSegment=name;selectedCorner=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.remove('hidden');
- $('lineEditorName').textContent=name+' · Length';const pair=segmentPairs(params()).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);
+ $('lineEditorName').textContent=name+' · Length';refreshLineLockUI();const pair=segmentPairs(params()).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===name);
  if(pair)$('lineLength').value=fmt(fromMM(segmentLength(...pair)),units()==='in'?4:2);
  sync();
 }
-function clearSketchSelection(){selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();}
+function clearSketchSelection(){constraintIssue=null;updateConstraintUI();selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();}
 function redrawSegments(p){const segs=segmentPairs(p),root=$('segmentLengths'),signature=segs.map(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)).join('|');
- if(root.dataset.signature!==signature){root.dataset.signature=signature;root.textContent='';for(const [a,b]of segs){const name=nodeLetter(a.id)+nodeLetter(b.id),holder=document.createElement('label');holder.className='segmentItem';holder.innerHTML=`<span class="segmentName">${name}</span><div class="unitField"><input type="number" step="0.1" aria-label="${name} length"><span class="inputUnit" aria-hidden="true">${units()==='in'?'in':'mm'}</span></div>`;const input=holder.querySelector('input');input.addEventListener('change',()=>updateSegmentLength(name,toMM(Number(input.value))));root.append(holder);}}
- segs.forEach(([a,b],i)=>{const holder=root.children[i],input=holder.querySelector('input');if(document.activeElement!==input){input.value=fmt(fromMM(segmentLength(a,b)),units()==='in'?4:2);input.defaultValue=input.value;}holder.querySelector('.inputUnit').textContent=units()==='in'?'in':'mm';holder.classList.toggle('selected',selectedSegment===nodeLetter(a.id)+nodeLetter(b.id));});
- if(selectedSegment){const pair=segs.find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===selectedSegment);if(pair&&document.activeElement!==$('lineLength'))$('lineLength').value=fmt(fromMM(segmentLength(...pair)),units()==='in'?4:2);}
+ if(root.dataset.signature!==signature){root.dataset.signature=signature;root.textContent='';for(const [a,b]of segs){const name=nodeLetter(a.id)+nodeLetter(b.id),holder=document.createElement('label');holder.className='segmentItem';holder.innerHTML=`<span class="segmentName">${name}</span><button type="button" class="linePin" data-line="${name}" aria-label="Toggle length lock for ${name}" title="Lock or unlock segment length" aria-pressed="false">🔓</button><div class="unitField"><input type="number" step="0.1" aria-label="${name} length"><span class="inputUnit" aria-hidden="true">${units()==='in'?'in':'mm'}</span></div>`;const input=holder.querySelector('input');input.addEventListener('change',()=>updateSegmentLength(name,toMM(Number(input.value))));holder.querySelector('.linePin').addEventListener('click',e=>{e.preventDefault();toggleLengthLock(name);});root.append(holder);}}
+ segs.forEach(([a,b],i)=>{const holder=root.children[i],input=holder.querySelector('input');if(document.activeElement!==input){input.value=fmt(fromMM(segmentLength(a,b)),units()==='in'?4:2);input.defaultValue=input.value;}holder.querySelector('.inputUnit').textContent=units()==='in'?'in':'mm';holder.classList.toggle('selected',selectedSegment===nodeLetter(a.id)+nodeLetter(b.id));const name=nodeLetter(a.id)+nodeLetter(b.id),pin=holder.querySelector('.linePin'),held=Object.hasOwn(lengthLocks,name);holder.classList.toggle('lengthPinned',held);pin.textContent=held?'🔒':'🔓';pin.setAttribute('aria-pressed',String(held));});
+ refreshLineLockUI();if(selectedSegment){const pair=segs.find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===selectedSegment);if(pair&&document.activeElement!==$('lineLength'))$('lineLength').value=fmt(fromMM(segmentLength(...pair)),units()==='in'?4:2);}
+}
+function updateLiveLengthReadout(p){
+ const readout=$('profileKeyDims');if(!readout)return;
+ const pairs=segmentPairs(p),lookup=new Map(pairs.map(([a,b])=>[nodeLetter(a.id)+nodeLetter(b.id),segmentLength(a,b)]));
+ const keys=['IH','HG','GF','FE','ED'];
+ readout.textContent='';
+ keys.forEach(name=>{const value=lookup.get(name),el=document.createElement('div');el.className='liveKeyDim';
+  const key=document.createElement('strong');key.textContent=name;
+  const val=document.createElement('span');val.textContent=Number.isFinite(value)?disp(value,units()==='in'?3:2):'—';
+  el.append(key,val);readout.append(el);
+ });
+ $('liveLengthUnit').textContent=units()==='in'?'IN':'MM';
 }
 function configureTopVertices(count){
  if([...vertexLocks].some(id=>id.startsWith('top'))){$('topVertexCount').value=String(extraTopPoints.length);toast('Unlock J–N before changing the number of top vertices.');return;}
- count=Math.max(0,Math.min(5,count));
+ count=Math.max(0,Math.min(5,count));lengthLocks={};
  const p=params(),anchors=topAnchors({...p,extraTop:[]}),A=anchors[0],B=anchors[1],C=anchors[2];
  const leftCount=Math.floor(count/2),rightCount=count-leftCount;
  const positions=[...Array.from({length:leftCount},(_,i)=>A.x+(B.x-A.x)*(i+1)/(leftCount+1)),...Array.from({length:rightCount},(_,i)=>B.x+(C.x-B.x)*(i+1)/(rightCount+1))];
@@ -791,8 +1008,45 @@ function triangleMesh(p,part){
  for(const y of part.holes){const rect={x0:holeCenter-pad,x1:holeCenter+pad,y0:y-pad,y1:y+pad,cy:y};rects.push(rect);
   for(let k=0;k<=8;k++){newXs.push(rect.x0+(rect.x1-rect.x0)*k/8);ys.push(rect.y0+(rect.y1-rect.y0)*k/8);}}
  const keyX=(male=false)=>[p.channelLeft+(male?p.tongueOffset:p.lockOffset),p.channelRight-(male?p.tongueOffset:p.lockOffset)];
- if(part.female)newXs.push(...keyX(false));if(part.male)newXs.push(...keyX(true));if(p.woodOn){for(let x=p.xBase;x<p.xBase+p.width;x+=2.0)newXs.push(x);for(let y=2;y<Len;y+=2.4)ys.push(y);}
+ if(part.female){newXs.push(...keyX(false));if(p.floorOpenSocket)ys.push(p.lockDepth);}if(part.male)newXs.push(...keyX(true));if(p.woodOn){for(let x=p.xBase;x<p.xBase+p.width;x+=2.0)newXs.push(x);for(let y=2;y<Len;y+=2.4)ys.push(y);}
+ // Grip teeth are formed directly into the underside surface: no floating
+ // independent shells, and flat transitions at every tooth boundary.
+ const grips=[];
+ if(p.gripSides!=='none'){
+  for(const side of ['left','right']){
+   if(p.gripSides!==side&&p.gripSides!=='both')continue;
+   const lo=side==='left'?p.xBase:p.channelRight,hi=side==='left'?p.channelLeft:p.xBase+p.width;
+   if(hi-lo<p.gripW+3)continue;
+   const cx=side==='left'?lo+Math.min(10,(hi-lo)*.48):hi-Math.min(10,(hi-lo)*.48);
+   const x0=cx-p.gripW/2,x1=cx+p.gripW/2;
+   if(x0<lo+1||x1>hi-1)continue;
+   // Align array to installed doorway coordinate so teeth don't jump at seams.
+   const period=p.gripL+p.gripGap;
+   for(let index=0;index<Math.ceil(p.door/period)+1;index++){
+    const start=3+index*period,end=start+p.gripL;
+    const y0=Math.max(0,start-part.start),y1=Math.min(Len,end-part.start);
+    if(y1<=y0||start<part.start+2||end>part.end-2)continue;
+    grips.push({side,x0,x1,cx,start,end});
+    newXs.push(x0,cx,x1);
+    for(const gy of [start,start+p.gripL/2,end]){if(gy>part.start+1e-6&&gy<part.end-1e-6)ys.push(gy-part.start);}
+   }
+  }
+ }
  const poly=refinedContour(p,newXs),xs=uniq([...poly.map(q=>q.x),...newXs]),yg=uniq(ys);
+ const undersideGrip=(x,y,segment)=>{
+  if(!grips.length||segment!=='bottom')return 0;
+  // The ribs belong only on the wing undersides, never the step walls or the center stem.
+  for(const g of grips){
+   const absY=part.start+y;
+   if(x<g.x0-1e-5||x>g.x1+1e-5||absY<g.start-1e-5||absY>g.end+1e-5)continue;
+   const ax=Math.max(0,1-Math.abs((x-g.cx)/(p.gripW/2)));
+   const ay=Math.max(0,1-Math.abs((absY-(g.start+p.gripL/2))/(p.gripL/2)));
+   // Protect the perimeter of accepted fastener patch openings.
+   if(rects.some(r=>x>r.x0-2&&x<r.x1+2&&y>r.y0-2&&y<r.y1+2))return 0;
+   return -p.gripHeight*ax*ay;
+  }
+  return 0;
+ };
  // Deterministic printable wood grain: direction is set in XY, with 0° along Y.
  // Taper at every cut end, outside profile edges and around hole-patch boundaries
  // so the texture joins unchanged caps, sockets and hole rings watertight.
@@ -817,7 +1071,11 @@ function triangleMesh(p,part){
    const y0=yg[j],y1=yg[j+1],xm=(a.x+b.x)/2,ym=(y0+y1)/2;
    const punch=rects.some(r=>xm>r.x0+1e-5&&xm<r.x1-1e-5&&ym>r.y0+1e-5&&ym<r.y1-1e-5);
    if(punch&&(k==='top'||k==='bottom'))continue;
-   quad([a.x,y0,a.z+(k==='top'?grain(a.x,y0):0)],[b.x,y0,b.z+(k==='top'?grain(b.x,y0):0)],[b.x,y1,b.z+(k==='top'?grain(b.x,y1):0)],[a.x,y1,a.z+(k==='top'?grain(a.x,y1):0)]);
+   // A floor-open female pocket removes the underside itself, not merely the
+   // interior socket floor. Leave that bay empty until the rear wall.
+   if(p.floorOpenSocket&&part.female&&k==='bottom'&&
+      xm>keyX(false)[0]+1e-5&&xm<keyX(false)[1]-1e-5&&ym<p.lockDepth-1e-5)continue;
+   quad([a.x,y0,a.z+(k==='top'?grain(a.x,y0):undersideGrip(a.x,y0,k))],[b.x,y0,b.z+(k==='top'?grain(b.x,y0):undersideGrip(b.x,y0,k))],[b.x,y1,b.z+(k==='top'?grain(b.x,y1):undersideGrip(b.x,y1,k))],[a.x,y1,a.z+(k==='top'?grain(a.x,y1):undersideGrip(a.x,y1,k))]);
   }
  }
  // Welded circular openings are cut out of the upper surface and center underside.
@@ -862,7 +1120,9 @@ function triangleMesh(p,part){
    const bot=hits[0],top=hits[hits.length-1],interpolate=(edge,x)=>edge.a.z+(edge.b.z-edge.a.z)*(x-edge.a.x)/(edge.b.x-edge.a.x),
      inside=side!=='solid'&&((side==='female'&&part.female)||(side==='male'&&part.male))&&mid>keyX(side==='male')[0]&&mid<keyX(side==='male')[1],inset=side==='male'?p.tongueOffset:p.lockOffset;
    let lowA=interpolate(bot,x0),lowB=interpolate(bot,x1),hiA=interpolate(top,x0),hiB=interpolate(top,x1);
-   const bands=inside?[[[lowA,lowA+inset],[lowB,lowB+inset]],[[hiA-inset,hiA],[hiB-inset,hiB]]]:[[[lowA,hiA],[lowB,hiB]]];
+   const bands=inside?(p.floorOpenSocket?
+     [[[hiA-inset,hiA],[hiB-inset,hiB]]]:
+     [[[lowA,lowA+inset],[lowB,lowB+inset]],[[hiA-inset,hiA],[hiB-inset,hiB]]]):[[[lowA,hiA],[lowB,hiB]]];
    bandCache.push({x0,x1,bands});
   }
   const boundaryMarks=x=>{
@@ -881,14 +1141,59 @@ function triangleMesh(p,part){
    }
   }}
  }
- endCap(0,part.female?'female':'solid');endCap(Len,part.male?'male':'solid');
+ // Concave polygon end caps for sloping / overhanging step walls.
+ // A strip-based cap assumes x-monotonic walls and can produce non-manifold
+ // triangles in these shapes. Ear clipping here uses the ACTUAL 2D contour.
+ function polygonEndCap(y){
+  const pts=poly.filter((q,i)=>i===0||Math.hypot(q.x-poly[i-1].x,q.z-poly[i-1].z)>1e-6);
+  if(pts.length>2&&Math.hypot(pts[0].x-pts.at(-1).x,pts[0].z-pts.at(-1).z)<1e-6)pts.pop();
+  const cross=(a,b,c)=>(b.x-a.x)*(c.z-a.z)-(b.z-a.z)*(c.x-a.x);
+  const area=pts.reduce((v,a,i)=>v+a.x*pts[(i+1)%pts.length].z-pts[(i+1)%pts.length].x*a.z,0);
+  if(Math.abs(area)<1e-5)throw Error('Closed cross-section has zero area.');
+  const sign=Math.sign(area),remaining=pts.map((_,i)=>i),faces=[];
+  const inside=(p,a,b,c)=>{
+   const ab=sign*cross(a,b,p),bc=sign*cross(b,c,p),ca=sign*cross(c,a,p);
+   return ab>=-1e-7&&bc>=-1e-7&&ca>=-1e-7;
+  };
+  let watchdog=0;
+  while(remaining.length>3){
+   let found=false;
+   for(let k=0;k<remaining.length;k++){
+    const i0=remaining[(k+remaining.length-1)%remaining.length],i1=remaining[k],i2=remaining[(k+1)%remaining.length];
+    const a=pts[i0],b=pts[i1],c=pts[i2];
+    if(sign*cross(a,b,c)<=1e-7)continue;
+    if(remaining.some(i=>i!==i0&&i!==i1&&i!==i2&&inside(pts[i],a,b,c)))continue;
+    faces.push([i0,i1,i2]);remaining.splice(k,1);found=true;break;
+   }
+   if(!found||++watchdog>pts.length*2)throw Error('Cannot triangulate overhanging profile. Check for overlapping lines or too-tight fillets.');
+  }
+  faces.push(remaining);
+  // Original contour is clockwise in (x,z); front face points outward -Y.
+  for(const [i0,i1,i2] of faces){const a=[pts[i0].x,y,pts[i0].z],b=[pts[i1].x,y,pts[i1].z],c=[pts[i2].x,y,pts[i2].z];
+   const front=y<Len/2,swap=front?(sign<0):(sign>0);
+   if(swap)tri(a,c,b);else tri(a,b,c);
+  }
+ }
+ const angledStep=!!p.nodes&&(p.nodes.find(n=>n.id==='leftStepTop').x>p.nodes.find(n=>n.id==='leftStepBottom').x+1e-5||p.nodes.find(n=>n.id==='rightStepBottom').x>p.nodes.find(n=>n.id==='rightStepTop').x+1e-5);
+ if(angledStep&&!p.locksOn){polygonEndCap(0);polygonEndCap(Len);}
+ else{endCap(0,part.female?'female':'solid');endCap(Len,part.male?'male':'solid');}
  function lockGeometry(which){const isMale=which==='male',inset=isMale?p.tongueOffset:p.lockOffset,[x0,x1]=keyX(isMale),back=isMale?Len+p.tongueDepth:p.lockDepth,front=isMale?Len:0;
   const channel=[x0,...xs.filter(x=>x>x0+1e-5&&x<x1-1e-5),x1];
-  const atTop=x=>crossIntersections(poly,x+1e-8).slice(-1)[0].z-inset,atBottom=x=>crossIntersections(poly,x+1e-8)[0].z+inset;
+  const atTop=x=>crossIntersections(poly,x+1e-8).slice(-1)[0].z-inset,
+        atBottom=x=>crossIntersections(poly,x+1e-8)[0].z+(p.floorOpenSocket?0:inset);
   for(let i=0;i<channel.length-1;i++){
    const a=channel[i],b=channel[i+1],hA=atTop(a),hB=atTop(b),lA=atBottom(a),lB=atBottom(b);
    if(isMale){quad([a,front,hA],[b,front,hB],[b,back,hB],[a,back,hA]);quad([a,front,lA],[a,back,lA],[b,back,lB],[b,front,lB]);}
-   else {quad([b,front,hB],[a,front,hA],[a,back,hA],[b,back,hB]);quad([b,front,lB],[b,back,lB],[a,back,lA],[a,front,lA]);}
+   else {
+     // Match the interior roof mesh to the same Y subdivisions as its
+     // lateral socket walls. Otherwise the boundary contains T-junctions.
+     const roofYs=p.floorOpenSocket?uniq([front,back,...yg.filter(y=>y>front+1e-5&&y<back-1e-5)]):[front,back];
+     for(let t=0;t<roofYs.length-1;t++){
+      const y0=roofYs[t],y1=roofYs[t+1];
+      quad([b,y0,hB],[a,y0,hA],[a,y1,hA],[b,y1,hB]);
+     }
+     // With an open-bottom socket there is no internal lower wall.
+     if(!p.floorOpenSocket)quad([b,front,lB],[b,back,lB],[a,back,lA],[a,front,lA]);}
    const center=[(a+b)/2,back,(lA+lB+hA+hB)/4];
    const boundary=[[a,lA],[b,lB],[b,hB],[a,hA]];
    for(let k=0;k<boundary.length;k++){
@@ -899,7 +1204,14 @@ function triangleMesh(p,part){
   }
   const h0=atTop(x0),h1=atTop(x1),l0=atBottom(x0),l1=atBottom(x1);
   if(isMale){quad([x0,front,l0],[x0,front,h0],[x0,back,h0],[x0,back,l0]);quad([x1,front,l1],[x1,back,l1],[x1,back,h1],[x1,front,h1]);}
-  else{quad([x0,front,l0],[x0,back,l0],[x0,back,h0],[x0,front,h0]);quad([x1,front,l1],[x1,front,h1],[x1,back,h1],[x1,back,l1]);}
+  else{
+   const sideYs=p.floorOpenSocket?uniq([front,back,...yg.filter(y=>y>front+1e-5&&y<back-1e-5)]):[front,back];
+   for(let j=0;j<sideYs.length-1;j++){
+    const y0=sideYs[j],y1=sideYs[j+1];
+    quad([x0,y0,l0],[x0,y1,l0],[x0,y1,h0],[x0,y0,h0]);
+    quad([x1,y0,l1],[x1,y0,h1],[x1,y1,h1],[x1,y1,l1]);
+   }
+  }
  }
  if(part.female)lockGeometry('female');if(part.male)lockGeometry('male');
  // Position welding to 0.001 mm avoids floating point T-junctions in
@@ -907,6 +1219,53 @@ function triangleMesh(p,part){
  return {positions:new Float32Array(verts.map(v=>Math.round(v*1000)/1000)),normals:new Float32Array(normals),triangles:verts.length/9};
 }
 
+// Rotate each exported STL onto a supported build-plane orientation.
+// All rotations are proper rigid transforms (determinant +1); no mirroring.
+function printOrientationFor(part,p,mode){
+ if(mode==='start')return {face:part.female?'socket start':'flat/start',end:'start'};
+ if(mode==='end')return {face:part.male?'tongue/end (may need supports)':'flat/end',end:'end'};
+ if(mode==='grain')return {face:'exposed top/grain face (may have limited contact)',end:'grain'};
+ if(part.number===1)return {face:'flat outer/start',end:'start'};
+ if(!part.male)return {face:'flat outer/end',end:'end'};
+ return {face:part.female?'recessed socket/start':'start',end:'start'};
+}
+function orientedPrintMesh(mesh,part,p,mode){
+ const orientation=printOrientationFor(part,p,mode),src=mesh.positions,out=new Float32Array(src.length),mins=[Infinity,Infinity,Infinity],maxs=[-Infinity,-Infinity,-Infinity];
+ for(let i=0;i<src.length;i+=3){const x=src[i],y=src[i+1],z=src[i+2];let a,b,c;
+  if(orientation.end==='end'){a=-x;b=-z;c=-y;}
+  else if(orientation.end==='grain'){a=x;b=-y;c=-z;}
+  else{a=x;b=-z;c=y;}
+  out[i]=a;out[i+1]=b;out[i+2]=c;
+  for(let k=0;k<3;k++){mins[k]=Math.min(mins[k],out[i+k]);maxs[k]=Math.max(maxs[k],out[i+k]);}
+ }
+ for(let i=0;i<out.length;i+=3)for(let k=0;k<3;k++)out[i+k]=Math.round((out[i+k]-mins[k])*1000)/1000;
+ const ns=new Float32Array(out.length);for(let i=0;i<out.length;i+=9){
+  const ax=out[i+3]-out[i],ay=out[i+4]-out[i+1],az=out[i+5]-out[i+2],bx=out[i+6]-out[i],by=out[i+7]-out[i+1],bz=out[i+8]-out[i+2],n=[ay*bz-az*by,az*bx-ax*bz,ax*by-ay*bx];const m=Math.hypot(...n)||1;
+  for(let j=0;j<9;j+=3){ns[i+j]=n[0]/m;ns[i+j+1]=n[1]/m;ns[i+j+2]=n[2]/m;}
+ }
+ return {mesh:{positions:out,normals:ns,triangles:mesh.triangles},face:orientation.face,dimensions:maxs.map((max,k)=>max-mins[k])};
+}
+function assertClosedMesh(mesh){
+ if(!mesh||!mesh.positions||mesh.positions.length%9||mesh.triangles<4)throw Error('Empty or malformed triangle mesh.');
+ const p=mesh.positions,counts=new Map();
+ for(let i=0;i<p.length;i+=9){
+  const vs=[];
+  for(let j=0;j<3;j++){
+   const k=i+3*j;
+   if(!Number.isFinite(p[k])||!Number.isFinite(p[k+1])||!Number.isFinite(p[k+2]))throw Error('Non-finite STL vertex.');
+   vs.push([p[k],p[k+1],p[k+2]].join(','));
+  }
+  if(new Set(vs).size!==3)throw Error('Degenerate mesh triangle found.');
+  for(let j=0;j<3;j++){
+   const a=vs[j],b=vs[(j+1)%3],key=a<b?a+'|'+b:b+'|'+a;
+   counts.set(key,(counts.get(key)||0)+1);
+  }
+ }
+ let bad=0;for(const c of counts.values())if(c!==2)bad++;
+ if(bad)throw Error(`STL is not closed (${bad} open/non-manifold edge(s)). Simplify overlapping texture, grip, fillets or hole features before exporting.`);
+ return mesh;
+}
+function checkedPartMesh(p,part){return assertClosedMesh(triangleMesh(p,part));}
 function makeSTL(mesh,name){const pts=mesh.positions,norm=mesh.normals,count=mesh.triangles,arr=new ArrayBuffer(84+count*50),dv=new DataView(arr),enc=new TextEncoder().encode(('Threshold Studio | '+name+' | mm').slice(0,80));const bytes=new Uint8Array(arr);bytes.set(enc,0);dv.setUint32(80,count,true);let off=84;for(let i=0;i<count;i++){
  for(let k=0;k<3;k++)dv.setFloat32(off+k*4,norm[i*9+k],true);off+=12;
  for(let v=0;v<3;v++)for(let k=0;k<3;k++){dv.setFloat32(off,pts[i*9+v*3+k],true);off+=4;}dv.setUint16(off,0,true);off+=2;
@@ -922,18 +1281,18 @@ function svgExport(p){const W=p.width,H=Math.max(p.h,...profileOutline(p).map(q=
 function holeChecksCsv(v){const lines=['Section,Local_position_mm,Installed_position_mm,Status,Included_in_STL,Reason'];
  for(const h of v.holeChecks||[])lines.push([h.part,fmt(h.local,3),fmt(h.global,3),h.state,h.included?'YES':'NO',String(h.reason).replaceAll(',',';')].join(','));
  return lines.join('\r\n')+'\r\n';}
-function csvExport(p,v){const lines=['Segment,Start_mm,End_mm,Base_length_mm,Printable_length_mm,Mounting_holes_per_piece,Doorway_quantity,Mating_start,Mating_end'];for(const q of v.parts)lines.push([q.number,fmt(q.start,3),fmt(q.end,3),fmt(q.length,3),fmt(q.length+(q.male?p.tongueDepth:0),3),q.holes.length,p.sets,q.female?'socket':'flat',q.male?'tongue':'flat'].join(','));return lines.join('\r\n')+'\r\n';}
-function projectSave(p){return JSON.stringify({app:'Flooring Threshold Studio',version:'2.4',unit:'mm',vertexLocks:[...vertexLocks],preset:$('preset').value,
+function csvExport(p,v){const lines=['Segment,Start_mm,End_mm,Base_length_mm,Printable_length_mm,Mounting_holes_per_piece,Doorway_quantity,Mating_start,Mating_end,Floor_open_lock'];for(const q of v.parts)lines.push([q.number,fmt(q.start,3),fmt(q.end,3),fmt(q.length,3),fmt(q.length+(q.male?p.tongueDepth:0),3),q.holes.length,p.sets,q.female?'socket':'flat',q.male?'tongue':'flat',p.floorOpenSocket&&p.locksOn?'YES':'NO'].join(','));return lines.join('\r\n')+'\r\n';}
+function projectSave(p){return JSON.stringify({app:'Flooring Threshold Studio',version:'3.1',unit:'mm',vertexLocks:[...vertexLocks],lengthLocks:{...lengthLocks},preset:$('preset').value,
  profile:{leftWidth:p.L,centerWidth:p.M,rightWidth:p.R,crestHeight:p.h,leftClearance:p.left,rightRise:p.right,leftEdgeThickness:p.leftEdge,edgeThickness:p.edge,curve:p.curve,fillets:p.fillets,controlPoints:p.nodes,coordinateMode:!!p.nodes,additionalTopPoints:p.extraTop},
  installation:{length:p.door,maxPieceLength:p.max,quantity:p.sets,segmentation:p.splitMode},
  hardware:{enabled:p.holesOn,countPerSection:p.holeN,count:p.holeN,endInset:p.inset,holeX:p.xhole,boreDiameter:p.bore,headDiameter:p.head,recess:p.recess,sinkAngle:p.angle,counterboreDepth:p.boreDepth},
- locks:{enabled:p.locksOn,offset:p.lockOffset,depth:p.lockDepth,tongueOffset:p.tongueOffset,tongueDepth:p.tongueDepth},texture:{enabled:p.woodOn,angle:p.grainAngle,depth:p.grainDepth,pitch:p.grainPitch}},null,2);}
+ locks:{enabled:p.locksOn,floorOpenSocket:!!p.floorOpenSocket,geometryMode:p.geometryMode||'auto',offset:p.lockOffset,depth:p.lockDepth,tongueOffset:p.tongueOffset,tongueDepth:p.tongueDepth},texture:{enabled:p.woodOn,angle:p.grainAngle,depth:p.grainDepth,pitch:p.grainPitch},grips:{sides:p.gripSides,width:p.gripW,length:p.gripL,gap:p.gripGap,protrusion:p.gripHeight},printOrientation:$('printOrientation').value},null,2);}
 function openProject(data){if(data.app!=='Flooring Threshold Studio'||!data.profile||!data.installation||!data.hardware)throw Error('Not a recognized threshold project.');
  const {profile:a,installation:b,hardware:c}=data,l=data.locks||{enabled:false,offset:2.032,depth:8.89};
  const set=(id,v)=>{if(v===undefined||!Number.isFinite(Number(v)))throw Error('Missing/invalid value: '+id);$(id).value=fmt(fromMM(Number(v)),5);};
- for(const [id,val] of Object.entries({leftW:a.leftWidth,midW:a.centerWidth,rightW:a.rightWidth,crest:a.crestHeight,leftClear:a.leftClearance,rightRise:a.rightRise,leftEdge:a.leftEdgeThickness??((Math.max(a.leftClearance+.65*a.edgeThickness,a.crestHeight-1.25*a.edgeThickness))-a.leftClearance),edge:a.edgeThickness,doorL:b.length,maxL:b.maxPieceLength,endInset:c.endInset,holeX:c.holeX,boreD:c.boreDiameter,headD:c.headDiameter,boreDepth:c.counterboreDepth,lockOffset:l.offset,lockDepth:l.depth,tongueOffset:l.tongueOffset??l.offset*1.1,tongueDepth:l.tongueDepth??l.depth*.9,grainDepth:data.texture?.depth??.2032,grainPitch:data.texture?.pitch??4.318}))set(id,val);
- $('sets').value=b.quantity;$('splitMode').value=b.segmentation;$('holesOn').checked=c.enabled;$('holeN').value=c.countPerSection??c.count;$('recess').value=c.recess;$('sinkA').value=c.sinkAngle;$('curve').value=a.curve;$('preset').value=['sketch','flat','mirror','printFlat'].includes(data.preset)?data.preset:'sketch';$('locksOn').checked=l.enabled;$('woodOn').checked=!!data.texture?.enabled;$('grainAngle').value=data.texture?.angle??0;
- cornerRadii=a.fillets||{};vertexOverrides=a.coordinateMode&&Array.isArray(a.controlPoints)&&a.controlPoints.length===9?a.controlPoints.map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):null;extraTopPoints=Array.isArray(a.additionalTopPoints)?a.additionalTopPoints.slice(0,5).map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):[];vertexLocks=new Set((data.vertexLocks||[]).filter(id=>[...nodeOrder,...extraTopPoints.map(n=>n.id)].includes(id)));$('topVertexCount').value=String(extraTopPoints.length);selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();
+ for(const [id,val] of Object.entries({leftW:a.leftWidth,midW:a.centerWidth,rightW:a.rightWidth,crest:a.crestHeight,leftClear:a.leftClearance,rightRise:a.rightRise,leftEdge:a.leftEdgeThickness??((Math.max(a.leftClearance+.65*a.edgeThickness,a.crestHeight-1.25*a.edgeThickness))-a.leftClearance),edge:a.edgeThickness,doorL:b.length,maxL:b.maxPieceLength,endInset:c.endInset,holeX:c.holeX,boreD:c.boreDiameter,headD:c.headDiameter,boreDepth:c.counterboreDepth,lockOffset:l.offset,lockDepth:l.depth,tongueOffset:l.tongueOffset??l.offset*1.1,tongueDepth:l.tongueDepth??l.depth*.9,grainDepth:data.texture?.depth??.2032,grainPitch:data.texture?.pitch??4.318,gripW:data.grips?.width??4,gripL:data.grips?.length??8,gripGap:data.grips?.gap??6,gripHeight:data.grips?.protrusion??1}))set(id,val);
+ $('sets').value=b.quantity;$('splitMode').value=b.segmentation;$('holesOn').checked=c.enabled;$('holeN').value=c.countPerSection??c.count;$('recess').value=c.recess;$('sinkA').value=c.sinkAngle;$('curve').value=a.curve;$('preset').value=['sampleSym','sketch','flat','mirror','printFlat'].includes(data.preset)?data.preset:'sketch';$('locksOn').checked=l.enabled;$('floorOpenSocket').checked=!!l.floorOpenSocket;$('geometryMode').value=l.geometryMode==='strict'?'strict':'auto';$('woodOn').checked=!!data.texture?.enabled;$('grainAngle').value=data.texture?.angle??0;$('gripSides').value=['none','left','right','both'].includes(data.grips?.sides)?data.grips.sides:'none';$('printOrientation').value=['auto','start','end','grain'].includes(data.printOrientation)?data.printOrientation:'auto';
+ cornerRadii=a.fillets||{};vertexOverrides=a.coordinateMode&&Array.isArray(a.controlPoints)&&a.controlPoints.length===9?a.controlPoints.map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):null;extraTopPoints=Array.isArray(a.additionalTopPoints)?a.additionalTopPoints.slice(0,5).map(n=>({id:n.id,x:Number(n.x),z:Number(n.z)})):[];vertexLocks=new Set((data.vertexLocks||[]).filter(id=>[...nodeOrder,...extraTopPoints.map(n=>n.id)].includes(id)));lengthLocks=Object.fromEntries(Object.entries(data.lengthLocks||{}).map(([name,val])=>[(['3.0','3.1'].includes(data.version)?name:({'DE':'ED','EF':'FE','FG':'GF','GH':'HG','HI':'IH'}[name]||name)),val]).filter(([name,val])=>/^[A-N]{2}$/.test(name)&&Number.isFinite(Number(val))&&Number(val)>0));$('topVertexCount').value=String(extraTopPoints.length);memorizeInput();selectedCorner=null;selectedSegment=null;$('pointEditor').classList.add('hidden');$('lineEditor').classList.add('hidden');sync();
 }
 function download(blob,file){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);}
 function bytes(s){return new TextEncoder().encode(s);}
@@ -1105,7 +1464,87 @@ function setupMenus(){
   $('collapseMenus').addEventListener('click',()=>sections.forEach(s=>setMenuOpen(s,false)));
 }
 
-function sync(){updateUnitUI();const p=params(),v=validate(p),okay=v.errors.length===0;model={p,v};redrawCoordinates(p);redrawSegments(p);
+
+// UI hard limits are in mm (or counts / degrees). They keep manual entries
+// inside the supported numerical domain. Adaptive joint feasibility is advisory.
+const numericBounds={
+ leftW:[.15,1500],midW:[1,1500],rightW:[.15,1500],crest:[.2,200],leftClear:[.01,150],rightRise:[.01,150],leftEdge:[.05,100],edge:[.05,100],
+ doorL:[5,100000],maxL:[2,100000],endInset:[0,10000],holeX:[0,2000],boreD:[.1,100],headD:[.1,150],boreDepth:[.05,100],
+ lockOffset:[.02,80],lockDepth:[.1,250],tongueOffset:[.02,80],tongueDepth:[.1,250],grainDepth:[.01,1],grainPitch:[1.5,40],
+ gripW:[.05,30],gripL:[1,50],gripGap:[0,50],gripHeight:[.05,3],filletRadius:[.01,500],
+ sets:[1,100],holeN:[0,24],sinkA:[20.1,169.9],grainAngle:[-180,180]
+};
+const rawBounds=new Set(['sets','holeN','sinkA','grainAngle']);
+function inputBounds(id){
+ const bounds=numericBounds[id];if(!bounds)return null;
+ const [low,high]=bounds,unit=rawBounds.has(id)?1:(units()==='in'?U:1);
+ return [low/unit,high/unit];
+}
+function refreshBounds(){for(const id of Object.keys(numericBounds)){
+ const input=$(id);if(!input)continue;const [lo,hi]=inputBounds(id);
+ input.min=fmt(lo,6);input.max=fmt(hi,6);
+ input.title=`Permitted: ${fmt(lo,4)} to ${fmt(hi,4)} ${rawBounds.has(id)?id==='sinkA'||id==='grainAngle'?'°':'count':units()==='in'?'in':'mm'}`;
+ }}
+const menuMapping={
+ 1:['leftW','midW','rightW','crest','leftClear','rightRise','leftEdge','edge','curve','topVertexCount','preset'],
+ coords:['pointX','pointY'],2:['doorL','maxL','sets','splitMode'],3:['endInset','holeX','boreD','headD','boreDepth','sinkA','holeN','holesOn','recess'],
+ 4:['filletRadius'],5:['locksOn','floorOpenSocket','geometryMode','lockOffset','lockDepth','tongueOffset','tongueDepth'],texture:['woodOn','grainDepth','grainPitch','grainAngle'],
+ grips:['gripSides','gripW','gripL','gripGap','gripHeight'],6:['printOrientation']
+};
+function classifyIssue(message){
+ const m=String(message).toLowerCase();
+ if(/tongue|socket|joint|step wall|step extends|step floor|mating|end lock|body-only/.test(m)){
+  const ids=[];if(m.includes('tongue offset must exceed socket offset'))ids.push('lockOffset','tongueOffset');else if(/socket inset|socket offset/.test(m))ids.push('lockOffset');else if(/tongue inset|tongue offset/.test(m))ids.push('tongueOffset');else if(/offset|inset|clearance/.test(m))ids.push('lockOffset','tongueOffset');
+  if(/socket cut|socket depth/.test(m))ids.push('lockDepth');else if(/tongue length|tongue extends|tongue depth/.test(m))ids.push('tongueDepth');else if(/depth|length|too deep|too far/.test(m))ids.push('lockDepth','tongueDepth','maxL');
+  if(/step wall|step extends|step floor/.test(m))return {menu:['coords',5],ids:[]};
+  return {menu:[5],ids};
+ }
+ if(/split|segment|too many sections|print length|doorway/.test(m))return {menu:[2],ids:['maxL','doorL']};
+ if(/hole|bore|countersink|head|fastener/.test(m))return {menu:[3],ids:['holeX','boreD','headD','endInset']};
+ if(/grain|wood/.test(m))return {menu:['texture'],ids:['grainDepth','grainPitch']};
+ if(/grip|tooth/.test(m))return {menu:['grips'],ids:['gripW','gripL','gripGap','gripHeight']};
+ if(/fillet/.test(m))return {menu:[4],ids:['filletRadius']};
+ if(/point|vertex|line|constraint|locked length|profile crosses|upper profile/.test(m))return {menu:[1,'coords'],ids:[]};
+ return {menu:[1],ids:['leftW','midW','rightW','crest']};
+}
+function markMenuIssues(resolved){
+ document.querySelectorAll('.menuSection').forEach(el=>{el.classList.remove('menuError','menuWarning');el.querySelector('.menuIssueText')?.remove();el.removeAttribute('title');});
+ document.querySelectorAll('aside input').forEach(el=>el.classList.remove('inputInvalid','inputCaution'));
+ const issues=[];
+ for(const e of resolved.v.errors)issues.push({message:e,severity:'error'});
+ if(resolved.omitted.length){issues.push({message:'Tongue/socket geometry is currently omitted from exports. Review Section 06.',severity:'warning'});for(const cause of resolved.omitted)issues.push({message:cause,severity:'warning'});}
+ if(resolved.omittedGrain)issues.push({message:'Wood grain omitted because grips are enabled.',severity:'warning'});
+ if(constraintIssue)issues.push({message:constraintIssue.text,severity:'error'});
+ const grouped=new Map();for(const issue of issues){const lookup=classifyIssue(issue.message);
+  for(const id of lookup.menu){let list=grouped.get(String(id));if(!list){list=[];grouped.set(String(id),list);}list.push(issue);}
+  for(const field of lookup.ids){$(field)?.classList.add(issue.severity==='error'?'inputInvalid':'inputCaution');}
+ }
+ for(const [id,list] of grouped){const menu=document.querySelector(`.menuSection[data-menu="${id}"]`);if(!menu)continue;
+  const severity=list.some(x=>x.severity==='error')?'menuError':'menuWarning';menu.classList.add(severity);
+  const message=[...new Set(list.map(x=>x.message))].join('\n');menu.title=message;
+  const el=document.createElement('div');el.className='menuIssueText'+(severity==='menuWarning'?' warning':'');el.textContent='⚠ '+(list.length>1?list.length+' issues — ':'')+list[0].message;
+  menu.querySelector('.menuHeading').after(el);
+ }
+}
+let confirmedInputValues={};
+function memorizeInput(){for(const id of Object.keys(numericBounds)){const el=$(id);if(el&&el.value!=='')confirmedInputValues[id]=el.value;}}
+function guardedInputChange(input){
+ const id=input.id,b=inputBounds(id);if(!b)return;
+ const old=confirmedInputValues[id]??input.defaultValue,raw=input.value.trim(),value=Number(raw);
+ const [lo,hi]=b;
+ if(!raw||!Number.isFinite(value)||value<lo-1e-8||value>hi+1e-8||(id==='sets'||id==='holeN')&&!Number.isInteger(value)){
+  input.value=old;input.classList.add('inputInvalid');setTimeout(()=>input.classList.remove('inputInvalid'),1800);
+  toast(`${id}: enter a value between ${fmt(lo,4)} and ${fmt(hi,4)}${id==='sets'||id==='holeN'?' (whole number)':''}. Previous value restored.`);sync();return;
+ }
+ const oldErrors=(()=>{input.value=old;const e=validate(params()).errors;input.value=raw;return e;})();
+ const newErrors=validate(params()).errors;
+ const added=newErrors.filter(e=>!oldErrors.includes(e));
+ if(added.length){input.value=old;input.classList.add('inputInvalid');setTimeout(()=>input.classList.remove('inputInvalid'),1800);
+  toast(`Change rejected: ${added[0]}`);sync();return;
+ }
+ confirmedInputValues[id]=raw;sync();
+}
+function sync(){refreshBounds();if(constraintIssue&&constraintIssue.signature&&designSnapshot()!==constraintIssue.signature){constraintIssue=null;updateConstraintUI();}updateUnitUI();const requested=params(),resolved=manufacturingModel(requested),{p,v}=resolved,okay=v.errors.length===0;model=resolved;redrawCoordinates(requested);redrawSegments(requested);updateLiveLengthReadout(requested);
  if([p.L,p.M,p.R,p.h,p.left,p.right,p.edge].every(Number.isFinite)&&Math.max(p.L,p.M,p.R,p.h)<10000 && Math.min(p.L,p.M,p.R)>0){try{drawSketch(p);}catch(err){$('profileMessage').textContent=err.message;} $('widthReport').textContent=`OVERALL WIDTH  ${disp(p.width,units()==='in'?3:1)}`;}
  for(const [id,value] of Object.entries({metricWidth:fmt(fromMM(p.width),4),metricLength:fmt(fromMM(p.door),4),metricTotal:v.parts.length*p.sets,metricHoles:v.requestedHoleCount||0,metricMaxPiece:fmt(fromMM(p.max),4)})){
   const el=$(id);if(el!==document.activeElement){el.value=value;el.defaultValue=String(value);}
@@ -1116,20 +1555,75 @@ function sync(){updateUnitUI();const p=params(),v=validate(p),okay=v.errors.leng
  if(v.parts.length)$('segmentChoice').selectedIndex=Math.max(0,Math.min(previousChoice,v.parts.length-1));
  drawLayout(p,v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${v.parts.length} sections · ${v.hpos.length} bores`;$('holeReport').textContent=p.holesOn?`HOLES — ${v.hpos.length}/${v.requestedHoleCount} modeled · ${v.skippedCount} omitted · ${p.recess==='sink'?fmt(p.angle,0)+'° countersink':p.recess==='bore'?'counterbore':'plain bore'}`:'HOLES — disabled';
  $('profileMessage').textContent=`Total cross-section: ${disp(p.width,3)} wide × ${disp(p.h,3)} high`;
- $('filletMessage').textContent=`${Object.keys(p.fillets).length} corners rounded · tangent points may reach neighboring nodes; overlapping fillets are rejected.`;$('lockMessage').textContent=p.locksOn?`Recessed socket: ${disp(p.lockDepth,3)} deep / ${disp(p.lockOffset,3)} inset. Extruded tongue: ${disp(p.tongueDepth,3)} long / ${disp(p.tongueOffset,3)} inset. Clearances: ${disp(p.lockDepth-p.tongueDepth,3)} axial and ${disp(p.tongueOffset-p.lockOffset,3)} per side.`:'End locks disabled: flat ends.';$('grainMessage').textContent=p.woodOn?`Grain rotation ${fmt(p.grainAngle,1)}° · printable relief ${disp(p.grainDepth,3)} · spacing ${disp(p.grainPitch,3)}.`:'Wood grain disabled: smooth top surface.';
+ $('floorOpenInfo').textContent=requested.floorOpenSocket?(requested.locksOn?(model.omitted.length?'⚠ Floor-open lock requested, but Adaptive mode omitted ALL joints. Correct Section 06 conflicts before printing interlocks.':'✓ Floor-open socket enabled. The female pocket has no lower wall; the male tongue reaches the central underside plane. Test-fit the joint and check strength and bed support.'):'Floor-open lock saved but inactive until end locks are enabled.'):'Optional: remove the socket bottom wall and extend the tongue to the underside. The existing enclosed joint remains the default.';
+ $('filletMessage').textContent=`${Object.keys(p.fillets).length} corners rounded · tangent points may reach neighboring nodes; overlapping fillets are rejected.`;$('lockMessage').textContent=model.omitted.length?'⚠ Adaptive fallback active: exports omit tongue/socket joints. Your dimensions are retained and can be repaired.':p.locksOn?`Socket ${p.floorOpenSocket?'OPEN TO FLOOR (no lower wall)':'enclosed'}: ${disp(p.lockDepth,3)} deep / ${disp(p.lockOffset,3)} inset. Tongue ${p.floorOpenSocket?'to underside':'inset all around'}: ${disp(p.tongueDepth,3)} long / ${disp(p.tongueOffset,3)} inset. Clearances: ${disp(p.lockDepth-p.tongueDepth,3)} axial and ${disp(p.tongueOffset-p.lockOffset,3)} per side.`:'End locks disabled: flat ends.';$('gripMessage').textContent=p.gripSides==='none'?'Grip teeth disabled.':`${p.gripSides} wing(s) · ${disp(p.gripW,2)} wide × ${disp(p.gripL,2)} long, ${disp(p.gripGap,2)} gap and ${disp(p.gripHeight,2)} protrusion.`;$('grainMessage').textContent=model.omittedGrain?'⚠ Grain is temporarily omitted from printable STL/preview because grip teeth are enabled. Settings are saved.':p.woodOn?`Grain rotation ${fmt(p.grainAngle,1)}° · printable relief ${disp(p.grainDepth,3)} · spacing ${disp(p.grainPitch,3)}.`:'Wood grain disabled: smooth top surface.';
  const holeHealth=!p.holesOn?'disabled':v.skippedCount?'bad':v.marginalCount?'caution':'good';
  $('holeMessage').className='holeAdvice '+holeHealth;
  $('holeMessage').textContent=!p.holesOn?'Hardware holes are disabled.':v.skippedCount?`⚠ ${v.skippedCount}/${v.requestedHoleCount} requested holes cannot be modeled safely and will be omitted from printed STLs. This profile may not be optimal for screw mounting. Drag the hole line to improve placement. Export remains enabled if the profile itself is valid.`:v.marginalCount?`⚠ ${v.marginalCount} marginal hole(s) have limited remaining material. Export permitted; test fastener seating and structural strength.`:`✓ ${v.hpos.length} mounting holes have acceptable modeled channel clearance. Hole axis ${disp(p.xhole,3)} from left edge.`;
  $('sketchHoleHealth').textContent=!p.holesOn?'Holes off':v.skippedCount?`✕ ${v.skippedCount} invalid hole(s) · red = omitted`:v.marginalCount?`⚠ ${v.marginalCount} caution hole(s)`:`✓ ${v.hpos.length} hole(s) valid`;
  $('sketchHoleHealth').style.color=v.skippedCount?'#ffacae':v.marginalCount?'#ffd493':'#a7ead1';
  $('sinkA').disabled=p.recess!=='sink';$('boreDepth').disabled=p.recess!=='bore';
- $('checkList').innerHTML=okay?`<span style="color:#a7ead1">✓ Structural profile valid. ${v.skippedCount?'Export allowed with omitted red holes.':'Export available.'}</span>${v.warn.map(e=>`<p class="slim" style="color:#ffd392">⚠ ${escapeHTML(e)}</p>`).join('')}`:v.errors.map(e=>`<p class="slim" style="color:#ffb1b1">✕ ${escapeHTML(e)}</p>`).join('');
- if(constraintIssue)$('checkList').innerHTML+=`<div class="constraintIssue" role="alert">⛔ ${escapeHTML(constraintIssue.text)}${constraintIssue.ids.length?' · Locked point(s): '+constraintIssue.ids.map(nodeLetter).join(', '):''}</div>`;
- $('exportAll').disabled=!okay;$('exportOne').disabled=!okay;$('exportDxf').disabled=!okay;$('exportSvg').disabled=!okay;
- $('summaryNote').textContent=okay?(v.warn.length?'Some features may not be optimal. Review colored holes and warnings. Red holes are omitted from STL; verify strength and fit before printing.':'Geometry checks passed. Print a short sample to verify the floor transition before full production.'):'Fix invalid dimensions before exporting fabrication files.';
- historyCommit();
+ $('checkList').innerHTML=okay?`<span style="color:#a7ead1">✓ Cross-section passes geometric validation. ${v.skippedCount?'Export allowed with omitted red holes.':'Export available.'}</span>${v.warn.map(e=>`<p class="slim" style="color:#ffd392">⚠ ${escapeHTML(e)}</p>`).join('')}`:v.errors.map(e=>`<p class="slim" style="color:#ffb1b1">✕ ${escapeHTML(e)}</p>`).join('');
+ if(requested.locksOn&&requested.tongueOffset<=requested.lockOffset+.02){
+  const recommendation=requested.lockOffset+.25;
+  $('checkList').innerHTML+=`<button type="button" id="repairMatingClearance" class="btn secondary wide" style="margin-top:10px;text-align:left">↗ Repair mating clearance (tongue offset → ${disp(recommendation,3)})</button><p class="small">Target: 0.25 mm radial clearance per side. Please test-print the joint: clearance depends on filament and printer calibration.</p>`;
+ }
+ if(p.nodes&&(
+   p.nodes.find(n=>n.id==='leftStepTop').x>p.nodes.find(n=>n.id==='leftStepBottom').x+1e-5||
+   p.nodes.find(n=>n.id==='rightStepBottom').x>p.nodes.find(n=>n.id==='rightStepTop').x+1e-5)){
+   $('checkList').innerHTML+=`<button type="button" id="repairStepGeometry" class="btn secondary wide" style="margin-top:9px;text-align:left">↗ Repair step walls (align adjoining X coordinates)</button><p class="small">Respects locked vertices; keeps other points and their heights unchanged. You can Undo the adjustment.</p>`;
+ }
+ if(model.omittedGrain)$('checkList').innerHTML+=`<div class="holeAdvice caution" role="status"><strong>⚠ WOOD-GRAIN RELIEF OMITTED</strong> — grip teeth retained. Turn off grips to restore printable wood-grain relief. Requested grain parameters remain in the saved project.</div>`;
+ if(model.omitted.length)$('checkList').innerHTML+=`<div class="holeAdvice caution" role="status"><strong>⚠ BODY-ONLY FALLBACK ACTIVE</strong> — requested end locks cannot be fabricated with these parameters. STLs will use flat section ends; your saved project retains all requested lock settings. Repair the locks to restore interlocking pieces.</div>`;
+ markMenuIssues(model);if(constraintIssue)$('checkList').innerHTML+=`<div class="constraintIssue" role="alert">⛔ ${escapeHTML(constraintIssue.text)}${constraintIssue.ids.length?' · Locked point(s): '+constraintIssue.ids.map(nodeLetter).join(', '):''}</div>`;
+ $('exportPrintReady').disabled=!okay;$('exportAll').disabled=!okay;$('exportOne').disabled=!okay;$('exportDxf').disabled=!okay;$('exportSvg').disabled=!okay;
+ $('summaryNote').textContent=okay?(v.warn.length?'Some features may not be optimal. Review colored holes and warnings. Red holes are omitted from STL; verify strength and fit before printing.':'Geometry checks passed. Print a short sample to verify the floor transition before full production.'):'Review the blocking checks and adjust their inputs. Overhang advisories alone do not stop export.';
+ memorizeInput();historyCommit();
  if(!okay){glr?.clear();return;}
- try{glr?.update(p,v);}catch(e){console.error('3D error',e);$('checkList').innerHTML+=`<p class="slim" style="color:#ffb1b1">3D build: ${escapeHTML(String(e.message))}</p>`;$('exportAll').disabled=true;$('exportOne').disabled=true;}
+ try{glr?.update(p,v);}catch(e){console.error('3D error',e);$('checkList').innerHTML+=`<p class="slim" style="color:#ffb1b1">3D build: ${escapeHTML(String(e.message))}</p>`;$('exportPrintReady').disabled=true;$('exportAll').disabled=true;$('exportOne').disabled=true;}
+}
+
+function repairStepGeometry(){
+ const p=params(),base=(p.nodes||defaultVertices(p)).map(q=>({...q})),prior=vertexOverrides;
+ const get=id=>base.find(v=>v.id===id);
+ const badLeft=get('leftStepTop').x>get('leftStepBottom').x+1e-5;
+ const badRight=get('rightStepBottom').x>get('rightStepTop').x+1e-5;
+ if(!badLeft&&!badRight)return toast('Step walls already satisfy the current STL mesh constraints.');
+ const pairs=[...(badLeft?[['leftStepTop','leftStepBottom']]:[]),...(badRight?[['rightStepBottom','rightStepTop']]:[])];
+ // Choose a valid edit without moving locked points. Each step tries either
+ // endpoint; X only, so the linked I/H and D/E vertical rules are unchanged.
+ function pick(i){
+  if(i===pairs.length){vertexOverrides=base.map(q=>({...q}));const v=validate(params());return v.errors.filter(e=>!e.startsWith('Tongue offset must exceed')).length===0;}
+  const [primary,alternate]=pairs[i],a=get(primary),b=get(alternate);
+  for(const [to,from] of [[a,b],[b,a]]){
+   if(vertexLocks.has(to.id))continue;
+   const old=to.x;to.x=from.x;
+   if(pick(i+1))return true;
+   to.x=old;
+  }
+  return false;
+ }
+ if(!pick(0)){
+  vertexOverrides=prior;sync();
+  const bad=pairs.flat().filter(id=>vertexLocks.has(id));
+  return toast(bad.length?'Unlock the highlighted step point(s) to repair the walls: '+bad.map(nodeLetter).join(', '):'Cannot align these steps without creating another invalid profile. Adjust the step coordinates manually.');
+ }
+ constraintIssue=null;sync();toast('Step walls aligned. Custom profile updated; review the new shape before printing.');
+}
+function repairMatingClearance(){
+ const p=params(),input=$('tongueOffset'),prior=input.value,delta=.25; // mm
+ if(!p.locksOn)return toast('Interlocking ends are disabled.');
+ if(!Number.isFinite(p.lockOffset)||p.lockOffset<=0)return toast('Enter a valid socket inset first.');
+ input.value=fmt(fromMM(p.lockOffset+delta),5);
+ const before=validate(p).errors.filter(msg=>!msg.startsWith('Tongue offset must exceed'));
+ const after=validate(params()).errors;
+ const newlyBlocking=after.filter(e=>!before.includes(e));
+ if(newlyBlocking.length){
+  input.value=prior;sync();toast('Clearance could not be repaired with this section thickness: '+newlyBlocking[0]);return;
+ }
+ constraintIssue=null;
+ sync();
+ toast('Mating clearance updated. Print a short tongue/socket test before production.');
 }
 function escapeHTML(str){return String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 let syncTimeout;function scheduleSync(){clearTimeout(syncTimeout);syncTimeout=setTimeout(sync,100);}
@@ -1230,29 +1724,31 @@ function setupSketchInteractions(){
 }
 function applyDraggedGeometry(d,dx,dy){
  const zx=dx/(sketchCamera.zoom*d.fit.scale),zy=-dy/(sketchCamera.zoom*d.fit.scale);
- if(d.kind==='hole'){
-  const p=params(),value=Math.min(p.width,Math.max(0,Number(d.holeOrigin??p.xhole)+zx));
-  $('holeX').value=fmt(fromMM(value),5);sync();return;
- }
- const vertices=d.nodes.map(v=>({...v})),extra=d.extra.map(v=>({...v}));
- const find=id=>id.startsWith('top')?extra.find(v=>v.id===id):vertices.find(v=>v.id===id);
- const moveIds=d.kind==='vertex'?[d.id]:(()=>{const lookup=[...topAnchors({...params(),nodes:d.nodes,extraTop:d.extra}),...d.nodes.slice(3)];
-  const pair=lookup.map((v,i)=>[v,lookup[(i+1)%lookup.length]]).find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===d.id);
-  return pair?[pair[0].id,pair[1].id]:[];})();
- for(const id of moveIds){const n=find(id);if(!n||vertexLocks.has(id))continue;n.x+=zx;if(!lockedY(id))n.z+=zy;}
- // A pinned linked partner also freezes the Y of its mate, while leaving free X movable.
- for(const id of moveIds){const mate=pairedYMate(id);if(mate&&!moveIds.includes(mate)&&!lockedY(id)){
-   const a=find(id),b=find(mate);if(a&&b)b.z=a.z;
- }}
- vertexOverrides=vertices;extraTopPoints=extra;$('preset').value='sketch';sync();
+ if(d.kind==='hole'){$('holeX').value=fmt(fromMM(Math.min(params().width,Math.max(0,Number(d.holeOrigin??params().xhole)+zx))),5);sync();return;}
+ const oldBase=vertexOverrides?vertexOverrides.map(n=>({...n})):null,oldTop=extraTopPoints.map(n=>({...n})),oldPreset=$('preset').value;
+ const vertices=d.nodes.map(v=>({...v})),extra=d.extra.map(v=>({...v})),find=id=>id.startsWith('top')?extra.find(v=>v.id===id):vertices.find(v=>v.id===id);
+ const ref={...params(),nodes:d.nodes,extraTop:d.extra};
+ const segments=segmentPairs(ref),moveIds=d.kind==='vertex'?[d.id]:(segments.find(([a,b])=>nodeLetter(a.id)+nodeLetter(b.id)===d.id)||[]).map(n=>n.id);
+ const pinned=new Set();
+ for(const id of moveIds){const n=find(id);if(!n||vertexLocks.has(id))continue;n.x+=zx;pinned.add(id+':x');if(!lockedY(id)){n.z+=zy;pinned.add(id+':z');}}
+ for(const id of moveIds){const mate=pairedYMate(id);if(mate&&!moveIds.includes(mate)&&!lockedY(id)){const a=find(id),b=find(mate);if(a&&b){b.z=a.z;pinned.add(mate+':z');}}}
+ const result=solveLengths(vertices,extra,pinned);
+ if(!result.ok){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;
+  constraintIssue={text:result.message,ids:[],signature:designSnapshot()};updateConstraintUI();sync();return;}
+ const before=manufacturingModel(params()).v.errors;
+ vertexOverrides=vertices;extraTopPoints=extra;$('preset').value='sketch';
+ const added=manufacturingModel(params()).v.errors.filter(e=>!before.includes(e));
+ if(added.length){vertexOverrides=oldBase;extraTopPoints=oldTop;$('preset').value=oldPreset;constraintIssue={text:added[0],ids:[],signature:designSnapshot()};}
+ else constraintIssue=null;
+ sync();
 }
-// All summary cells are writable, including derived counts. Impossible totals are rejected.
 function editSummary(id){
  const input=$(id),raw=Number(input.value),p=params(),parts=model?.v?.parts?.length||0;
+ const snapshot={nodes:vertexOverrides?vertexOverrides.map(q=>({...q})):null,top:extraTopPoints.map(q=>({...q})),preset:$('preset').value,fields:Object.fromEntries(['doorL','maxL','sets','holeN'].map(id=>[id,$(id).value])),holesOn:$('holesOn').checked},priorErrors=validate(p).errors;
  if(!Number.isFinite(raw)||raw<0){toast('Enter a valid nonnegative value.');sync();return;}
  const setMM=(field,v)=>{$(field).value=fmt(fromMM(v),5);};
  if(id==='metricWidth'){
-  if(vertexLocks.size){toast('Unlock vertices before scaling the entire profile width.');sync();return;}
+  if(vertexLocks.size||Object.keys(lengthLocks).length){toast('Unlock fixed points and line lengths before scaling the entire profile width.');sync();return;}
   if(raw<=0){toast('Width must be positive.');sync();return;}
   const target=toMM(raw),base=vertexOverrides||defaultVertices(p),all=[...base,...extraTopPoints];
   const min=Math.min(...all.map(v=>v.x)),max=Math.max(...all.map(v=>v.x)),width=max-min;
@@ -1271,6 +1767,8 @@ function editSummary(id){
   if(!parts||!Number.isInteger(raw)||raw%parts!==0||raw/parts>24){toast('Holes per doorway must divide evenly across '+parts+' sections (max 24 per section).');sync();return;}
   $('holesOn').checked=raw>0;$('holeN').value=raw/parts;
  }
+ const added=validate(params()).errors.filter(e=>!priorErrors.includes(e));
+ if(added.length){vertexOverrides=snapshot.nodes;extraTopPoints=snapshot.top;$('preset').value=snapshot.preset;for(const [field,value] of Object.entries(snapshot.fields))$(field).value=value;$('holesOn').checked=snapshot.holesOn;toast('Summary edit rejected: '+added[0]);}
  sync();
 }
 function setupSummaryEditors(){
@@ -1282,7 +1780,7 @@ function setupSummaryEditors(){
  }
 }
 
-function ready(){setupMenus();updateUnitUI();setupDimensionSteppers();setupSketchInteractions();setupSummaryEditors(); setupSummaryEditors();glr=new GLViewer($('preview'));
+function ready(){memorizeInput();setupMenus();$('checkList').addEventListener('click',e=>{if(e.target.closest('#repairMatingClearance'))repairMatingClearance();if(e.target.closest('#repairStepGeometry'))repairStepGeometry();});updateUnitUI();setupDimensionSteppers();setupSketchInteractions();setupSummaryEditors();glr=new GLViewer($('preview'));
  $('undoSketch').addEventListener('click',undoDesign);
  document.querySelectorAll('[data-constraint-mode]').forEach(b=>b.addEventListener('click',()=>setConstraintMode(b.dataset.constraintMode)));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&constraintMode){setConstraintMode(null);return;}const editing=e.target.closest?.('input,textarea,[contenteditable="true"]');if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key.toLowerCase()==='z'&&!editing){e.preventDefault();undoDesign();}});
@@ -1291,18 +1789,18 @@ function ready(){setupMenus();updateUnitUI();setupDimensionSteppers();setupSketc
  $('units').addEventListener('change',e=>{const target=e.target.value; // existing text fields use previous display unit
    const old=target==='in'?'mm':'in';$('units').value=old;changeUnits(target);
  });
- $('preset').addEventListener('change',e=>{vertexLocks.clear();cornerRadii={};vertexOverrides=null;extraTopPoints=[];$('topVertexCount').value='0';clearSketchSelection();applyPreset(e.target.value);});
+ $('preset').addEventListener('change',e=>{lengthLocks={};vertexLocks.clear();cornerRadii={};vertexOverrides=null;extraTopPoints=[];$('topVertexCount').value='0';clearSketchSelection();applyPreset(e.target.value);});
  $('topVertexCount').addEventListener('change',e=>configureTopVertices(Number(e.target.value)));
  $('lineLength').addEventListener('change',()=>{if(selectedSegment)updateSegmentLength(selectedSegment,toMM(Number($('lineLength').value)));});
- $('closeLineEditor').addEventListener('click',clearSketchSelection);
+ $('closeLineEditor').addEventListener('click',clearSketchSelection);$('lineLockToggle').addEventListener('click',()=>selectedSegment&&toggleLengthLock(selectedSegment));
  $('sketch').addEventListener('click',e=>{if(e.target===$('sketch')||e.target.tagName.toLowerCase()==='path')clearSketchSelection();});
  $('togglePointLock').addEventListener('click',()=>toggleVertexLock(selectedCorner));
  $('pointX').addEventListener('change',()=>updatePointEditor('x'));$('pointY').addEventListener('change',()=>updatePointEditor('z'));
  $('pointOpenFillet').addEventListener('click',()=>{setMenuOpen(document.querySelector('[data-menu="4"]'),true);document.querySelector('[data-menu="4"]').scrollIntoView({block:'nearest'});});
  $('openCoordMenu').addEventListener('click',()=>{setMenuOpen(document.querySelector('[data-menu="coords"]'),true);document.querySelector('[data-menu="coords"]').scrollIntoView({block:'nearest'});});
- $('resetCoordinates').addEventListener('click',()=>{if(vertexLocks.size)return toast('Unlock all vertices before restoring the profile.');vertexOverrides=null;sync();toast('Restored the dimension-defined profile.');});
- for(const id of [...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','woodOn','grainAngle']){
-  const field=$(id);field.addEventListener('input',scheduleSync);field.addEventListener('change',scheduleSync);
+ $('resetCoordinates').addEventListener('click',()=>{if(vertexLocks.size)return toast('Unlock all vertices before restoring the profile.');lengthLocks={};vertexOverrides=null;sync();toast('Restored the dimension-defined profile.');});
+ for(const id of [...fields,'sets','holeN','sinkA','holesOn','curve','recess','splitMode','explode','locksOn','floorOpenSocket','woodOn','grainAngle','gripSides','gripW','gripL','gripGap','gripHeight']){
+  const field=$(id);if(field.type==='number'){field.addEventListener('change',()=>guardedInputChange(field));}else{field.addEventListener('input',scheduleSync);field.addEventListener('change',scheduleSync);}
  }
  function setSketchDimension(dimId,id){
   const value=$(dimId).value;
@@ -1317,14 +1815,14 @@ function ready(){setupMenus();updateUnitUI();setupDimensionSteppers();setupSketc
   $(dimId).addEventListener('input',()=>{setSketchDimension(dimId,id);scheduleSync();});
   $(dimId).addEventListener('change',()=>{setSketchDimension(dimId,id);sync();});
  }
- $('applyFillet').addEventListener('click',()=>{if(!selectedCorner)return toast('Select a corner marker.');const radius=num('filletRadius');if(!(radius>0))return toast('Fillet radius must be positive.');const previous=cornerRadii[selectedCorner];cornerRadii[selectedCorner]=radius;const test=validate(params());if(test.errors.length){if(previous===undefined)delete cornerRadii[selectedCorner];else cornerRadii[selectedCorner]=previous;sync();return toast(test.errors[0]);}sync();});
+ $('applyFillet').addEventListener('click',()=>{if(!selectedCorner)return toast('Select a corner marker.');const radius=num('filletRadius');if(!(radius>0))return toast('Fillet radius must be positive.');const previous=cornerRadii[selectedCorner];cornerRadii[selectedCorner]=radius;const test=manufacturingModel(params()).v;if(test.errors.length){if(previous===undefined)delete cornerRadii[selectedCorner];else cornerRadii[selectedCorner]=previous;sync();return toast(test.errors[0]);}sync();});
  $('removeFillet').addEventListener('click',()=>{delete cornerRadii[selectedCorner];sync();});
  $('clearFillets').addEventListener('click',()=>{cornerRadii={};sync();});
  $('segmentChoice').addEventListener('change',()=>{if(model&&!model.v.errors.length)glr?.update(model.p,model.v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${model.v.parts.length} sections · ${model.v.hpos.length} bores`;});$('previewFocus').addEventListener('change',()=>{if(model&&!model.v.errors.length)glr?.update(model.p,model.v);$('modelInfo').textContent=$('previewFocus').value==='piece'?`P${$('segmentChoice').selectedIndex+1} · close-up`:`${model.v.parts.length} sections · ${model.v.hpos.length} bores`;});
  document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{currentMode=button.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===button));$('drawingPanel').classList.toggle('hidden',currentMode==='three');$('threePanel').classList.toggle('hidden',currentMode==='sketch');if(currentMode==='three')$('threePanel').style.marginTop='0';else $('threePanel').style.marginTop='15px';glr?.draw();}));
  const guard=()=>{sync();if(model.v.errors.length){toast(model.v.errors[0]);return false;}return true;};
  $('inspectSocket').addEventListener('click',()=>{
-  const p=params(),v=validate(p);
+  const {p,v}=manufacturingModel(params());
   if(v.errors.length){toast('Correct geometry errors before inspecting the socket.');return;}
   if(v.parts.length<2||!p.locksOn){toast('A socket exists only when interlocking sections are enabled and the doorway has multiple pieces.');return;}
   $('previewFocus').value='piece';$('segmentChoice').selectedIndex=1;
@@ -1333,17 +1831,32 @@ function ready(){setupMenus();updateUnitUI();setupDimensionSteppers();setupSketc
   $('threePanel').scrollIntoView({block:'nearest',behavior:'smooth'});
   toast('Showing the open socket at the start of section P2. Drag to rotate.');
  });
- $('exportOne').addEventListener('click',()=>{if(!guard())return;let {p,v}=model,i=Math.max(0,$('segmentChoice').selectedIndex),part=v.parts[i];try{download(new Blob([makeSTL(triangleMesh(p,part),'P'+part.number)],{type:'model/stl'}),`threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm.stl`);toast('STL generated with bores, textured top (if enabled), fillets and mating locks.');}catch(e){toast('STL export error: '+e.message);}});
+ $('exportOne').addEventListener('click',()=>{if(!guard())return;let {p,v}=model,i=Math.max(0,$('segmentChoice').selectedIndex),part=v.parts[i];try{download(new Blob([makeSTL(checkedPartMesh(p,part),'P'+part.number)],{type:'model/stl'}),`threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm${model.omitted.length?'_NO_JOINTS':''}${model.omittedGrain?'_NO_GRAIN':''}.stl`);toast(model.omitted.length||model.omittedGrain?'STL generated with documented geometry omissions — review Design checks.':'Watertight STL exported; verify slicing and fit.');}catch(e){toast('STL export error: '+e.message);}});
  $('exportSvg').addEventListener('click',()=>{if(guard())download(new Blob([svgExport(model.p)],{type:'image/svg+xml'}),'threshold_profile.svg');});
  $('exportDxf').addEventListener('click',()=>{if(guard())download(new Blob([dxf(model.p)],{type:'application/dxf'}),'threshold_profile_mm.dxf');});
- $('exportJson').addEventListener('click',()=>{if(guard())download(new Blob([projectSave(model.p)],{type:'application/json'}),'threshold_project.json');});
+ $('exportJson').addEventListener('click',()=>{sync();download(new Blob([projectSave(model.requested)],{type:'application/json'}),'threshold_project.json');});
  $('importJson').addEventListener('click',()=>{$('jsonFile').click();});
  $('jsonFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{openProject(JSON.parse(await f.text()));toast('Project parameters loaded.');}catch(err){toast(err.message);}e.target.value='';});
- $('exportAll').addEventListener('click',()=>{if(!guard())return;let {p,v}=model;try{
- const entries=[['README.txt',`FLOORING THRESHOLD STUDIO | Print package v2.4\n\nLength and cross-section dimensions are in millimeters. Binary STL coordinate units are millimeters.\n\nCross section derived from the supplied user sketch.\nInstalled length: ${fmt(p.door,3)} mm\nWidth: ${fmt(p.L+p.M+p.R,3)} mm\nPeak height: ${fmt(p.h,3)} mm\nQuantity of doorways: ${p.sets}\nSegments per doorway: ${v.parts.length}\nFasteners per section: ${p.holeN}\nDoorway fasteners modeled: ${v.hpos.length} of ${v.requestedHoleCount} requested\nUnsafe red holes OMITTED: ${v.skippedCount}\n${v.skippedCount?'WARNING: The design has omitted red mounting holes. Correct their placement before manufacturing.\n':''}\nSTL files each represent ONE piece; print ${p.sets} copies of every STL.\nFor print-flat T-cap, orient the broad flat face against the build plate, with the underside center stem facing upward. Shallow/disabled wood grain recommended when first-layer adhesion requires a fully planar face. Vertex locks constrain editing only, not physical parts.\nPrint side/orientation, slip resistance, floor clearances, structural loads, fasteners and fit must be independently verified. Interior segment joints use opposing socket and tongue connectors when enabled; endmost outer caps remain flat. Independent tongue and socket offsets/depths control the mating fit. Wood-grain surface relief (if enabled) is embedded in each STL. Rotate grain in section 07. Socket opens on the leading face of P2 and later sections. All dimensions nominal. A circular fillet must fit tangentially on the two edges; 90-degree fillets may have radius equal to the shorter edge.\n`],['threshold_profile_mm.dxf',dxf(p)],['threshold_profile.svg',svgExport(p)],['threshold_cut_schedule.csv',csvExport(p,v)],['hole_position_checks.csv',holeChecksCsv(v)],['threshold_project.json',projectSave(p)]];
- for(const part of v.parts)entries.push([`stl/threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm.stl`,makeSTL(triangleMesh(p,part),'segment '+part.number)]);
+ $('exportPrintReady').addEventListener('click',()=>{if(!guard())return;const {p,v,requested}=model;try{
+ const mode=$('printOrientation').value;
+ const lines=['Flooring Threshold Studio v3.1 — BUILD-PLATE-ORIENTED STLs','','STL coordinates are in millimeters. Place all files on the slicer bed at Z=0; no further rotation is intended.','Printer bed and Z capacity are not automatically known; CHECK EVERY PIECE.','Orientation AUTO: P1 on flat first end; P-last on flat last end; middle pieces on recessed socket face.','Socket mouths are planar rings, not solid flat discs. Rafts/brims may help. The grain face is NOT the default support face.','Grip teeth may need supports and grip must be verified physically.','',`Quantity of doorways: ${p.sets}`,'','Piece | Downward-facing support | X × Y footprint (mm) | Z height (mm)'];
+ const entries=[['threshold_project.json',projectSave(requested)],['GEOMETRY_STATUS.txt',manufacturingNotes(model)],['threshold_cut_schedule.csv',csvExport(p,v)],['hole_position_checks.csv',holeChecksCsv(v)],['threshold_profile_mm.dxf',dxf(p)],['threshold_profile.svg',svgExport(p)]];
+ for(const part of v.parts){
+  const result=orientedPrintMesh(checkedPartMesh(p,part),part,p,mode);
+  const [X,Y,Z]=result.dimensions;
+  const name=`print_oriented/threshold_P${String(part.number).padStart(2,'0')}_${mode}.stl`;
+  entries.push([name,makeSTL(result.mesh,'build oriented '+part.number)]);
+  lines.push(`P${part.number} | ${result.face} | ${fmt(X,2)} × ${fmt(Y,2)} | ${fmt(Z,2)}${Z>250?'  WARNING: tall print':''}`);
+ }
+ lines.push('','NOTE: grip pattern is actual underside relief, not an image. Spacing is along installed doorway; teeth near part seams are omitted for clean support faces.','Check pocket-face stability, support structures, toolhead travel and final orientation in your slicer before printing.');
+ entries.unshift(['PRINT_ORIENTATION_GUIDE.txt',lines.join('\n')]);
+ download(zipStored(entries),'Flooring_Threshold_PRINT_ORIENTED_v2_8.zip');toast(`Prepared ${v.parts.length} oriented STLs · verify fit in slicer.`);
+ }catch(err){console.error(err);toast('Print-oriented package error: '+err.message);}});
+ $('exportAll').addEventListener('click',()=>{if(!guard())return;let {p,v,requested}=model;try{
+ const entries=[['GEOMETRY_STATUS.txt',manufacturingNotes(model)],['README.txt',`FLOORING THRESHOLD STUDIO | Print package v3.1\n\nLength and cross-section dimensions are in millimeters. Binary STL coordinate units are millimeters.\n\nCross section derived from the supplied user sketch.\nInstalled length: ${fmt(p.door,3)} mm\nWidth: ${fmt(p.L+p.M+p.R,3)} mm\nPeak height: ${fmt(p.h,3)} mm\nQuantity of doorways: ${p.sets}\nSegments per doorway: ${v.parts.length}\nFasteners per section: ${p.holeN}\nDoorway fasteners modeled: ${v.hpos.length} of ${v.requestedHoleCount} requested\nUnsafe red holes OMITTED: ${v.skippedCount}\n${v.skippedCount?'WARNING: The design has omitted red mounting holes. Correct their placement before manufacturing.\n':''}\nSTL files in this package retain MODEL coordinates. To get pieces rotated onto their flat/socket faces, use Download PRINT-ORIENTED package. STL files each represent ONE piece; print ${p.sets} copies of every STL.\nFor print-flat T-cap, orient the broad flat face against the build plate, with the underside center stem facing upward. Shallow/disabled wood grain recommended when first-layer adhesion requires a fully planar face. Vertex locks constrain editing only, not physical parts.\nGrip teeth, if enabled, are modeled into the wing undersides. For build-plate-oriented STLs use the separate PRINT-ORIENTED package export. Print side/orientation, slip resistance, floor clearances, structural loads, fasteners and fit must be independently verified. Interior segment joints use opposing socket and tongue connectors when enabled; endmost outer caps remain flat. Independent tongue and socket offsets/depths control the mating fit. Wood-grain surface relief (if enabled) is embedded in each STL. Rotate grain in section 07. Socket opens on the leading face of P2 and later sections. When the floor-open lock option is enabled, the socket has no lower wall and its tongue reaches the underside plane; test fit, floor contact, and local strength. All dimensions nominal. A circular fillet must fit tangentially on the two edges; 90-degree fillets may have radius equal to the shorter edge.\n`],['threshold_profile_mm.dxf',dxf(p)],['threshold_profile.svg',svgExport(p)],['threshold_cut_schedule.csv',csvExport(p,v)],['hole_position_checks.csv',holeChecksCsv(v)],['threshold_project.json',projectSave(requested)]];
+ for(const part of v.parts)entries.push([`stl/threshold_P${String(part.number).padStart(2,'0')}_${fmt(part.length+(part.male?p.tongueDepth:0),1)}mm.stl`,makeSTL(checkedPartMesh(p,part),'segment '+part.number)]);
  download(zipStored(entries),'Flooring_Threshold_Print_Package.zip');toast(`Generated ${v.parts.length} STLs + drawing, DXF and schedule.`);
  }catch(err){console.error(err);toast('Package error: '+err.message);}});
- sync();}
+ if($('preset').value==='sampleSym')applyPreset('sampleSym');else sync();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 </script></body></html>
